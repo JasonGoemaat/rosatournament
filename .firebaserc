@@ -3,7 +3,7 @@
     "goemaat-multiple-apps": {
       "hosting": {
         "tournament": [
-          "goemaat-multiple-apps"
+          "goemaat-ma-tournament"
         ]
       }
     }

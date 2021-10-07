@@ -28,8 +28,11 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Install Firebase CLI
+        run: sudo npm install -g firebase-tools
+        
+      - name: Use Project
+        run: firebase use --add goemaat-muleiple-apps --token ${{ secrets.FIREBASE_TOKEN }}
+      
       - name: Firebase Deploy
-        run: |
-          sudo npm install -g firebase-tools
-          firebase use --add goemaat-muleiple-apps --token ${{ secrets.FIREBASE_TOKEN }}
-          firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}

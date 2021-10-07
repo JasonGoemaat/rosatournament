@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Auth, User, signInWithPopup, GoogleAuthProvider } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-firebase-auth-sample',
@@ -6,10 +7,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./firebase-auth-sample.component.scss']
 })
 export class FirebaseAuthSampleComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
+  public user: User | null = null;
+  
+  constructor(public auth: Auth) {
+    (window as any).cfas = this;
+    console.log({ auth });
   }
 
+  ngOnInit(): void {
+    this.auth.onAuthStateChanged(user => {
+      console.log({ user });
+      this.user = user;
+    })
+  }
+
+  signIn() {
+    signInWithPopup(this.auth, new GoogleAuthProvider());
+  }
+
+  signOut() {
+    this.auth.signOut();
+  }
 }

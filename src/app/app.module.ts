@@ -11,6 +11,7 @@ import { TestSecondRouteComponent } from './test-second-route/test-second-route.
 
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 import { FirebaseAuthTestComponent } from './firebase-auth-test/firebase-auth-test.component';
 import { FirebaseAuthSampleComponent } from './sample/firebase-auth-sample/firebase-auth-sample.component';
 import { SamplesComponent } from './sample/samples/samples.component';
@@ -43,6 +44,7 @@ const firebaseConfig = {
     BrowserAnimationsModule,
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth())
   ],
   providers: [],
   bootstrap: [MainComponent]

@@ -1,3 +1,12 @@
 <app-sample-nav></app-sample-nav>
 
-<p>firebase-auth-sample works!</p>
+<h2>firebase-auth-sample works!</h2>
+
+<hr/>
+
+<button *ngIf="user === null" (click)="signIn()">Sign In With Google</button>
+<button *ngIf="user !== null" (click)="signOut()">Sign Out</button>
+
+<div ng-if="user !== null">
+  <pre>{{ user | json }}</pre>
+</div>

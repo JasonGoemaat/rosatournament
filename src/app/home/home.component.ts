@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  sliderValue = 25;
 
-  constructor() { }
+  constructor() {
+    (window as any).chome = this;
+  }
 
   ngOnInit(): void {
   }
 
+  changeSliderValue($event: MatSliderChange) {
+    console.log(`slider now: ${$event.value}`);
+  }
 }

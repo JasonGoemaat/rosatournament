@@ -1,24 +1,2 @@
 :host {
-  position: sticky;
-  display: flex;
-  flex-direction: column;
-  top: 0;
-  width: 280px;
-  background-color: #101830;
-  color: white;
-  min-height: 800px;
-
-  .centered {
-    text-align: center;
-  }
-
-  .title {
-    margin-top: 20px;
-    font-size: 2em;
-    text-align: center;
-  }
-
-  .text1 {
-    color: white;
-  }
 }

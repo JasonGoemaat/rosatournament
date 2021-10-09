@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from "@angular/forms";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,10 @@ import { FirebaseAuthTestComponent } from './firebase-auth-test/firebase-auth-te
 import { FirebaseAuthSampleComponent } from './sample/firebase-auth-sample/firebase-auth-sample.component';
 import { SamplesComponent } from './sample/samples/samples.component';
 import { SampleNavComponent } from './sample/sample-nav/sample-nav.component';
+import { TournamentsComponent } from './tournaments/tournaments/tournaments.component';
+import { NavUserComponent } from './nav/nav-user/nav-user.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AppMaterialModule } from './app-material-module';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDyEMGADaBOQW1F36QtoPFYDGJzdFETvrs",
@@ -36,15 +41,20 @@ const firebaseConfig = {
     FirebaseAuthTestComponent,
     FirebaseAuthSampleComponent,
     SamplesComponent,
-    SampleNavComponent
+    SampleNavComponent,
+    TournamentsComponent,
+    NavUserComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    FontAwesomeModule,
+    AppMaterialModule,
   ],
   providers: [],
   bootstrap: [MainComponent]

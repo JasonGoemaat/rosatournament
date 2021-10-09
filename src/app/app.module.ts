@@ -16,6 +16,9 @@ import { FirebaseAuthTestComponent } from './firebase-auth-test/firebase-auth-te
 import { FirebaseAuthSampleComponent } from './sample/firebase-auth-sample/firebase-auth-sample.component';
 import { SamplesComponent } from './sample/samples/samples.component';
 import { SampleNavComponent } from './sample/sample-nav/sample-nav.component';
+import { TournamentsComponent } from './tournaments/tournaments/tournaments.component';
+import { NavUserComponent } from './nav/nav-user/nav-user.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDyEMGADaBOQW1F36QtoPFYDGJzdFETvrs",
@@ -36,7 +39,9 @@ const firebaseConfig = {
     FirebaseAuthTestComponent,
     FirebaseAuthSampleComponent,
     SamplesComponent,
-    SampleNavComponent
+    SampleNavComponent,
+    TournamentsComponent,
+    NavUserComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +49,8 @@ const firebaseConfig = {
     BrowserAnimationsModule,
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [MainComponent]

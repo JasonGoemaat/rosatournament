@@ -1,0 +1,12 @@
+<div class="nav-item user-info" (click)="toggleExpanded()">
+  <img *ngIf="photoURL" [src]="photoURL">
+  <div style="flex: 1 1 auto; user-select: none">{{user?.displayName}}</div>
+  <fa-icon [icon]="faAngleRight" style="justify-self: flex-end;" *ngIf="!isExpanded; else isExpandedIcon"></fa-icon>
+  <ng-template #isExpandedIcon>
+    <fa-icon [icon]="faAngleUp"></fa-icon>
+  </ng-template>
+</div>
+<div class="nav-item" *ngIf="isExpanded">
+  <fa-icon [icon]="faSignOutAlt" class="nav-item-icon"></fa-icon>
+  <div>Sign Out</div>
+</div>

@@ -1,1 +1,4 @@
-<p class="centered title">Tournament</p>
+<app-nav-user *ngIf="user | async as u; else notLoggedIn" [user]="u" (signOut)="onSignOut()"></app-nav-user>
+<ng-template #notLoggedIn>
+  <div class="nav-item" (click)="signIn()">Sign In</div>
+</ng-template>

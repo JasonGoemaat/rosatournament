@@ -21,4 +21,23 @@
   .text1 {
     color: white;
   }
+
+  .signed-in {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; // so we can have absolute drop-down
+
+    > * {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    .drop-down {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+    }
+  }
 }

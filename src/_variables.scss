@@ -1,5 +1,4 @@
-//$nav-background: #101830;
-$nav-background: red;
+$nav-background: #101830;
 $nav-background-hover: lighten($nav-background, 20%);
-$nav-foreground: lighten($nav-background, 90%);
-$nav-foreground-hover: lighten($nav-background, 70%);
+$nav-color: lighten($nav-background, 80%);
+$nav-color-hover: lighten($nav-background, 90%);

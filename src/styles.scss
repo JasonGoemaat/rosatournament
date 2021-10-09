@@ -5,74 +5,46 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.nav-bar {
+.nav-main {
   position: sticky;
   display: flex;
   flex-direction: column;
   top: 0;
   width: 280px;
-  color: white;
   min-height: 800px;
   background-color: $nav-background;
+  color: $nav-color;
 
-  .centered {
-    text-align: center;
-  }
-
-  .title {
-    margin-top: 20px;
-    font-size: 2em;
-    text-align: center;
-  }
-
-  .text1 {
-    color: white;
-  }
-
-  .signed-in {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative; // so we can have absolute drop-down
-
-    > * {
-      margin-left: 20px;
-      margin-right: 20px;
-    }
-
-    .drop-down {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-    }
-  }
-}
-
-.nav-item {
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  cursor: pointer;
-  img {
-    height: 30px;
-  }
-
-  .nav-item-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
+  .nav-item {
+    margin-left: 10px;
     margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    user-select: none;
+    img {
+      height: 30px;
+    }
+  
+    .nav-item-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      margin-right: 10px;
+    }
+  }
+  
+  .nav-item-action {
+    &:hover {
+      background-color: $nav-background-hover;
+      color: $nav-color-hover;
+    }
   }
 }
 
-.nav-item-action {
-  &:hover {
-    background-color: #f0f0f0;
-  }
-}

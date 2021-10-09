@@ -1,4 +1,7 @@
 <app-nav-user *ngIf="user | async as u; else notLoggedIn" [user]="u" (signOut)="onSignOut()"></app-nav-user>
 <ng-template #notLoggedIn>
-  <div class="nav-item" (click)="signIn()">Sign In</div>
+  <div class="nav-item">
+    <p style="font-size: x-large;">Tournament</p>
+  </div>
+  <div class="nav-item nav-item-action" (click)="signIn()">Sign In</div>
 </ng-template>

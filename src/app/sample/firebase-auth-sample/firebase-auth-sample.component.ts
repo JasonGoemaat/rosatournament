@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Auth, User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from '@angular/fire/auth';
+import { Component, OnInit, Optional } from '@angular/core';
+import { Auth, User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, authState } from '@angular/fire/auth';
+import { EMPTY, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-firebase-auth-sample',
@@ -7,18 +8,23 @@ import { Auth, User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, si
   styleUrls: ['./firebase-auth-sample.component.scss']
 })
 export class FirebaseAuthSampleComponent implements OnInit {
-  public user: User | null = null;
+  public readonly user: Observable<User | null> = EMPTY;
   
-  constructor(public auth: Auth) {
+  constructor(@Optional() public auth: Auth) {
     (window as any).cfas = this;
     console.log({ auth });
+    if (auth) {
+      this.user = authState(this.auth);
+    }
   }
 
   ngOnInit(): void {
-    onAuthStateChanged(this.auth, user => {
-      console.log({ user });
-      this.user = user;
-    })
+    // this causes failed test because we don't inject Auth for tests
+    if (this.auth) {
+      onAuthStateChanged(this.auth, user => {
+        console.log('ngOnInit() looking at onAuthStateChanged:', { user });
+      })
+    }
   }
 
   signIn() {

@@ -1,0 +1,17 @@
+<h1>Todos</h1>
+
+<div style="cursor:pointer; user-select: none; width: 400px;" *ngFor="let todo of todoItems | async" (click)="toggleTodo(todo.id)">
+  <div style="display: flex; align-items: center;">
+    <div style="flex: 1 1 auto">
+      <mat-checkbox style="width: auto" [checked]="todo.done">{{todo.title}}</mat-checkbox>
+    </div>
+    <button mat-button color="warn" (click)="deleteTodo(todo.id)">delete</button>
+  </div>
+</div>
+
+<mat-form-field>
+  <mat-label>What do you need to do?</mat-label>
+  <input matInput #input placeholder="todo title" [(ngModel)]="newTodoTitle">
+</mat-form-field>
+
+<button mat-button color="primary" style="margin-left: 20px;" (click)="onAddTodo(input.value)">add todo</button>

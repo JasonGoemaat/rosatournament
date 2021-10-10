@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { Auth, authState, GoogleAuthProvider, signInWithPopup, signOut, User } from '@angular/fire/auth';
 import { EMPTY, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -20,7 +20,7 @@ export class NavComponent implements OnInit {
     this.displayDropDown = !this.displayDropDown;
   }
 
-  constructor(public auth: Auth) {
+  constructor(@Optional() public auth: Auth) {
     // https://github.com/angular/angularfire/blob/master/samples/modular/src/app/auth/auth.component.ts
     (window as any).cnav = this;
     if (auth) {

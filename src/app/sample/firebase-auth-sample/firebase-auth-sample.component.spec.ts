@@ -6,17 +6,12 @@ import { FirebaseAuthSampleComponent } from './firebase-auth-sample.component';
 xdescribe('NOTFirebaseAuthSampleComponent', () => {
   let component: FirebaseAuthSampleComponent;
   let fixture: ComponentFixture<FirebaseAuthSampleComponent>;
-  const authSpy = jasmine.createSpyObj('Auth', {});
+  const authSpy = jasmine.createSpyObj('Auth', ['notAMethod']);
   
-  // Jason added this, getting error 'No provider for Auth'
-  let providers = [
-    { provide: Auth, useValue: authSpy }
-  ]
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ FirebaseAuthSampleComponent ],
-      providers
+      providers: [{ provide: Auth, useValue: authSpy }],
     })
     .compileComponents();
   });

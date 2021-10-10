@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NavComponent } from './nav.component';
 import { RouterTestingModule } from "@angular/router/testing";
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('NavComponent', () => {
   let component: NavComponent;
@@ -12,7 +13,8 @@ describe('NavComponent', () => {
       imports: [
         RouterTestingModule.withRoutes([]),
       ],
-      declarations: [ NavComponent ]
+      declarations: [ NavComponent ],
+      schemas: [ NO_ERRORS_SCHEMA ],
     })
     .compileComponents();
   });

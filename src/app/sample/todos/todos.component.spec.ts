@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TodosComponent } from './todos.component';
 import { Store } from "@ngxs/store";
 import { NGXS_MODULE } from "../../app.module";
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('TodosComponent', () => {
   let component: TodosComponent;
@@ -12,7 +13,8 @@ describe('TodosComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ NGXS_MODULE ],
       providers: [ Store ],
-      declarations: [ TodosComponent ]
+      schemas: [ NO_ERRORS_SCHEMA ],
+      declarations: [ TodosComponent ],
     })
     .compileComponents();
   });

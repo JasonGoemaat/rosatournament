@@ -5,6 +5,7 @@
     <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId])">Bracket</button>
     <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId, 'games'])">Games</button>
     <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId, 'participants'])">Participants</button>
+    <button mat-menu-item (click)="resetTournament()">&lt;--RESET--&gt;</button>
   </mat-menu>
   <h1 class="loading">{{data.vm.tournament.name}}</h1>
   <router-outlet></router-outlet>

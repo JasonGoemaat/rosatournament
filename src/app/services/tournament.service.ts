@@ -8,7 +8,7 @@ import { defaultConfig, TournamentConfig } from '../models/tournament-config';
 import { TournamentViewModel } from '../models/tournament-view-model';
 import { AuthService } from './auth.service';
 import { FirebaseFunctionsService } from './firebase-functions.service';
-import { AuthInfo } from './firebase-util.service';
+import { AuthInfo, FirebaseUtilService } from './firebase-util.service';
 
 export interface MyRouteData {
   auth: AuthInfo,
@@ -30,7 +30,11 @@ export class TournamentService {
 
   unsub : Unsubscribe | null = null;
   
-  constructor(public auth: AuthService, public ff: FirebaseFunctionsService) {
+  constructor(
+    public auth: AuthService,
+    public ff: FirebaseFunctionsService,
+    public fu: FirebaseUtilService,
+  ) {
     this.tournament$.unsubscribe();
   }
 
@@ -88,6 +92,7 @@ export class TournamentService {
       );
   }
 
-  setTournament(tournamentId: string, tournament: Tournament) {
+  setTournament(tournamentId: string, tournament: Tournament): Promise<any> {
+    return this.fu.saveDoc(tournament, 'tournaments', tournamentId);
   }
 }

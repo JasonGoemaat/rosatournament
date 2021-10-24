@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { getFirestore, addDoc, collection, getDocs, onSnapshot, doc } from 'firebase/firestore';
+import { getFirestore, addDoc, collection, getDocs, onSnapshot, doc, setDoc } from 'firebase/firestore';
 
 /**
  * This service provides the firebase functions you normally import from firebse,
@@ -22,6 +22,7 @@ export class FirebaseFunctionsService {
   getDocs = getDocs;
   onSnapshot = onSnapshot;
   doc = doc;
+  setDoc = setDoc;
 
   constructor() { }
 }

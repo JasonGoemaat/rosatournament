@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs/internal/observable/of';
-import { switchMap, tap } from 'rxjs/operators';
-import { combineLatest, ReplaySubject, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { TournamentService, MyRouteData } from 'src/app/services/tournament.service';
 import { TournamentViewModel } from 'src/app/models/tournament-view-model';
 import { AuthInfo } from 'src/app/services/firebase-util.service';
-import { defaultConfig } from 'src/app/models/tournament-config';
+import { tournamentReset } from 'src/app/models/reset';
 import { faSpinner, faCoffee } from "@fortawesome/free-solid-svg-icons";
 
 export interface MyData {
@@ -61,5 +60,13 @@ export class TournamentsComponent implements OnInit, OnDestroy {
       this.paramMap.unsubscribe();
       this.paramMap = undefined;
     }
+  }
+
+  resetTournament(): void {
+    if (!confirm('ARE YOU ABSOLUTELY SURE?')) {
+      return;
+    }
+
+    this.service.setTournament('other', tournamentReset);
   }
 }

@@ -37,4 +37,10 @@ export class FirebaseUtilService {
   signOut() {
     this.ff.getAuth().signOut();
   }
+
+  saveDoc(data: any, path: string, ...segments: string[]) {
+    const db = this.ff.getFirestore();
+    const doc = this.ff.doc(db, path, ...segments);
+    return this.ff.setDoc(doc, data);
+  }
 }

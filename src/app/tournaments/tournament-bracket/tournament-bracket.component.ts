@@ -1,14 +1,11 @@
 import {Component,Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { combineLatest, ReplaySubject } from 'rxjs';
-import { map } from "rxjs/operators";
-import { AuthService } from 'src/app/services/auth.service';
-import { TournamentService } from 'src/app/services/tournament.service';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { MyRouteData, TournamentService } from 'src/app/services/tournament.service';
 import { data, Tournament } from '../../models/tournament';
 import { TournamentConfig, BorderConfig, TournamentSpotConfig, defaultConfig } from '../../models/tournament-config';
 import { SpotViewModel, TournamentViewModel } from '../../models/tournament-view-model';
-import { MyData } from '../tournaments/tournaments.component';
 
 @Component({
   selector: 'app-tournament-bracket',
@@ -18,32 +15,15 @@ import { MyData } from '../tournaments/tournaments.component';
 export class TournamentBracketComponent implements OnInit {
   myConfig: TournamentConfig | null = null;
   myTournament: Tournament | null = null;
-  data$: ReplaySubject<MyData> = new ReplaySubject<MyData>(1);
-
-  @Input()
-  set config(config: TournamentConfig) {
-    this.myConfig = config;
-    if (this.config !== null && this.myTournament !== null) {
-      this.vm = new TournamentViewModel(this.myConfig, this.myTournament);
-    }
-  }
-
-  @Input()
-  set tournament(tournament: Tournament) {
-    this.myTournament = tournament;
-    if (this.myConfig !== null && this.myTournament !== null) {
-      this.vm = new TournamentViewModel(this.myConfig, this.myTournament);
-    }
-  }
-  vm: TournamentViewModel | null = null;
+  data$: Observable<MyRouteData>;
   BorderConfig = BorderConfig;
   data = data;
 
   constructor(
     public route: ActivatedRoute,
-    public service: TournamentService,
-    public authService: AuthService) {
+    public service: TournamentService) {
     (window as any).cBracket = this;
+    this.data$ = service.getForParams(route.paramMap).pipe(tap(x => console.log('Bracket component:', x)));
   }
 
   ngOnInit(): void {
@@ -61,7 +41,6 @@ export class TournamentBracketComponent implements OnInit {
     //       this.data$.next(<MyData>{ vm, auth })
     //     });
     // });
-    this.service.getForParams(this.route.paramMap);
   }
 
   getBorderBottom(spot: TournamentSpotConfig): string {
@@ -84,10 +63,8 @@ export class TournamentBracketComponent implements OnInit {
     return '';
   }
 
-  getGameString(index: number): string | null{
-    if (!this.config) return null;
-
-    const config = this.config as TournamentConfig;
+  getGameString(data: MyRouteData, index: number): string | null{
+    const config = data.config as TournamentConfig;
     for (let i = 0; i < config.games.length; i++) {
       const game = config.games[i];
       if (game.spotA == index) {
@@ -106,17 +83,17 @@ export class TournamentBracketComponent implements OnInit {
     // need isItalic (if not name like 'Jeff Livingston' (i.e. for time or source, or place ))
     // hintText (if is where winner goes, display game name)
 
-    const infos: any[] = [];
+    // const infos: any[] = [];
 
-    if (this.config != null) {
-      this.config.spots.forEach((spot, spotIndex) => {
-        // 
-      })
-    }
+    // if (this.config != null) {
+    //   this.config.spots.forEach((spot, spotIndex) => {
+    //     // 
+    //   })
+    // }
   }
 
-  onSpotClick(spot: SpotViewModel) {
-    console.log('click:', spot, this.vm);
+  onSpotClick(data: MyRouteData, spot: SpotViewModel) {
+    // console.log('click:', spot, this.vm);
     // const dialogRef = this.dialog.open(SpotDialogComponent, {
     //   data: new SpotDialogData(this.vm as TournamentViewModel, spot)
     // });

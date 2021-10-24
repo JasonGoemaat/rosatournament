@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { MyRouteData, TournamentService } from 'src/app/services/tournament.service';
 import { UtilService } from 'src/app/services/util.service';
 import { TournamentViewModel } from "../../models/tournament-view-model";
 
+// used for quick design to see what data I needed
 const sampleData = [
   {
     gameId: 0,
@@ -134,6 +135,7 @@ export class TournamentGamesComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     public service: TournamentService,
+    public router: Router,
   ) {
     (window as any).cGames = this;
     this.data$ = service.getForParams(route.paramMap)
@@ -160,6 +162,10 @@ export class TournamentGamesComponent implements OnInit {
 
   clickShowPlayed(data: any) {
     this.showPlayed = true;
+  }
+
+  openGame(data: any, game: any) {
+    this.router.navigate(['/', 'tournaments', data.tournamentId, 'games', game.gameId]);
   }
 
   ngOnInit(): void {

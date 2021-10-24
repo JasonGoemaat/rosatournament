@@ -1,1 +1,7 @@
-<p>tournament-game works!</p>
+<div *ngIf="data$ | async as data; else loading">
+  <h2>Game {{data.model.gameName}} at {{data.model.timeString}}</h2>
+</div>
+
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>

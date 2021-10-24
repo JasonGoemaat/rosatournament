@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-loading',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./loading.component.scss']
 })
 export class LoadingComponent implements OnInit {
+  faSpinner = faSpinner;
 
   constructor() { }
 

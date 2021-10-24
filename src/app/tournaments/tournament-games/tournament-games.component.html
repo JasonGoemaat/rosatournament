@@ -4,9 +4,8 @@
   </h2>
 
   <ol>
-
     <!-- some -->
-    <li *ngFor="let game of data.some" class="game">
+    <li *ngFor="let game of data.some" class="game" (click)="openGame(data, game)">
       <div class="header">
         <div class="time">{{game.model.timeString}} - Game {{game.model.gameName}}</div>
       </div>
@@ -30,7 +29,7 @@
     </li>
 
     <!-- more -->
-    <li *ngFor="let game of showMore ? data.more : []" class="game">
+    <li *ngFor="let game of showMore ? data.more : []" class="game" (click)="openGame(data, game)">
       <div class="header">
         <div class="time">{{game.model.timeString}} - Game {{game.model.gameName}}</div>
       </div>
@@ -54,7 +53,7 @@
     </li>
 
     <!-- played -->
-    <li *ngFor="let game of showPlayed ? data.played : []" class="game finished">
+    <li *ngFor="let game of showPlayed ? data.played : []" class="game finished" (click)="openGame(data, game)">
       <div class="header">
         <div class="time">{{game.model.timeString}} - Game {{game.model.gameName}}</div>
       </div>

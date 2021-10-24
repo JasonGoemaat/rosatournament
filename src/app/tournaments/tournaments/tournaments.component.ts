@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { TournamentService, MyRouteData } from 'src/app/services/tournament.service';
 import { tournamentReset } from 'src/app/models/reset';
-import { faSpinner, faCoffee } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-tournaments',
@@ -17,8 +16,6 @@ export class TournamentsComponent implements OnInit, OnDestroy {
   tournamentId: string = '';
   data$: Observable<MyRouteData>
   paramMap : Subscription | undefined = undefined;
-  faSpinner = faSpinner;
-  faCoffee = faCoffee;
 
   constructor(
     public route: ActivatedRoute,

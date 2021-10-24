@@ -39,6 +39,7 @@ export class TournamentService {
   }
 
   getTournament(tournamentId: string) {
+    console.log(`getTournament(${tournamentId})`);
     if (tournamentId !== this.lastTournamentId) {
       this.tournament$ = new ReplaySubject<Tournament>(1);
       if (this.unsub) {
@@ -70,11 +71,14 @@ export class TournamentService {
   getForParams(paramMap: Observable<ParamMap>): Observable<MyRouteData> {
     return paramMap
       .pipe(
-        map(params => ({
-          tournamentId: `${params.get('tournamentId')}`,
-          gameId: params.has('gameId') ? Number(params.get('gameId')) : undefined,
-          participantId: params.has('participantId') ? Number(params.get('participantId')) : undefined,
-        }))
+        map(params => {
+          console.log('getForParams:', params);
+          return {
+            tournamentId: `${params.get('tournamentId')}`,
+            gameId: params.has('gameId') ? Number(params.get('gameId')) : undefined,
+            participantId: params.has('participantId') ? Number(params.get('participantId')) : undefined,
+          };
+        })
       )
       .pipe(
         mergeMap(result => {

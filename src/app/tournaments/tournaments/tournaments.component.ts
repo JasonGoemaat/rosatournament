@@ -5,15 +5,8 @@ import { tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { TournamentService, MyRouteData } from 'src/app/services/tournament.service';
-import { TournamentViewModel } from 'src/app/models/tournament-view-model';
-import { AuthInfo } from 'src/app/services/firebase-util.service';
 import { tournamentReset } from 'src/app/models/reset';
 import { faSpinner, faCoffee } from "@fortawesome/free-solid-svg-icons";
-
-export interface MyData {
-  vm: TournamentViewModel;
-  auth: AuthInfo;
-}
 
 @Component({
   selector: 'app-tournaments',
@@ -40,26 +33,9 @@ export class TournamentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.paramMap = this.route.paramMap.subscribe((params: ParamMap) => {
-    //   this.tournamentId = `${params.get('tournamentId')}`;
-    //   console.log('got params:', params);
-    //   console.log('tournamentId:', this.tournamentId);
-    //   this.service.getTournament(this.tournamentId);
-    //   combineLatest([this.service.tournament$, this.authService.auth$])
-    //     .subscribe(([tournament, auth]) => {
-    //       console.log('tournament:', tournament);
-    //       console.log('auth:', auth);
-    //       const vm = new TournamentViewModel(defaultConfig, tournament);
-    //       this.data$.next(<MyData>{ vm, auth })
-    //     });
-    // });
   }
 
   ngOnDestroy(): void {
-    if (this.paramMap) {
-      this.paramMap.unsubscribe();
-      this.paramMap = undefined;
-    }
   }
 
   resetTournament(): void {
@@ -67,6 +43,6 @@ export class TournamentsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.service.setTournament('other', tournamentReset);
+    this.service.setTournament('other', tournamentReset).then(x => console.log('RESET!', x)).catch((err: any) => console.error(err));
   }
 }

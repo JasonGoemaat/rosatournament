@@ -1,1 +1,8 @@
 <p>tournament-participants works!</p>
+
+<div *ngIf="mine | async as mine; else loading">
+  <ol>
+    <li *ngFor="let participant of mine.participants">{{participant.name}}</li>
+  </ol>
+</div>
+<ng-template #loading><h1 class="loading">Loading</h1></ng-template>

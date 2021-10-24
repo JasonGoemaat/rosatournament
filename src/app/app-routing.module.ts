@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 // import { FirebaseAuthSampleComponent } from './sample/firebase-auth-sample/firebase-auth-sample.component';
 import { SamplesComponent } from './sample/samples/samples.component';
@@ -48,8 +48,12 @@ const routes: Routes = [
   { path: 'samples/todos', component: TodosComponent },
 ];
 
+const configuration: ExtraOptions = {
+  paramsInheritanceStrategy: 'always'
+}
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, configuration)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

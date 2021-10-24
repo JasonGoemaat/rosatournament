@@ -2,7 +2,7 @@
   "targets": {
     "goemaat-multiple-apps": {
       "hosting": {
-        "tournament": [
+        "rosatournament": [
           "rosatournament"
         ]
       }

@@ -29,11 +29,14 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
 // ngxs states
 import { TodosState } from "./shared/todos.state";
-import { TournamentPlayersComponent } from './tournaments/tournament-players/tournament-players.component';
-import { TournamentGameComponent } from './tournaments/tournament-game/tournament-game.component';
-import { TournamentBracketComponent } from './tournaments/tournament-bracket/tournament-bracket.component';
 
 import { initializeApp } from "firebase/app";
+import { TournamentMenuComponent } from './tournaments/tournament-menu/tournament-menu.component';
+import { TournamentGamesComponent } from './tournaments/tournament-games/tournament-games.component';
+import { TournamentParticipantsComponent } from './tournaments/tournament-participants/tournament-participants.component';
+import { TournamentParticipantComponent } from './tournaments/tournament-participant/tournament-participant.component';
+import { TournamentGameComponent } from './tournaments/tournament-game/tournament-game.component';
+import { TournamentBracketComponent } from './tournaments/tournament-bracket/tournament-bracket.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDyEMGADaBOQW1F36QtoPFYDGJzdFETvrs",
@@ -64,9 +67,12 @@ export const NGXS_MODULE = NgxsModule.forRoot(
     TodosComponent,
     SamplesComponent,
     SampleNavComponent,
-    TournamentPlayersComponent,
-    TournamentGameComponent,
     TournamentBracketComponent,
+    TournamentMenuComponent,
+    TournamentGamesComponent,
+    TournamentGameComponent,
+    TournamentParticipantsComponent,
+    TournamentParticipantComponent,
   ],
   imports: [
     BrowserModule,

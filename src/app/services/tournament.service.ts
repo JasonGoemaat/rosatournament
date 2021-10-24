@@ -17,6 +17,7 @@ export interface MyRouteData {
   vm: TournamentViewModel,
   gameId: number | null,
   participantId: number | null,
+  tournamentId: string,
 }
 
 @Injectable({
@@ -55,7 +56,8 @@ export class TournamentService {
         auth,
         tournament,
         config,
-        vm
+        vm,
+        tournamentId
       }
       return result;
     }));

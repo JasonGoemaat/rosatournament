@@ -7,7 +7,9 @@ import { TodosComponent } from './sample/todos/todos.component';
 import { TestSecondRouteComponent } from './test-second-route/test-second-route.component';
 import { TournamentBracketComponent } from './tournaments/tournament-bracket/tournament-bracket.component';
 import { TournamentGameComponent } from './tournaments/tournament-game/tournament-game.component';
-import { TournamentPlayersComponent } from './tournaments/tournament-players/tournament-players.component';
+import { TournamentGamesComponent } from './tournaments/tournament-games/tournament-games.component';
+import { TournamentParticipantComponent } from './tournaments/tournament-participant/tournament-participant.component';
+import { TournamentParticipantsComponent } from './tournaments/tournament-participants/tournament-participants.component';
 import { TournamentsComponent } from './tournaments/tournaments/tournaments.component';
 
 const routes: Routes = [
@@ -22,12 +24,22 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
+        path: 'games',
+        component: TournamentGamesComponent,
+        pathMatch: 'full'
+      },
+      {
         path: 'games/:gameId',
         component: TournamentGameComponent
       },
       {
-        path: 'players/:playerId',
-        component: TournamentPlayersComponent
+        path: 'participants',
+        component: TournamentParticipantsComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'participants/:playerId',
+        component: TournamentParticipantComponent
       },
     ]
   },

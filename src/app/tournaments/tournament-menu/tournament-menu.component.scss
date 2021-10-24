@@ -1,0 +1,30 @@
+.menu-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  user-select: none;
+  z-index: 1000;
+}
+
+.menu {
+  user-select: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 240px;
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+
+  > a {
+    padding: 5px;
+    border: solid 1px black;
+    border-collapse: collapse;
+  }
+}
+
+[hidden] {
+  display: none;
+}

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { switchMap, tap } from 'rxjs/operators';
@@ -28,7 +28,12 @@ export class TournamentsComponent implements OnInit, OnDestroy {
   faSpinner = faSpinner;
   faCoffee = faCoffee;
 
-  constructor(public route: ActivatedRoute, public service: TournamentService, public authService: AuthService) {
+  constructor(
+    public route: ActivatedRoute,
+    public service: TournamentService,
+    public authService: AuthService,
+    public router: Router,
+    ) {
     (window as any).cTournaments = this;
     this.data$ = this.service.getForParams(this.route.paramMap).pipe(tap(x => {
       console.log('getForParams returned:', x);

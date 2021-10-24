@@ -1,4 +1,11 @@
 <div *ngIf="data$ | async as data; else loading">
+  <!-- <app-tournament-menu [tournamentId]="data.tournamentId"></app-tournament-menu> -->
+  <button mat-button [matMenuTriggerFor]="menu" style="float: left;">Menu</button>
+  <mat-menu #menu>
+    <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId])">Bracket</button>
+    <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId, 'games'])">Games</button>
+    <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId, 'participants'])">Participants</button>
+  </mat-menu>
   <h1 class="loading">{{data.vm.tournament.name}}</h1>
   <router-outlet></router-outlet>
 </div>

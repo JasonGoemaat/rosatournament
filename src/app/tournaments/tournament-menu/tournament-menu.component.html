@@ -1,0 +1,8 @@
+<div class="menu-header" (click)="toggle()">
+  Menu
+  <div class="menu" [hidden]="!expanded">
+    <button (click)="clickBracket()">Bracket</button>
+    <button (click)="clickGames()">Games</button>
+    <button (click)="clickParticipants()">Participants</button>
+  </div>
+</div>

@@ -110,7 +110,7 @@ export const parseForGames = (data: MyRouteData) => {
   });
 
   let unplayed = games.filter(game => !game.result);
-  let played = games.filter(game => game.result);
+  let played = games.filter(game => game.result).reverse(); // reversed to show most recent first
 
   let some = unplayed.splice(0, 5);
   let more = unplayed;

@@ -37,6 +37,7 @@ import { TournamentParticipantsComponent } from './tournaments/tournament-partic
 import { TournamentParticipantComponent } from './tournaments/tournament-participant/tournament-participant.component';
 import { TournamentGameComponent } from './tournaments/tournament-game/tournament-game.component';
 import { TournamentBracketComponent } from './tournaments/tournament-bracket/tournament-bracket.component';
+import { LoadingComponent } from './loading/loading.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDyEMGADaBOQW1F36QtoPFYDGJzdFETvrs",
@@ -73,6 +74,7 @@ export const NGXS_MODULE = NgxsModule.forRoot(
     TournamentGameComponent,
     TournamentParticipantsComponent,
     TournamentParticipantComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,

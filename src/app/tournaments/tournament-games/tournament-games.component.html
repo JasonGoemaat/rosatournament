@@ -1,1 +1,71 @@
-<p>tournament-games works!</p>
+<div *ngIf="data$ | async as data; else loading">
+  <h2 *ngIf="data.some.length === 0" style="margin-left: 20px">
+    All games have finished!
+  </h2>
+
+  <ol>
+
+    <!-- some -->
+    <li *ngFor="let game of data.some" class="game">
+      <div class="header">
+        <div class="time">{{game.model.timeString}} - Game {{game.model.gameName}}</div>
+      </div>
+      <div class="vs">
+        <div class="participants">
+          <div *ngFor="let name of game.model.participants1">
+            {{name}}
+          </div>
+        </div>
+        <div class="separator" style="margin-left: 10px;">vs.</div>
+        <div class="participants">
+          <div *ngFor="let name of game.model.participants2">
+            {{name}}
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li *ngIf="!showMore && data.more.length > 0" class="link" (click)="clickShowMore(data)">
+      show more
+    </li>
+
+    <!-- more -->
+    <li *ngFor="let game of showMore ? data.more : []" class="game">
+      <div class="header">
+        <div class="time">{{game.model.timeString}} - Game {{game.model.gameName}}</div>
+      </div>
+      <div class="vs">
+        <div class="participants">
+          <div *ngFor="let name of game.model.participants1">
+            {{name}}
+          </div>
+        </div>
+        <div class="separator" style="margin-left: 10px;">vs.</div>
+        <div class="participants">
+          <div *ngFor="let name of game.model.participants2">
+            {{name}}
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li *ngIf="!showPlayed && data.played.length > 0" class="link" (click)="clickShowPlayed(data)">
+      show played
+    </li>
+
+    <!-- played -->
+    <li *ngFor="let game of showPlayed ? data.played : []" class="game finished">
+      <div class="header">
+        <div class="time">{{game.model.timeString}} - Game {{game.model.gameName}}</div>
+      </div>
+      <div class="vs">
+        <span>{{game.model.winnerName}}</span>
+        <em>won vs.</em>
+        <span>{{game.model.loserName}}</span>
+      </div>
+    </li>
+  </ol>
+</div>
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>

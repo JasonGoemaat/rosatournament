@@ -32,7 +32,6 @@
     "@ngxs/devtools-plugin": "^3.3.2",
     "@ngxs/logger-plugin": "^3.3.2",
     "@ngxs/router-plugin": "^3.7.2",
-    "@ngxs/schematics": "0.0.1-alpha.5",
     "@ngxs/store": "^3.3.2",
     "firebase": "^9.0.0",
     "rxfire": "^6.0.0",

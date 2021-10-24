@@ -1,0 +1,68 @@
+ol {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+
+  li.link {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  li.game {
+    border: solid 1px black;
+    border-radius: 5px;
+    background-color: #b5d5f4;
+    margin-bottom: 10px;
+
+    &.finished {
+      background-color: white;
+    }
+
+    div.header {
+      padding: 5px;
+      font-weight: bold;
+    }
+
+    div.vs {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-top: -5px;
+
+      div.participants {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 120px;
+      }
+
+      div.separator {
+        flex: 0 0 20px;
+      }
+
+      div.played {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        span {
+          flex: 0 0 120px;
+        }
+
+        em {
+          flex: 0 0 20px;
+        }
+      }
+    }
+  }
+}

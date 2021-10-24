@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ParamMap } from '@angular/router';
 import { Unsubscribe } from '@firebase/util';
 import { Observable, Observer, ReplaySubject, combineLatest, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, tap } from 'rxjs/operators';
 import { Tournament } from '../models/tournament';
 import { defaultConfig, TournamentConfig } from '../models/tournament-config';
 import { TournamentViewModel } from '../models/tournament-view-model';
@@ -92,6 +92,11 @@ export class TournamentService {
             participantId: result.participantId,
             ...info
           }
+        })
+      )
+      .pipe( // for debugging, make available in the console
+        tap(data => {
+          (window as any).data = data;
         })
       );
   }

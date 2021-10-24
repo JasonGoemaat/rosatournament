@@ -1,3 +1,4 @@
+import { UtilService } from "../services/util.service";
 import { GameResult, Participant, Tournament } from "./tournament";
 import { TournamentConfig, TournamentSpotConfig } from "./tournament-config";
 
@@ -12,17 +13,13 @@ export interface SpotViewModel {
   config: TournamentSpotConfig;
 }
 
-const rxTime = /([0-9]+:)([0-9]+):[0-9]+( AM| PM)/
-const getTimeString = (utc: number) => {
-    const lts = new Date(utc).toLocaleTimeString();
-    const arr = lts.match(rxTime);
-    return arr ? arr.slice(1).join('') : 'BAD TIME';
-}
-
 export class TournamentViewModel {
     public spots: SpotViewModel[];
 
-    constructor(public config: TournamentConfig, public tournament: Tournament) {
+    constructor(
+      public config: TournamentConfig,
+      public tournament: Tournament
+    ) {
         const spots = config.spots.map((spotConfig, index) => <SpotViewModel>{ text: `Spot ${index}`, config: spotConfig, index });
         this.spots = spots;
 
@@ -34,8 +31,9 @@ export class TournamentViewModel {
                 const timeSlot = tournament.timeSlots.find(ts => ts.gameId == gameIndex);
                 if (timeSlot) {
                     const utc = timeSlot.utc;
-                    spots[winnerTo].text = getTimeString(utc);
-                } else {
+                    //spots[winnerTo].text = getTimeString(utc);
+                    spots[winnerTo].text = UtilService.formatTime(utc);
+                  } else {
                     spots[winnerTo].text = 'BAD SLOT TIME';
                 }
                 spots[winnerTo].isBold = true;
@@ -94,18 +92,19 @@ export class TournamentViewModel {
       return games;
     }
 
-    declareWinner(gameId: number, winnerId: number) {
+    declareWinner(gameId: number, winnerId: number): Tournament {
+      const tournament = this.cloneTournament();
       const gameConfig = this.config.games[gameId];
-      const info = this.getParticipant(this.tournament.participantMap[gameConfig.spotA]).id === winnerId ? {
+      const info = this.getParticipant(tournament.participantMap[gameConfig.spotA]).id === winnerId ? {
         winnerSourceSpot: gameConfig.spotA,
         loserSourceSpot: gameConfig.spotB,
-        winner: this.tournament.participantMap[gameConfig.spotA],
-        loser: this.tournament.participantMap[gameConfig.spotB],
+        winner: tournament.participantMap[gameConfig.spotA],
+        loser: tournament.participantMap[gameConfig.spotB],
       } : {
         winnerSourceSpot: gameConfig.spotB,
         loserSourceSpot: gameConfig.spotA,
-        winner: this.tournament.participantMap[gameConfig.spotB],
-        loser: this.tournament.participantMap[gameConfig.spotA],
+        winner: tournament.participantMap[gameConfig.spotB],
+        loser: tournament.participantMap[gameConfig.spotA],
       }
 
       var gameResult: GameResult = {
@@ -119,21 +118,63 @@ export class TournamentViewModel {
         entryTime: Date.now()
       }
 
-      this.tournament.gameResultMap[gameId] = gameResult;
-      this.tournament.resultMap[info.winnerSourceSpot] = true;
-      this.tournament.resultMap[info.loserSourceSpot] = false;
-      this.tournament.participantMap[gameConfig.winnerTo as number] = info.winner;
-      this.tournament.participantMap[gameConfig.loserTo as number] = info.loser;
-
-      console.log('gameConfig:', gameConfig);
-      console.log('info:', info);
-      console.log('resultMap:', this.tournament.resultMap);
-      console.log('gameResultMap:', this.tournament.gameResultMap);
-      console.log('participantMap:', this.tournament.participantMap);
+      tournament.gameResultMap[gameId] = gameResult;
+      tournament.resultMap[info.winnerSourceSpot] = true;
+      tournament.resultMap[info.loserSourceSpot] = false;
+      tournament.participantMap[gameConfig.winnerTo as number] = info.winner;
+      tournament.participantMap[gameConfig.loserTo as number] = info.loser;
+      return tournament;
     }
 
     getGameResultForSpot(spotIndex: number) : GameResult | null {
       return null;
+    }
+
+    getUpcomingGames() {
+      const games = this.getGames(true).slice(0, 5);
+      const game = games[0];
+    }
+
+    /**
+     * Get all possible players that can go in a spot.  If spot has a player, use
+     * that.  Otherwise parse unplayed games and add to a list.
+     */
+    generatePossiblePlayers(): any[] {
+      const mapped = this.config.spots.map((spot, index) => {
+        let result: any = {...spot};
+        const participant = this.tournament.participantMap[index];
+        if (participant) {
+          result.participant = participant;
+          result.possible = [participant];
+        } else {
+          result.possible = [];
+        }
+      });
+      this.getGames(true).forEach(game => {
+      })
+      return []; // TODO: finish this?
+    }
+
+    /**
+     * Used for immutability, copies tournament data in an immutable way to allow changes
+     */
+    cloneTournament(): Tournament {
+      const t = this.tournament;
+      const n: Tournament = {...t}
+      n.participants = n.participants.map(x => ({...x}));
+      n.timeSlots = n.timeSlots.map(x => ({...x}));
+      n.participantMap = {...n.participantMap};
+      n.resultMap = {...n.resultMap};
+      n.gameResultMap = {...n.gameResultMap};
+      Object.keys(n.gameResultMap).forEach(key => {
+        const k = Number(key);
+        const map = {...n.gameResultMap[k]};
+        const winners = map.gameWinners;
+        if (winners) {
+          n.gameResultMap[k].gameWinners = [...winners];
+        }
+      });
+      return n;
     }
 }
 

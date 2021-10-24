@@ -1,0 +1,70 @@
+[hidden] { display: none !important }
+
+h1 { text-align: center; }
+
+.container {
+  cursor: pointer;
+  font-size: small;
+  display: grid;
+  /* columns are 3 wide for winner, 2 for loser */
+  grid-template-columns: repeat(24,64px);
+  grid-template-rows: repeat(92,10px); /* 64 + 6 */
+  margin-left: 30px;
+  
+  font-family: 'Roboto', sans-serif;
+  
+  > div {
+    border-bottom: solid 1px black;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    
+    > .name {
+      position: absolute;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 20px;
+      left: 10px;
+      right: 25px;
+      bottom: 0;
+      white-space: nowrap;
+      text-overflow: clip;
+      text-align: left;
+      user-select: none;
+
+      &.winner {
+        color: green;
+      }
+
+      &.loser {
+        color: red;
+      }
+
+      &.bold {
+        font-weight: bold;
+      }
+
+      &.italic {
+        font-style: italic;
+      }
+    }
+    
+    > .text {
+      position: absolute;
+      top: 100%;
+      right: 100%;
+      width: 30px;
+      height: 20px;
+      margin-top: -10px; // center
+      margin-right: 5px; 
+      text-align: right;
+      color: blue;
+      
+      text-overflow: revert;
+      overflow: visible;
+    }
+  }
+}

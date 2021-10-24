@@ -1,0 +1,16 @@
+<div class="container" *ngIf="data$ | async as data">
+  <div 
+    *ngFor="let spot of data.vm.spots; let i = index"
+    [style.grid-area]="spot.config.gridArea"
+    [style.border-bottom]="getBorderBottom(spot.config)"
+    [style.border-right]="getBorderRight(spot.config)"
+    [hidden]="spot.config.hidden"
+  >
+    <div (click)="onSpotClick(spot)" class="name" [ngClass]="{ winner: spot.isWinner, loser: spot.isLoser, bold: spot.isBold, italic: spot.isItalic }">{{spot.text}}</div>
+    <div class="text">{{spot.gameName}}</div>
+  </div>
+
+  <div *ngFor="let text of data.vm.config.texts; let i = index" [style.grid-area]="text.gridArea" style="border: 0; text-align: center; font-weight: bold; font-style: italic;">
+    {{text.text}}
+  </div>
+</div>

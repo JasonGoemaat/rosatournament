@@ -3,11 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --open",
+    "start-ngrok": "ng serve --open --disable-host-check --live-reload=false",
     "build": "ng build",
+    "build-pretty": "env NG_BUILD_MANGLE=false NG_BUILD_MINIFY=false NG_BUILD_BEAUTIFY=true ng build --prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch",
-    "deploy": "firebase deploy --only hosting:tournament --project goemaat-multiple-apps"
+    "deploy": "firebase deploy --only hosting:rosatournament --project goemaat-multiple-apps",
+    "bundle-report": "ng build --prod --stats-json && webpack-bundle-analyzer dist/tournament/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -16,7 +19,6 @@
     "@angular/common": "~12.2.0",
     "@angular/compiler": "~12.2.0",
     "@angular/core": "~12.2.0",
-    "@angular/fire": "7.0.4",
     "@angular/forms": "~12.2.0",
     "@angular/material": "12.2.8",
     "@angular/platform-browser": "~12.2.0",
@@ -41,7 +43,7 @@
   "devDependencies": {
     "@angular-devkit/architect": "^0.1200.0",
     "@angular-devkit/build-angular": "~12.2.8",
-    "@angular/cli": "~12.2.8",
+    "@angular/cli": "12.2.11",
     "@angular/compiler-cli": "~12.2.0",
     "@ngxs/schematics": "^0.0.1-alpha.5",
     "@types/jasmine": "~3.8.0",

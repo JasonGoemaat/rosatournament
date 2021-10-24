@@ -2,20 +2,25 @@ import { Injectable } from '@angular/core';
 import { User } from '@firebase/auth';
 import { ReplaySubject } from 'rxjs';
 import { FirebaseFunctionsService } from './firebase-functions.service';
-import { AuthInfo, FirebaseUtilService } from './firebase-util.service';
+
+export interface AuthInfo {
+  isAuthReceived: boolean;
+  photoURL: string | null | undefined;
+  name: string | null | undefined;
+  uid: string | undefined;
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
-  auth$: ReplaySubject<AuthInfo>;
+export class FirebaseUtilService {
+  auth: ReplaySubject<AuthInfo>;
 
   constructor(public ff: FirebaseFunctionsService) {
-    (window as any).sAuth = this;
-    this.auth$ = new ReplaySubject<AuthInfo>(1);
-    this.auth$.next({ isAuthReceived: false, photoURL: undefined, name: undefined, uid: undefined });
+    this.auth = new ReplaySubject<AuthInfo>(1);
+    this.auth.next({ isAuthReceived: false, photoURL: undefined, name: undefined, uid: undefined });
     this.ff.getAuth().onAuthStateChanged((user: User | null) => {
-      this.auth$.next({ 
+      this.auth.next({ 
         isAuthReceived: true,
         photoURL: user === null ? undefined : user.photoURL,
         name: user === null ? undefined : user.displayName,

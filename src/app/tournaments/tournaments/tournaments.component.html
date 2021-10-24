@@ -1,1 +1,9 @@
-<p>tournaments works!</p>
+<div *ngIf="data$ | async as data; else loading">
+  <h1 class="loading">{{data.vm.tournament.name}}</h1>
+  <router-outlet></router-outlet>
+</div>
+<ng-template #loading>
+  <h1 class="loading">
+    Loading &nbsp; <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+  </h1>
+</ng-template>

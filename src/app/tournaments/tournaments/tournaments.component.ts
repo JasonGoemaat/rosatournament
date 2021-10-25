@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { TournamentService, MyRouteData } from 'src/app/services/tournament.service';
 import { tournamentReset } from 'src/app/models/reset';
+import { Tournament } from 'src/app/models/tournament';
 
 @Component({
   selector: 'app-tournaments',
@@ -50,5 +51,9 @@ export class TournamentsComponent implements OnInit, OnDestroy {
 
   signOut(): void {
     this.authService.signOut();
+  }
+
+  copyToClipboard(tournament: Tournament) {
+    navigator.clipboard.writeText(JSON.stringify(tournament));
   }
 }

@@ -181,10 +181,10 @@ const createDefaultConfig = () : TournamentConfig => {
       { spotA: 22, spotB: 23, winnerTo: 39, name: 'LD' },
 
       // winner bracket round 2 (games 12-15)
-      { spotA: 24, spotB: 25, winnerTo: 40, loserTo: 32, name: 'WI', },
-      { spotA: 26, spotB: 27, winnerTo: 41, loserTo: 34, name: 'WJ' },
-      { spotA: 28, spotB: 29, winnerTo: 42, loserTo: 36, name: 'WK' },
-      { spotA: 30, spotB: 31, winnerTo: 43, loserTo: 38, name: 'WL' },
+      { spotA: 24, spotB: 25, winnerTo: 40, loserTo: 36, name: 'WI', },
+      { spotA: 26, spotB: 27, winnerTo: 41, loserTo: 38, name: 'WJ' },
+      { spotA: 28, spotB: 29, winnerTo: 42, loserTo: 32, name: 'WK' },
+      { spotA: 30, spotB: 31, winnerTo: 43, loserTo: 34, name: 'WL' },
 
       // loser bracket round 2 (games 16-19)
       { spotA: 32, spotB: 33, winnerTo: 44, name: 'LE' },

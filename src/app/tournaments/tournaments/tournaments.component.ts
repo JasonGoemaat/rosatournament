@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -36,12 +36,12 @@ export class TournamentsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  resetTournament(): void {
-    if (!confirm('ARE YOU ABSOLUTELY SURE?')) {
+  resetTournament(tournamentId: string): void {
+    if (!confirm(`ARE YOU ABSOLUTELY SURE?\r\nThis will reset tournament "${tournamentId}"!`)) {
       return;
     }
 
-    this.service.setTournament('other', tournamentReset).then(x => console.log('RESET!', x)).catch((err: any) => console.error(err));
+    this.service.setTournament(tournamentId, tournamentReset).then(x => console.log('RESET!', x)).catch((err: any) => console.error(err));
   }
 
   signIn(): void {

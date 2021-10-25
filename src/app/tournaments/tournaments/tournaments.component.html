@@ -10,7 +10,7 @@
     <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId, 'participants'])">Participants</button>
     <button mat-menu-item *ngIf="!data.auth.name" (click)="signIn()">Sign In</button>
     <button mat-menu-item *ngIf="data.auth.name" (click)="signOut()">Sign Out</button>
-    <button mat-menu-item (click)="resetTournament()">&lt;--RESET--&gt;</button>
+    <button mat-menu-item (click)="resetTournament(data.tournamentId)">&lt;--RESET--&gt;</button>
   </mat-menu>
   <h1 class="loading">{{data.vm.tournament.name}}</h1>
   <router-outlet></router-outlet>

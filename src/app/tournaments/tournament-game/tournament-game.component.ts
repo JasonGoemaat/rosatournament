@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -6,6 +7,7 @@ import { TimeSlot } from 'src/app/models/tournament';
 import { TournamentViewModel } from 'src/app/models/tournament-view-model';
 import { MyRouteData, TournamentService } from 'src/app/services/tournament.service';
 import { UtilService } from 'src/app/services/util.service';
+import { GameTimeSlotDialogComponent } from './game-time-slot-dialog/game-time-slot-dialog.component';
 
 const parseForGame = (data: MyRouteData) => {
   const {vm, config, tournament} = data;
@@ -44,6 +46,7 @@ export class TournamentGameComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     public service: TournamentService,
+    public dialog: MatDialog,
   ) {
     (window as any).cGame = this;
     this.data$ = service.getForParams(route.paramMap)
@@ -100,5 +103,44 @@ export class TournamentGameComponent implements OnInit {
     const tournament = vm.deleteGameResult(data.gameId);
     this.service.setTournament(data.tournamentId, tournament)
     .then(() => (window as any).history.back()) // go back to previous page
+  }
+
+  openDialog(data: any): void {
+    const gameId = data.gameId;
+    const dialogRef = this.dialog.open(GameTimeSlotDialogComponent, {
+      width: '250px',
+      data: {
+        vm: data.vm,
+        gameId: data.gameId
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed with result:', result);
+      if (typeof(result) !== 'number') {
+        console.log('NOT A NUMBER');
+        return;
+      }
+
+      const newTimeSlot = result;
+      const vm = data.vm as TournamentViewModel;
+      let currentTimeSlot = vm.tournament.timeSlots.findIndex(ts => ts.gameId === data.gameId);
+      if (currentTimeSlot < 0) {
+        console.log('COULD NOT FIND CURRENT TIMESLOT');
+      }
+
+      const tournament = vm.cloneTournament();
+      while (currentTimeSlot > newTimeSlot) {
+        tournament.timeSlots[currentTimeSlot].gameId = tournament.timeSlots[currentTimeSlot - 1].gameId;
+        currentTimeSlot--;
+      }
+      while (currentTimeSlot < newTimeSlot) {
+        tournament.timeSlots[currentTimeSlot].gameId = tournament.timeSlots[currentTimeSlot + 1].gameId;
+        currentTimeSlot++;
+      }
+      tournament.timeSlots[currentTimeSlot].gameId = data.gameId;
+      this.service.setTournament(data.tournamentId, tournament)
+      .then(() => (window as any).history.back()) // go back to previous page
+    });
   }
 }

@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Move Game Time For {{currentTimeSlot.gameName}}</h1>
+<div mat-dialog-content>
+  <p>Game {{currentTimeSlot.gameName}} will currently be played at {{currentTimeSlot.timeString}}</p>
+
+  <mat-form-field appearance="fill" *ngIf="true">
+    <mat-label>Time Slot</mat-label>
+    <mat-select [(value)]="currentTimeSlotIndex">
+      <mat-option *ngFor="let slot of timeSlots; let i = index" [value]="i">{{slot.timeString}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="currentTimeSlotIndex" cdkFocusInitial>Ok</button>
+</div>

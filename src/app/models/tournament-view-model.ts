@@ -153,8 +153,10 @@ export class TournamentViewModel {
         tournament = this.setGameResult(skippedGameId, {matchWinner, gameWinners: [], lagWinner: undefined}, tournament);
         
         // change person at spotB of skipped game to 'NOT NEEDED'
-        tournament.participantMap[gameConfig.loserTo as number] = this.getNotNeededParticipant().id as number;
+        const notNeededId = this.getNotNeededParticipant().id as number;
+        tournament.participantMap[gameConfig.loserTo as number] = notNeededId;
         tournament.gameResultMap[skippedGameId].skipped = true;
+        tournament.gameResultMap[skippedGameId].matchWinner = notNeededId;
       }
 
       return tournament;

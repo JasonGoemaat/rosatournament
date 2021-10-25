@@ -99,12 +99,19 @@ export class TournamentViewModel {
       const {lagWinner, matchWinner, gameWinners} = info;
       const A = tournament.participantMap[gameConfig.spotA];
       const B = tournament.participantMap[gameConfig.spotB];
-      
+
       let matchLoser = undefined;
       let isFinished = false;
       if (matchWinner) {
         isFinished = true;
         matchLoser = (matchWinner === A) ? B : A; // loser is other
+
+        if (gameConfig.ifAWinsSkipGame as number >= 0 && matchWinner === A) {
+          // we need to:
+          // 1. set gameResult for skipped game
+          // 2. also set spots for skipped game - winner and BYE
+          // 3. move loser to 2nd place (loserTo of skipped game)
+        }
 
         const winnerSourceSpot = (matchWinner === A) ? gameConfig.spotA : gameConfig.spotB;
         const loserSourceSpot = (matchWinner === A) ? gameConfig.spotB : gameConfig.spotA;
@@ -140,6 +147,7 @@ export class TournamentViewModel {
       return tournament;
     }
 
+    // OLD method - deprecated and doesn't work
     declareWinner(gameId: number, winnerId: number): Tournament {
       const tournament = this.cloneTournament();
       const gameConfig = this.config.games[gameId];
@@ -207,6 +215,10 @@ export class TournamentViewModel {
      * Used for immutability, copies tournament data in an immutable way to allow changes
      */
     cloneTournament(): Tournament {
+      // create BYE and NOT NEEDED participants if they don't exist
+      this.getByeParticipant();
+      this.getNotNeededParticipant();
+
       const t = this.tournament;
       const n: Tournament = {...t}
       n.participants = n.participants.map(x => ({...x}));
@@ -223,6 +235,34 @@ export class TournamentViewModel {
         }
       });
       return n;
+    }
+
+    getByeParticipant(): Participant {
+      let result = this.tournament.participants.find(p => p.hidden && p.name === 'BYE');
+      if (!result) {
+        let newId = this.tournament.participants.reduce((acc, v) => Math.max(acc, v.id as number), 0) + 1;
+        result = {
+          id: newId,
+          hidden: true,
+          name: 'BYE'
+        };
+        this.tournament.participants.push(result);
+      }
+      return result;
+    }
+
+    getNotNeededParticipant(): Participant {
+      let result = this.tournament.participants.find(p => p.hidden && p.name === 'NOT NEEDED');
+      if (!result) {
+        let newId = this.tournament.participants.reduce((acc, v) => Math.max(acc, v.id as number), 0) + 1;
+        result = {
+          id: newId,
+          hidden: true,
+          name: 'NOT NEEDED'
+        };
+        this.tournament.participants.push(result);
+      }
+      return result;
     }
 }
 

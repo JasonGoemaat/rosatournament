@@ -92,8 +92,10 @@ export class TournamentViewModel {
       return games;
     }
 
-    setGameResult(gameId: any, info: { lagWinner: number | undefined; matchWinner: number | undefined; gameWinners: (number)[]; }) {
-      const tournament = this.cloneTournament();
+    setGameResult(gameId: any, info: { lagWinner: number | undefined; matchWinner: number | undefined; gameWinners: (number)[]; }, useTournament?: Tournament) {
+      // use passed tournament or clone a new one
+      let tournament = useTournament ? useTournament : this.cloneTournament();
+
       const gameConfig = this.config.games[gameId];
 
       const {lagWinner, matchWinner, gameWinners} = info;
@@ -105,13 +107,6 @@ export class TournamentViewModel {
       if (matchWinner) {
         isFinished = true;
         matchLoser = (matchWinner === A) ? B : A; // loser is other
-
-        if (gameConfig.ifAWinsSkipGame as number >= 0 && matchWinner === A) {
-          // we need to:
-          // 1. set gameResult for skipped game
-          // 2. also set spots for skipped game - winner and BYE
-          // 3. move loser to 2nd place (loserTo of skipped game)
-        }
 
         const winnerSourceSpot = (matchWinner === A) ? gameConfig.spotA : gameConfig.spotB;
         const loserSourceSpot = (matchWinner === A) ? gameConfig.spotB : gameConfig.spotA;
@@ -143,6 +138,24 @@ export class TournamentViewModel {
       console.log('gameId:', gameId);
 
       tournament.gameResultMap[gameId] = gameResult;
+
+      //--------------------------------------------------------------------------------
+      // if the game we just set the result for is the playoff game
+      // (ifAWinsSkipGame is set) and A won, then we can skip this game.  To do that
+      // we set the gameResult as if A won again and recursively call this function
+      // to make it appear as if they played the game and A won.  Then we just alter
+      // that game result to show that B was really a BYE.  This should put everyone
+      // in the correct spots
+      //--------------------------------------------------------------------------------
+      if (gameConfig.ifAWinsSkipGame as number >= 0 && matchWinner === A) {
+        // set game result as if A won again
+        const skippedGameId = gameConfig.ifAWinsSkipGame as number;
+        tournament = this.setGameResult(skippedGameId, {matchWinner, gameWinners: [], lagWinner: undefined}, tournament);
+        
+        // change person at spotB of skipped game to 'NOT NEEDED'
+        tournament.participantMap[gameConfig.loserTo as number] = this.getNotNeededParticipant().id as number;
+        tournament.gameResultMap[skippedGameId].skipped = true;
+      }
 
       return tournament;
     }
@@ -237,30 +250,32 @@ export class TournamentViewModel {
       return n;
     }
 
-    getByeParticipant(): Participant {
-      let result = this.tournament.participants.find(p => p.hidden && p.name === 'BYE');
+    getByeParticipant(useTournament?: Tournament): Participant {
+      const tournament = useTournament ? useTournament : this.tournament;
+      let result = tournament.participants.find(p => p.hidden && p.name === 'BYE');
       if (!result) {
-        let newId = this.tournament.participants.reduce((acc, v) => Math.max(acc, v.id as number), 0) + 1;
+        let newId = tournament.participants.reduce((acc, v) => Math.max(acc, v.id as number), 0) + 1;
         result = {
           id: newId,
           hidden: true,
           name: 'BYE'
         };
-        this.tournament.participants.push(result);
+        tournament.participants.push(result);
       }
       return result;
     }
 
-    getNotNeededParticipant(): Participant {
-      let result = this.tournament.participants.find(p => p.hidden && p.name === 'NOT NEEDED');
+    getNotNeededParticipant(useTournament?: Tournament): Participant {
+      const tournament = useTournament ? useTournament : this.tournament;
+      let result = tournament.participants.find(p => p.hidden && p.name === 'NOT NEEDED');
       if (!result) {
-        let newId = this.tournament.participants.reduce((acc, v) => Math.max(acc, v.id as number), 0) + 1;
+        let newId = tournament.participants.reduce((acc, v) => Math.max(acc, v.id as number), 0) + 1;
         result = {
           id: newId,
           hidden: true,
           name: 'NOT NEEDED'
         };
-        this.tournament.participants.push(result);
+        tournament.participants.push(result);
       }
       return result;
     }

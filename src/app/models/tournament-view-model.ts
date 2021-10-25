@@ -81,7 +81,6 @@ export class TournamentViewModel {
       const timeSlots = this.tournament.timeSlots.filter(timeSlot => !unplayedOnly || this.tournament.gameResultMap[timeSlot.gameId] === undefined);
       const unknownParticipant: Participant = { name: 'UNKNOWN' };
       const games = timeSlots.map(timeSlot => {
-        let result = {};
         let gameConfig = this.config.games[timeSlot.gameId];
         let participantA = this.getParticipant(this.tournament.participantMap[gameConfig.spotA]) || unknownParticipant;
         let participantB = this.getParticipant(this.tournament.participantMap[gameConfig.spotB]) || unknownParticipant;

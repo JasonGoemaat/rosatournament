@@ -5,9 +5,9 @@
       <mat-card-title>Game {{data.model.gameName}}</mat-card-title>
       <mat-card-subtitle *ngIf="data.model.haveParticipants">{{data.model.timeString}}: {{data.model.A.name}} - {{data.model.B.name}}</mat-card-subtitle>
     </mat-card-title-group>
-    <mat-card-content *ngIf="data.model.haveParticipants">
+    <mat-card-content>
       <h4>Lag</h4>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" *ngIf="data.model.haveParticipants">
         <mat-label>Lag Winner</mat-label>
         <mat-select [(value)]="lagWinner">
           <mat-option>Not Set</mat-option>
@@ -17,7 +17,7 @@
       </mat-form-field>
 
       <h4>Games</h4>
-      <div class="games">
+      <div class="games" *ngIf="data.model.haveParticipants">
         <mat-form-field appearance="fill">
           <mat-label>Game 1</mat-label>
           <mat-select [(value)]="game1Winner">
@@ -47,7 +47,7 @@
       </div>
 
       <h4>Match</h4>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" *ngIf="data.model.haveParticipants">
         <mat-label>Match Winner</mat-label>
         <mat-select [(value)]="matchWinner">
           <mat-option>Not Set</mat-option>
@@ -66,7 +66,7 @@
       <button mat-button color="primary" (click)="save(data)">SAVE</button>
       <button mat-button color="red" (click)="delete(data)">DELETE</button>
     </mat-card-actions>
-    <mat-card-actions *ngIf="data.model.haveParticipants">
+    <mat-card-actions>
       <button mat-button color="primary" (click)="openDialog(data)">reschedule</button>
     </mat-card-actions>
   </mat-card>

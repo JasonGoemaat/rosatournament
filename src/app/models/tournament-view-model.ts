@@ -91,6 +91,22 @@ export class TournamentViewModel {
       return games;
     }
 
+    deleteGameResult(gameId: number, useTournament?: Tournament) : Tournament {
+      const tournament = useTournament ? useTournament : this.tournament;
+      const config = this.config.games[gameId];
+      if (config.winnerTo) delete tournament.participantMap[config.winnerTo];
+      if (config.loserTo) delete tournament.participantMap[config.loserTo];
+      delete tournament.gameResultMap[gameId];
+      return tournament;
+    }
+
+    // to reset final 2 games (from /games):
+    // var t = x.vm.cloneTournament(); delete t.gameResultMap[29]; delete t.gameResultMap[30]; cGames.service.setTournament(x.tournamentId, t);
+    // var t = x.vm.cloneTournament(); [58, 59, 60, 61].forEach(i => delete t.participantMap[i]); cGames.service.setTournament(x.tournamentId, t);
+    // ----- or -----
+    // var t = x.vm.deleteGameResult(29);
+    // t = x,vm.deleteGameResult(30, t);
+    // cGame.service.setTournament(x.tournamentId, t);
     setGameResult(gameId: any, info: { lagWinner: number | undefined; matchWinner: number | undefined; gameWinners: (number)[]; }, useTournament?: Tournament) {
       // use passed tournament or clone a new one
       let tournament = useTournament ? useTournament : this.cloneTournament();

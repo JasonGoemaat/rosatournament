@@ -87,7 +87,7 @@ export const parseForGames = (data: MyRouteData) => {
     let result: any = {...game};
 
     // has game been played?
-    if (game.result) {
+    if (game.result && game.result.isFinished) {
       const winner = data.vm.getParticipant(game.result.matchWinner as number);
       const loser = data.vm.getParticipant(game.result.matchLoser as number);
       result.model = {
@@ -110,8 +110,8 @@ export const parseForGames = (data: MyRouteData) => {
     return result;
   });
 
-  let unplayed = games.filter(game => !game.result);
-  let played = games.filter(game => game.result).reverse(); // reversed to show most recent first
+  let unplayed = games.filter(game => !(game.result && game.result.isFinished));
+  let played = games.filter(game => (game.result && game.result.isFinished)).reverse(); // reversed to show most recent first
 
   let some = unplayed.splice(0, 5);
   let more = unplayed;

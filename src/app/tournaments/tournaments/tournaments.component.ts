@@ -26,6 +26,7 @@ export class TournamentsComponent implements OnInit, OnDestroy {
     (window as any).cTournaments = this;
     this.data$ = this.service.getForParams(this.route.paramMap).pipe(tap(x => {
       console.log('getForParams returned:', x);
+      (window as any).t = x;
     }));
   }
 
@@ -41,5 +42,13 @@ export class TournamentsComponent implements OnInit, OnDestroy {
     }
 
     this.service.setTournament('other', tournamentReset).then(x => console.log('RESET!', x)).catch((err: any) => console.error(err));
+  }
+
+  signIn(): void {
+    this.authService.signIn();
+  }
+
+  signOut(): void {
+    this.authService.signOut();
   }
 }

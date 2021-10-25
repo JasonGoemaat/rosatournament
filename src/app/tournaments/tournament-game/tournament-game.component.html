@@ -64,6 +64,7 @@
 
     <mat-card-actions *ngIf="data.model.haveParticipants">
       <button mat-button color="primary" (click)="save(data)">SAVE</button>
+      <button mat-button color="red" (click)="delete(data)">DELETE</button>
     </mat-card-actions>
   </mat-card>
 </div>

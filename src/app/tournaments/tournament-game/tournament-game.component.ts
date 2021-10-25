@@ -90,4 +90,15 @@ export class TournamentGameComponent implements OnInit {
     this.service.setTournament(data.tournamentId, newTournament)
     .then(() => (window as any).history.back()) // go back to previous page
   }
+
+  delete(data: any) {
+    if (!confirm('ARE YOU SURE?')) {
+      return;
+    }
+
+    const vm = data.vm as TournamentViewModel;
+    const tournament = vm.deleteGameResult(data.gameId);
+    this.service.setTournament(data.tournamentId, tournament)
+    .then(() => (window as any).history.back()) // go back to previous page
+  }
 }

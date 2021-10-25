@@ -23,7 +23,8 @@ export interface TournamentGameConfig {
   winnerTo?: number; // spot, this is also where game winner is displayed and game time
   loserTo?: number;
   name?: string;
-  description?: string
+  description?: string;
+  ifAWinsSkipGame?: number; // if spotA wins and this is set, finish this game using A and BYE
 }
 
 export interface TournamentTextConfig {
@@ -214,10 +215,10 @@ const createDefaultConfig = () : TournamentConfig => {
       { spotA: 56, spotB: 57, winnerTo: 59, loserTo: 65, name: 'LP' },
 
       // finals - winners of winner bracket and lose bracket
-      { spotA: 58, spotB: 59, winnerTo: 60, loserTo: 61, name: 'WP' },
+      { spotA: 58, spotB: 59, winnerTo: 60, loserTo: 61, name: 'WP', ifAWinsSkipGame: 30 }, // skip game 30 if A wins (winner never loses a game)
 
       // final playoff (if needed because loser bracket champion beat winner bracket champion, if
-      // not needed just select the winner)
+      // not needed just select the winner - this is game 30)
       { spotA: 60, spotB: 61, winnerTo: 62, loserTo: 64, name: 'LQ' },
 
       // playoff to determine 5th and 6th

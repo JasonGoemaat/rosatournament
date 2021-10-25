@@ -3,6 +3,7 @@ export interface Participant {
   id?: number;
   seed?: number;
   uid?: string;
+  hidden?: boolean; // for 'BYE' and 'NOT NEEDED' players
 }
 
 export type ParticipantMap = Record<number, number>
@@ -24,6 +25,7 @@ export interface Tournament {
 
 export interface GameResult {
   isFinished?: boolean;
+  skipped?: boolean; // for games where there is a BYE or not played if winner bracket winner never loses
   matchWinner?: number;
   matchLoser?: number;
   lagWinner?: number, // who won the lag (if we want to track)

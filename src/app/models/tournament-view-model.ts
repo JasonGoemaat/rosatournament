@@ -81,7 +81,6 @@ export class TournamentViewModel {
       const timeSlots = this.tournament.timeSlots.filter(timeSlot => !unplayedOnly || this.tournament.gameResultMap[timeSlot.gameId] === undefined);
       const unknownParticipant: Participant = { name: 'UNKNOWN' };
       const games = timeSlots.map(timeSlot => {
-        let result = {};
         let gameConfig = this.config.games[timeSlot.gameId];
         let participantA = this.getParticipant(this.tournament.participantMap[gameConfig.spotA]) || unknownParticipant;
         let participantB = this.getParticipant(this.tournament.participantMap[gameConfig.spotB]) || unknownParticipant;
@@ -92,14 +91,16 @@ export class TournamentViewModel {
       return games;
     }
 
-    setGameResult(gameId: any, info: { lagWinner: number | undefined; matchWinner: number | undefined; gameWinners: (number)[]; }) {
-      const tournament = this.cloneTournament();
+    setGameResult(gameId: any, info: { lagWinner: number | undefined; matchWinner: number | undefined; gameWinners: (number)[]; }, useTournament?: Tournament) {
+      // use passed tournament or clone a new one
+      let tournament = useTournament ? useTournament : this.cloneTournament();
+
       const gameConfig = this.config.games[gameId];
 
       const {lagWinner, matchWinner, gameWinners} = info;
       const A = tournament.participantMap[gameConfig.spotA];
       const B = tournament.participantMap[gameConfig.spotB];
-      
+
       let matchLoser = undefined;
       let isFinished = false;
       if (matchWinner) {
@@ -137,9 +138,30 @@ export class TournamentViewModel {
 
       tournament.gameResultMap[gameId] = gameResult;
 
+      //--------------------------------------------------------------------------------
+      // if the game we just set the result for is the playoff game
+      // (ifAWinsSkipGame is set) and A won, then we can skip this game.  To do that
+      // we set the gameResult as if A won again and recursively call this function
+      // to make it appear as if they played the game and A won.  Then we just alter
+      // that game result to show that B was really a BYE.  This should put everyone
+      // in the correct spots
+      //--------------------------------------------------------------------------------
+      if (gameConfig.ifAWinsSkipGame as number >= 0 && matchWinner === A) {
+        // set game result as if A won again
+        const skippedGameId = gameConfig.ifAWinsSkipGame as number;
+        tournament = this.setGameResult(skippedGameId, {matchWinner, gameWinners: [], lagWinner: undefined}, tournament);
+        
+        // change person at spotB of skipped game to 'NOT NEEDED'
+        const notNeededId = this.getNotNeededParticipant().id as number;
+        tournament.participantMap[gameConfig.loserTo as number] = notNeededId;
+        tournament.gameResultMap[skippedGameId].skipped = true;
+        tournament.gameResultMap[skippedGameId].matchWinner = notNeededId;
+      }
+
       return tournament;
     }
 
+    // OLD method - deprecated and doesn't work
     declareWinner(gameId: number, winnerId: number): Tournament {
       const tournament = this.cloneTournament();
       const gameConfig = this.config.games[gameId];
@@ -207,6 +229,10 @@ export class TournamentViewModel {
      * Used for immutability, copies tournament data in an immutable way to allow changes
      */
     cloneTournament(): Tournament {
+      // create BYE and NOT NEEDED participants if they don't exist
+      this.getByeParticipant();
+      this.getNotNeededParticipant();
+
       const t = this.tournament;
       const n: Tournament = {...t}
       n.participants = n.participants.map(x => ({...x}));
@@ -223,6 +249,36 @@ export class TournamentViewModel {
         }
       });
       return n;
+    }
+
+    getByeParticipant(useTournament?: Tournament): Participant {
+      const tournament = useTournament ? useTournament : this.tournament;
+      let result = tournament.participants.find(p => p.hidden && p.name === 'BYE');
+      if (!result) {
+        let newId = tournament.participants.reduce((acc, v) => Math.max(acc, v.id as number), 0) + 1;
+        result = {
+          id: newId,
+          hidden: true,
+          name: 'BYE'
+        };
+        tournament.participants.push(result);
+      }
+      return result;
+    }
+
+    getNotNeededParticipant(useTournament?: Tournament): Participant {
+      const tournament = useTournament ? useTournament : this.tournament;
+      let result = tournament.participants.find(p => p.hidden && p.name === 'NOT NEEDED');
+      if (!result) {
+        let newId = tournament.participants.reduce((acc, v) => Math.max(acc, v.id as number), 0) + 1;
+        result = {
+          id: newId,
+          hidden: true,
+          name: 'NOT NEEDED'
+        };
+        tournament.participants.push(result);
+      }
+      return result;
     }
 }
 

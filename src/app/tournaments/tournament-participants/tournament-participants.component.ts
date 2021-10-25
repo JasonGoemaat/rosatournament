@@ -19,7 +19,9 @@ export class TournamentParticipantsComponent implements OnInit {
   ) {
     this.mine = tournamentService.getForParams(route.paramMap)
     .pipe(map((data: MyRouteData) => ({
-        participants: data.tournament.participants.sort((a: Participant, b: Participant) => (a.name as string) < (b.name as string) ? -1 : 1),
+        participants: data.tournament.participants
+          .filter(p => !p.hidden)
+          .sort((a: Participant, b: Participant) => (a.name as string) < (b.name as string) ? -1 : 1),
         ...data
       })
     ))

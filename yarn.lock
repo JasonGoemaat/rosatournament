@@ -1802,7 +1802,7 @@
   dependencies:
     tslib "^1.9.0"
 
-"@ngxs/schematics@0.0.1-alpha.5":
+"@ngxs/schematics@^0.0.1-alpha.5":
   version "0.0.1-alpha.5"
   resolved "https://registry.yarnpkg.com/@ngxs/schematics/-/schematics-0.0.1-alpha.5.tgz#014bd731e28a30f63065e8dadec2c02ef320df46"
   integrity sha512-Tso98DroqoIUrXArrrBO/RRMO545ccMg709VFJg8WLHzH3b6zl67ysjeIDD+FBE0TouQLfpCoobR6q62k2GUBQ==

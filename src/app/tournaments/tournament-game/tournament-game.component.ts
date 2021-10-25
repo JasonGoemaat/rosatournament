@@ -1,19 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { delay, map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { TimeSlot } from 'src/app/models/tournament';
+import { TournamentViewModel } from 'src/app/models/tournament-view-model';
 import { MyRouteData, TournamentService } from 'src/app/services/tournament.service';
 import { UtilService } from 'src/app/services/util.service';
 
 const parseForGame = (data: MyRouteData) => {
-  let gameConfig = data.vm.config.games[data.gameId as number];
-  let timeSlot = data.vm.tournament.timeSlots.find(ts => ts.gameId === data.gameId) as TimeSlot;
+  const {vm, config, tournament} = data;
+  let gameConfig = config.games[data.gameId as number];
+  let timeSlot = tournament.timeSlots.find(ts => ts.gameId === data.gameId) as TimeSlot;
+  let A = vm.getParticipant(tournament.participantMap[gameConfig.spotA]);
+  let B = vm.getParticipant(tournament.participantMap[gameConfig.spotB]);
   let model = {
     gameName: gameConfig.name as string,
-    timeString: UtilService.formatTime(timeSlot.utc)
+    timeString: UtilService.formatTime(timeSlot.utc),
+    haveParticipants: !!(A && B),
+    A,
+    B,
+    participants: [A, B],
+    result: data.vm.tournament.gameResultMap[data.gameId as number],
+    nameFor: (id: number) => vm.getParticipant(id),
   }
-  return {...data, gameConfig, timeSlot, model};
+  return {...data, gameConfig, timeSlot, model,};
 }
 
 @Component({
@@ -25,6 +35,12 @@ export class TournamentGameComponent implements OnInit {
 
   data$: Observable<any>;
 
+  lagWinner?: string;
+  game1Winner?: string;
+  game2Winner?: string;
+  game3Winner?: string;
+  matchWinner?: string;
+
   constructor(
     public route: ActivatedRoute,
     public service: TournamentService,
@@ -32,8 +48,17 @@ export class TournamentGameComponent implements OnInit {
     (window as any).cGame = this;
     this.data$ = service.getForParams(route.paramMap)
     .pipe(map(parseForGame))
-    .pipe(delay(2000))
+    // .pipe(delay(20))
     .pipe(tap(x => {
+      // set form values based on result
+      if (x.model.result) {
+        this.lagWinner = `${x.model.result.lagWinner}`;
+        this.matchWinner = `${x.model.result.matchWinner}`;
+        const [a, b, c] = x.model.result.gameWinners as number[];
+        this.game1Winner = `${a}`;
+        this.game2Winner = `${b}`;
+        this.game3Winner = `${c}`;
+      }
       console.log('cGame:', x);
       (window as any).g = x;
     }))
@@ -42,4 +67,27 @@ export class TournamentGameComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  save(data: any): void {
+    const vm = data.vm as TournamentViewModel;
+    const numberFor = (x: any) => {
+      if (typeof(x) === 'number') {
+        return x;
+      }
+
+      if (typeof(x) === 'string') {
+        return parseInt(x);
+      }
+
+      return undefined;
+    }
+    
+    const newTournament = vm.setGameResult(data.gameId, {
+      lagWinner: numberFor(this.lagWinner),
+      matchWinner: numberFor(this.matchWinner),
+      gameWinners: [numberFor(this.game1Winner), numberFor(this.game2Winner), numberFor(this.game3Winner)].map(numberFor).filter(x => typeof(x) === 'number') as number[]
+    })
+
+    this.service.setTournament(data.tournamentId, newTournament)
+    .then(() => (window as any).history.back()) // go back to previous page
+  }
 }

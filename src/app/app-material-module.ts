@@ -9,6 +9,7 @@ import { MatListModule } from "@angular/material/list";
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from "@angular/material/menu";
 import { MatCardModule } from "@angular/material/card";
+import { MatSelectModule } from "@angular/material/select";
 
 const modules = [
   CdkTableModule,
@@ -20,6 +21,7 @@ const modules = [
   MatCheckboxModule,
   MatMenuModule,
   MatCardModule,
+  MatSelectModule,
 ];
 
 @NgModule({

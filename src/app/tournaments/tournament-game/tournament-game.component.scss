@@ -1,0 +1,14 @@
+:host {
+  margin-left: 15px;
+  display: block;
+}
+
+.mat-card-content > h4 {
+  font-weight: bold;
+}
+
+.games {
+  mat-form-field {
+    margin-bottom: 20px;
+  }
+}

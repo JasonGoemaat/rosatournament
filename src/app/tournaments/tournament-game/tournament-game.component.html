@@ -1,5 +1,71 @@
 <div *ngIf="data$ | async as data; else loading">
-  <h2>Game {{data.model.gameName}} at {{data.model.timeString}}</h2>
+
+  <mat-card class="example-card">
+    <mat-card-title-group>
+      <mat-card-title>Game {{data.model.gameName}}</mat-card-title>
+      <mat-card-subtitle *ngIf="data.model.haveParticipants">{{data.model.timeString}}: {{data.model.A.name}} - {{data.model.B.name}}</mat-card-subtitle>
+    </mat-card-title-group>
+    <mat-card-content *ngIf="data.model.haveParticipants">
+      <h4>Lag</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>Lag Winner</mat-label>
+        <mat-select [(value)]="lagWinner">
+          <mat-option>Not Set</mat-option>
+          <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
+          <mat-option value="{{data.model.B.id}}">{{data.model.B.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Games</h4>
+      <div class="games">
+        <mat-form-field appearance="fill">
+          <mat-label>Game 1</mat-label>
+          <mat-select [(value)]="game1Winner">
+            <mat-option>Not Set</mat-option>
+            <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
+            <mat-option value="{{data.model.B.id}}">{{data.model.B.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br/>
+        <mat-form-field appearance="fill">
+          <mat-label>Game 2</mat-label>
+          <mat-select [(value)]="game2Winner">
+            <mat-option>Not Set</mat-option>
+            <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
+            <mat-option value="{{data.model.B.id}}">{{data.model.B.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br/>
+        <mat-form-field appearance="fill">
+          <mat-label>Game 3</mat-label>
+          <mat-select [(value)]="game3Winner">
+            <mat-option>Not Set</mat-option>
+            <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
+            <mat-option value="{{data.model.B.id}}">{{data.model.B.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <h4>Match</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>Match Winner</mat-label>
+        <mat-select [(value)]="matchWinner">
+          <mat-option>Not Set</mat-option>
+          <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
+          <mat-option value="{{data.model.B.id}}">{{data.model.B.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+    </mat-card-content>
+
+    <mat-card-content *ngIf="!data.model.haveParticipants">
+      <h2>Participants unknown...</h2>
+    </mat-card-content>
+
+    <mat-card-actions *ngIf="data.model.haveParticipants">
+      <button mat-button color="primary" (click)="save(data)">SAVE</button>
+    </mat-card-actions>
+  </mat-card>
 </div>
 
 <ng-template #loading>

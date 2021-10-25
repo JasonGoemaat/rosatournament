@@ -92,6 +92,54 @@ export class TournamentViewModel {
       return games;
     }
 
+    setGameResult(gameId: any, info: { lagWinner: number | undefined; matchWinner: number | undefined; gameWinners: (number)[]; }) {
+      const tournament = this.cloneTournament();
+      const gameConfig = this.config.games[gameId];
+
+      const {lagWinner, matchWinner, gameWinners} = info;
+      const A = tournament.participantMap[gameConfig.spotA];
+      const B = tournament.participantMap[gameConfig.spotB];
+      
+      let matchLoser = undefined;
+      let isFinished = false;
+      if (matchWinner) {
+        isFinished = true;
+        matchLoser = (matchWinner === A) ? B : A; // loser is other
+
+        const winnerSourceSpot = (matchWinner === A) ? gameConfig.spotA : gameConfig.spotB;
+        const loserSourceSpot = (matchWinner === A) ? gameConfig.spotB : gameConfig.spotA;
+        tournament.resultMap[winnerSourceSpot] = true;
+        tournament.resultMap[loserSourceSpot] = false;
+        tournament.participantMap[gameConfig.winnerTo as number] = matchWinner;
+        tournament.participantMap[gameConfig.loserTo as number] = matchLoser;
+      }
+
+      var oldResult = tournament.gameResultMap[gameId];
+      const startTime = oldResult && oldResult.startTime ? oldResult.startTime : Date.now()
+
+      var gameResult: GameResult = {
+        isFinished,
+        matchWinner,
+        matchLoser,
+        lagWinner,
+        gameWinners,
+        startTime,
+        endTime: Date.now(),
+        entryTime: Date.now(),
+      }
+
+      if (!gameResult.lagWinner) delete gameResult.lagWinner;
+      if (!gameResult.matchWinner) delete gameResult.matchWinner;
+      if (!gameResult.matchLoser) delete gameResult.matchLoser;
+
+      console.log('setting gameResult:', gameResult);
+      console.log('gameId:', gameId);
+
+      tournament.gameResultMap[gameId] = gameResult;
+
+      return tournament;
+    }
+
     declareWinner(gameId: number, winnerId: number): Tournament {
       const tournament = this.cloneTournament();
       const gameConfig = this.config.games[gameId];

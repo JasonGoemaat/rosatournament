@@ -35,9 +35,6 @@ $tournament-theme: mat.define-light-theme((
 @include mat.all-component-themes($tournament-theme);
 
 
-
-
-
 // done with themes
 
 html, body { height: 100%; }
@@ -89,3 +86,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+mat-card {
+  background-color: $card-background;
+  margin-bottom: 10px;
+}

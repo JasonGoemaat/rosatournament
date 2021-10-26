@@ -1,0 +1,10 @@
+@use "../../../_variables" as *;
+
+mat-card {
+    margin-bottom: 10px;
+    width: 300px;
+    user-select: none;
+    cursor: pointer;
+    background-color: $card-background;
+    margin-left: 10px;
+}

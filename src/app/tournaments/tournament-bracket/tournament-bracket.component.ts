@@ -94,8 +94,8 @@ export class TournamentBracketComponent implements OnInit {
     // }
   }
 
-  navigateToMatch(tournamentId: string, matchId: number) {
-    this.router.navigate(['tournaments', tournamentId, 'matches', matchId]);
+  navigateToMatch(tournamentId: string, matchIndex: number) {
+    this.router.navigate(['tournaments', tournamentId, 'matches', matchIndex]);
   }
 
   onSpotClick(data: MyRouteData, spot: SpotModel) {
@@ -113,9 +113,9 @@ export class TournamentBracketComponent implements OnInit {
 
     // spot doesn't have loser or winner, must be a seed spot...  find the match
     // they play in
-    let matchId = data.config.matches.findIndex(match => match.spotA === spot.index || match.spotB === spot.index);
-    if (matchId >= 0) {
-      this.navigateToMatch(tournamentId, matchId);
+    let matchIndex = data.config.matches.findIndex(match => match.spotA === spot.index || match.spotB === spot.index);
+    if (matchIndex >= 0) {
+      this.navigateToMatch(tournamentId, matchIndex);
     }
 
     // ----- old stuff for when I was using a dialog -----

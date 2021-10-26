@@ -9,35 +9,35 @@ import { TournamentViewModel } from "../../models/tournament-view-model";
 // used for quick design to see what data I needed
 const sampleData = [
   {
-    matchId: 0,
+    matchIndex: 0,
     timeString: '9:00 am',
     matchName: 'WA',
     participants1: ['Jeff Livingston'],
     participants2: ['Kade Rosa']
   },
   {
-    matchId: 1,
+    matchIndex: 1,
     timeString: '9:30 am',
     matchName: 'WB',
     participants1: ['Jason Goemaat'],
     participants2: ['Brent Kolk']
   },
   {
-    matchId: 2,
+    matchIndex: 2,
     timeString: '10:00 am',
     matchName: 'WC',
     participants1: ['Danny Martin'],
     participants2: ['Jack Rosa']
   },
   {
-    matchId: 3,
+    matchIndex: 3,
     timeString: '10:30 am',
     matchName: 'WD',
     participants1: ['Doug Liebe'],
     participants2: ['Chris Goldenstein']
   },
   {
-    matchId: 4,
+    matchIndex: 4,
     timeString: '11:00 am',
     matchName: 'WE',
     participants1: ['Tim Martin'],
@@ -91,7 +91,7 @@ export const parseForMatches = (data: MyRouteData) => {
       const winner = data.vm.getParticipant(match.result.matchWinner as number);
       const loser = data.vm.getParticipant(match.result.matchLoser as number);
       result.model = {
-        matchId: matchIndex,
+        matchIndex: matchIndex,
         timeString: UtilService.formatTime(match.utc),
         matchName: match.name,
         winnerName: winner.name,
@@ -99,7 +99,7 @@ export const parseForMatches = (data: MyRouteData) => {
       }
     } else {
       result.model = {
-        matchId: matchIndex,
+        matchIndex: matchIndex,
         timeString: UtilService.formatTime(match.utc),
         matchName: match.name,
         participants1: getParticipantsForSpot(data.vm, match.spotA),
@@ -165,7 +165,7 @@ export class TournamentMatchesComponent implements OnInit {
   }
 
   openMatch(data: any, match: any) {
-    this.router.navigate(['/', 'tournaments', data.tournamentId, 'matches', match.matchId]);
+    this.router.navigate(['/', 'tournaments', data.tournamentId, 'matches', match.matchIndex]);
   }
 
   ngOnInit(): void {

@@ -29,7 +29,7 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'matches/:matchId',
+        path: 'matches/:matchIndex',
         component: TournamentMatchComponent
       },
       {

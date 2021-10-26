@@ -50,7 +50,7 @@ export interface TournamentSpot {
 
 export interface TimeSlot {
   utc: number;
-  matchId: number;
+  matchIndex: number;
 }
 
 export type TournamentSpots = Record<number, TournamentSpot>;

@@ -138,136 +138,136 @@ export const tournamentReset = {
   "name": "13th Annual Tournament Of The Rosa's",
   "timeSlots": [
     {
-      "matchId": 6,
+      "matchIndex": 6,
       "utc": 1635602400000
     },
     {
-      "matchId": 1,
+      "matchIndex": 1,
       "utc": 1635604200000
     },
     {
-      "matchId": 2,
+      "matchIndex": 2,
       "utc": 1635606000000
     },
     {
-      "matchId": 3,
+      "matchIndex": 3,
       "utc": 1635607800000
     },
     {
       "utc": 1635609600000,
-      "matchId": 4
+      "matchIndex": 4
     },
     {
       "utc": 1635611400000,
-      "matchId": 5
+      "matchIndex": 5
     },
     {
       "utc": 1635613200000,
-      "matchId": 0
+      "matchIndex": 0
     },
     {
       "utc": 1635615000000,
-      "matchId": 7
+      "matchIndex": 7
     },
     {
-      "matchId": 12,
+      "matchIndex": 12,
       "utc": 1635616800000
     },
     {
-      "matchId": 14,
+      "matchIndex": 14,
       "utc": 1635618600000
     },
     {
       "utc": 1635620400000,
-      "matchId": 15
+      "matchIndex": 15
     },
     {
-      "matchId": 8,
+      "matchIndex": 8,
       "utc": 1635622200000
     },
     {
-      "matchId": 10,
+      "matchIndex": 10,
       "utc": 1635624000000
     },
     {
       "utc": 1635625800000,
-      "matchId": 11
+      "matchIndex": 11
     },
     {
       "utc": 1635627600000,
-      "matchId": 13
+      "matchIndex": 13
     },
     {
       "utc": 1635629400000,
-      "matchId": 9
+      "matchIndex": 9
     },
     {
       "utc": 1635631200000,
-      "matchId": 16
+      "matchIndex": 16
     },
     {
-      "matchId": 17,
+      "matchIndex": 17,
       "utc": 1635633000000
     },
     {
-      "matchId": 18,
+      "matchIndex": 18,
       "utc": 1635634800000
     },
     {
       "utc": 1635636600000,
-      "matchId": 19
+      "matchIndex": 19
     },
     {
-      "matchId": 22,
+      "matchIndex": 22,
       "utc": 1635638400000
     },
     {
       "utc": 1635640200000,
-      "matchId": 23
+      "matchIndex": 23
     },
     {
-      "matchId": 20,
+      "matchIndex": 20,
       "utc": 1635642000000
     },
     {
-      "matchId": 21,
+      "matchIndex": 21,
       "utc": 1635643800000
     },
     {
       "utc": 1635645600000,
-      "matchId": 24
+      "matchIndex": 24
     },
     {
       "utc": 1635647400000,
-      "matchId": 25
+      "matchIndex": 25
     },
     {
-      "matchId": 32,
+      "matchIndex": 32,
       "utc": 1635649200000
     },
     {
       "utc": 1635651000000,
-      "matchId": 31
+      "matchIndex": 31
     },
     {
-      "matchId": 27,
+      "matchIndex": 27,
       "utc": 1635652800000
     },
     {
       "utc": 1635654600000,
-      "matchId": 26
+      "matchIndex": 26
     },
     {
       "utc": 1635656400000,
-      "matchId": 28
+      "matchIndex": 28
     },
     {
-      "matchId": 29,
+      "matchIndex": 29,
       "utc": 1635658200000
     },
     {
       "utc": 1635660000000,
-      "matchId": 30
+      "matchIndex": 30
     }
   ],
   "ownerName": "Jason Goemaat",

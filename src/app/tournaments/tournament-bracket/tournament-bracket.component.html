@@ -1,6 +1,6 @@
 <div class="container" *ngIf="data$ | async as data">
   <div 
-    *ngFor="let spot of data.vm.spots; let i = index"
+    *ngFor="let spot of data.vm.spotList; let i = index"
     [style.grid-area]="spot.config.gridArea"
     [style.border-bottom]="getBorderBottom(spot.config)"
     [style.border-right]="getBorderRight(spot.config)"

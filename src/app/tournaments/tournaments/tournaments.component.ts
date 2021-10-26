@@ -41,7 +41,12 @@ export class TournamentsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.service.setTournament(tournamentId, tournamentReset).then(x => console.log('RESET!', x)).catch((err: any) => console.error(err));
+    const change = {...tournamentReset};
+    if (tournamentId !== 'mine') {
+      change.name = `${tournamentId}: ${change.name}`;
+    }
+
+    this.service.setTournament(tournamentId, change).then(x => console.log('RESET!', x)).catch((err: any) => console.error(err));
   }
 
   signIn(): void {

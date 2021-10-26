@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { MyRouteData, TournamentService } from 'src/app/services/tournament.service';
 import { data, Tournament } from '../../models/tournament';
-import { TournamentConfig, BorderConfig, TournamentSpotConfig, defaultConfig } from '../../models/tournament-config';
-import { SpotViewModel } from '../../models/tournament-view-model';
+import { TournamentConfig, BorderConfig, SpotConfig, defaultConfig } from '../../models/tournament-config';
+import { SpotModel } from '../../models/tournament-view-model';
 
 @Component({
   selector: 'app-tournament-bracket',
@@ -45,7 +45,7 @@ export class TournamentBracketComponent implements OnInit {
     // });
   }
 
-  getBorderBottom(spot: TournamentSpotConfig): string {
+  getBorderBottom(spot: SpotConfig): string {
     if (spot.borders === BorderConfig.Bottom || spot.borders == BorderConfig.BottomRight) {
       return 'solid 1px black';
     }
@@ -55,7 +55,7 @@ export class TournamentBracketComponent implements OnInit {
     return '';
   }
 
-  getBorderRight(spot: TournamentSpotConfig): string {
+  getBorderRight(spot: SpotConfig): string {
     if (spot.borders === BorderConfig.BottomRight) {
       return 'solid 1px black';
     }
@@ -67,8 +67,8 @@ export class TournamentBracketComponent implements OnInit {
 
   getGameString(data: MyRouteData, index: number): string | null{
     const config = data.config as TournamentConfig;
-    for (let i = 0; i < config.games.length; i++) {
-      const game = config.games[i];
+    for (let i = 0; i < config.matches.length; i++) {
+      const game = config.matches[i];
       if (game.spotA == index) {
         return `A${i}`;
       }
@@ -79,7 +79,7 @@ export class TournamentBracketComponent implements OnInit {
     return null;
   }
 
-  getSpotDisplayInfo(spot: TournamentSpotConfig) {
+  getSpotDisplayInfo(spot: SpotConfig) {
     // need 'isWinner' or 'isLoser' to add class to element
     // need displayText (name (i.e. 'Jeff Livingston'), time (i.e. '9:00 am'), source (i.e. loser of WA'))
     // need isItalic (if not name like 'Jeff Livingston' (i.e. for time or source, or place ))
@@ -98,7 +98,7 @@ export class TournamentBracketComponent implements OnInit {
     this.router.navigate(['tournaments', tournamentId, 'games', gameId]);
   }
 
-  onSpotClick(data: MyRouteData, spot: SpotViewModel) {
+  onSpotClick(data: MyRouteData, spot: SpotModel) {
     const tournamentId = data.tournamentId;
     const {loserOfGame, winnerOfGame} = data.config.spots[spot.index];
     if (typeof(loserOfGame) === 'number') {
@@ -113,7 +113,7 @@ export class TournamentBracketComponent implements OnInit {
 
     // spot doesn't have loser or winner, must be a seed spot...  find the game
     // they play in
-    let gameId = data.config.games.findIndex(game => game.spotA === spot.index || game.spotB === spot.index);
+    let gameId = data.config.matches.findIndex(game => game.spotA === spot.index || game.spotB === spot.index);
     if (gameId >= 0) {
       this.navigateToGame(tournamentId, gameId);
     }
@@ -129,7 +129,7 @@ export class TournamentBracketComponent implements OnInit {
     // });
   }
 
-  getTooltip(data: MyRouteData, spot: SpotViewModel): string {
+  getTooltip(data: MyRouteData, spot: SpotModel): string {
     const lines = [
       `spot: ${spot.index}`
     ]

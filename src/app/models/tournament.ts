@@ -6,7 +6,7 @@ export interface Participant {
   hidden?: boolean; // for 'BYE' and 'NOT NEEDED' players
 }
 
-export type ParticipantMap = Record<number, number>
+export type spotParticipant = Record<number, number>
 
 export type ResultMap = Record<number, boolean>
 
@@ -18,7 +18,7 @@ export interface Tournament {
   isPublic: boolean;
   scheduleMinutes: number;
   timeSlots: TimeSlot[];
-  participantMap: ParticipantMap; // index with spot, gives participant ID
+  spotParticipant: spotParticipant; // index with spot, gives participant ID
   resultMap: ResultMap; // index with spot, tells you if they won (true), lost (false) or haven't played (undefined)
   gameResultMap: GameResultMap;
 }

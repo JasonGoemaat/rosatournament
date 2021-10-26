@@ -46,9 +46,9 @@ const sampleData = [
 ];
 
 export const getParticipantsForGameId = (vm: TournamentViewModel, gameIndex: number, winnerOrLoser: string) : string[] => {
-  const game = vm.config.games[gameIndex];
-  let participantA = vm.getParticipant(vm.tournament.participantMap[game.spotA]);
-  let participantB = vm.getParticipant(vm.tournament.participantMap[game.spotB]);
+  const game = vm.config.matches[gameIndex];
+  let participantA = vm.getParticipant(vm.tournament.spotParticipant[game.spotA]);
+  let participantB = vm.getParticipant(vm.tournament.spotParticipant[game.spotB]);
   if (participantA && participantB) {
     return [`${participantA.name || 'UNKNOWN'}`, '-or-', `${participantB.name || 'UNKNOWN'}`];
   } else {
@@ -60,7 +60,7 @@ export const getParticipantsForSpot = (vm: TournamentViewModel, spotIndex: numbe
   let spotConfig = vm.config.spots[spotIndex];
 
   // if a participant is set for the spot
-  let participantId = vm.tournament.participantMap[spotIndex];
+  let participantId = vm.tournament.spotParticipant[spotIndex];
   if (participantId) {
     return [vm.getParticipant(participantId).name || 'UNKNOWN'];
   }

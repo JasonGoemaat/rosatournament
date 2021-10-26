@@ -6,7 +6,7 @@ export enum BorderConfig {
   DashedBottomRight
 }
 
-export interface TournamentSpotConfig {
+export interface SpotConfig {
   gridArea: string;
   borders: BorderConfig;
   seed?: number;
@@ -17,7 +17,7 @@ export interface TournamentSpotConfig {
   hidden?: boolean; // special
 }
 
-export interface TournamentGameConfig {
+export interface MatchConfig {
   spotA: number;
   spotB: number;
   winnerTo?: number; // spot, this is also where game winner is displayed and game time
@@ -35,9 +35,9 @@ export interface TournamentTextConfig {
 
 export interface TournamentConfig {
   name: string;
-  spots: TournamentSpotConfig[];
+  spots: SpotConfig[];
   texts: TournamentTextConfig[];
-  games: TournamentGameConfig[];
+  matches: MatchConfig[];
 }
 
 const createDefaultConfig = () : TournamentConfig => {
@@ -164,7 +164,7 @@ const createDefaultConfig = () : TournamentConfig => {
       {gridArea: '35/5/span 2/span 2', text: '7th-8th'},
       {gridArea: '35/7/span 2/span 2', text: '5th-6th'},
     ],
-    games: [
+    matches: [
       // winner bracket round 1 (games 0-7)
       { spotA: 0, spotB: 1, winnerTo: 24, loserTo: 16, name: 'WA' },
       { spotA: 2, spotB: 3, winnerTo: 25, loserTo: 17, name: 'WB' },
@@ -229,7 +229,7 @@ const createDefaultConfig = () : TournamentConfig => {
     ]
   };
 
-  config.games.forEach((game, i) => {
+  config.matches.forEach((game, i) => {
     if (game.loserTo != undefined) {
       config.spots[game.loserTo].loserOfGame = i;
     }

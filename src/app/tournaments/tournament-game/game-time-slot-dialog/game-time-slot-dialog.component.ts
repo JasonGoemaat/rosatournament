@@ -31,7 +31,7 @@ export class GameTimeSlotDialogComponent implements OnInit {
       const result = {
         ...ts,
         timeString: UtilService.formatTime(ts.utc),
-        gameName: data.vm.config.games[ts.gameId].name
+        gameName: data.vm.config.matches[ts.gameId].name
       };
 
       if (ts.gameId === data.gameId) {

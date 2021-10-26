@@ -11,10 +11,10 @@ import { GameTimeSlotDialogComponent } from './game-time-slot-dialog/game-time-s
 
 const parseForGame = (data: MyRouteData) => {
   const {vm, config, tournament} = data;
-  let gameConfig = config.games[data.gameId as number];
+  let gameConfig = config.matches[data.gameId as number];
   let timeSlot = tournament.timeSlots.find(ts => ts.gameId === data.gameId) as TimeSlot;
-  let A = vm.getParticipant(tournament.participantMap[gameConfig.spotA]);
-  let B = vm.getParticipant(tournament.participantMap[gameConfig.spotB]);
+  let A = vm.getParticipant(tournament.spotParticipant[gameConfig.spotA]);
+  let B = vm.getParticipant(tournament.spotParticipant[gameConfig.spotB]);
   let model = {
     gameName: gameConfig.name as string,
     timeString: UtilService.formatTime(timeSlot.utc),

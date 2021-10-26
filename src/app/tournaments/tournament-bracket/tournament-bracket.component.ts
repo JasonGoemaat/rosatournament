@@ -128,4 +128,11 @@ export class TournamentBracketComponent implements OnInit {
     //   console.log('SpotDialogComponent closed, result:', result);
     // });
   }
+
+  getTooltip(data: MyRouteData, spot: SpotViewModel): string {
+    const lines = [
+      `spot: ${spot.index}`
+    ]
+    return lines.join('\r\n');
+  }
 }

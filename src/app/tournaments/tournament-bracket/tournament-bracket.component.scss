@@ -1,5 +1,9 @@
 [hidden] { display: none !important }
 
+::ng-deep .multiline-tooltip{
+  white-space: pre-line;
+}
+
 h1 { text-align: center; }
 
 .container {

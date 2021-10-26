@@ -11,6 +11,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatCardModule } from "@angular/material/card";
 import { MatSelectModule } from "@angular/material/select";
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 const modules = [
   CdkTableModule,
@@ -24,6 +25,7 @@ const modules = [
   MatCardModule,
   MatSelectModule,
   MatDialogModule,
+  MatTooltipModule,
 ];
 
 @NgModule({

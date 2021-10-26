@@ -322,8 +322,7 @@ export class TournamentViewModel {
       // Follow unplayed games to find ids of players that might get there.
       // Use timeSlots to get games in play order which should make sure
       // there are players in the spots we're getting from
-      tournament.timeSlots.forEach(({gameId}) => {
-        if (tournament.gameResultMap[gameId]) return;
+      this.getUnfinishedGames().forEach(({gameId}) => {
         const {spotA, spotB, winnerTo, loserTo} = config.games[gameId];
         const possible = [...spotMap[spotA], ...spotMap[spotB]];
         if(winnerTo) spotMap[winnerTo] = possible;
@@ -331,6 +330,22 @@ export class TournamentViewModel {
       });
 
       return spotMap;
+    }
+
+    getUnfinishedGamesForParticipant(participantId: number) {
+
+    }
+
+    getUnfinishedGames(): ({gameId: number,  utc: number, timeSlotIndex: number}[]) {
+      const {tournament, config} = this;
+      return tournament.timeSlots.map(({gameId, utc}, timeSlotIndex) => {
+        if (tournament.gameResultMap[gameId] && tournament.gameResultMap[gameId].isFinished) return null;
+        return {gameId, utc, timeSlotIndex};
+        //const {spotA, spotB, winnerTo, loserTo} = config.games[gameId];
+        // const possible = [...spotMap[spotA], ...spotMap[spotB]];
+        // if(winnerTo) spotMap[winnerTo] = possible;
+        // if(loserTo) spotMap[loserTo] = possible;
+      }).filter(x => x != null) as {gameId: number,  utc: number, timeSlotIndex: number}[];
     }
 
     getParticipantViewModels() {

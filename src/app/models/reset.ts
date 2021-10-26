@@ -125,7 +125,7 @@ export const tournamentReset = {
       "id": 18
     }
   ],
-  "gameResultMap": {},
+  "matchResultMap": {},
   "isPublic": true,
   "scheduleMinutes": 30,
   "roles": {
@@ -138,136 +138,136 @@ export const tournamentReset = {
   "name": "13th Annual Tournament Of The Rosa's",
   "timeSlots": [
     {
-      "gameId": 6,
+      "matchId": 6,
       "utc": 1635602400000
     },
     {
-      "gameId": 1,
+      "matchId": 1,
       "utc": 1635604200000
     },
     {
-      "gameId": 2,
+      "matchId": 2,
       "utc": 1635606000000
     },
     {
-      "gameId": 3,
+      "matchId": 3,
       "utc": 1635607800000
     },
     {
       "utc": 1635609600000,
-      "gameId": 4
+      "matchId": 4
     },
     {
       "utc": 1635611400000,
-      "gameId": 5
+      "matchId": 5
     },
     {
       "utc": 1635613200000,
-      "gameId": 0
+      "matchId": 0
     },
     {
       "utc": 1635615000000,
-      "gameId": 7
+      "matchId": 7
     },
     {
-      "gameId": 12,
+      "matchId": 12,
       "utc": 1635616800000
     },
     {
-      "gameId": 14,
+      "matchId": 14,
       "utc": 1635618600000
     },
     {
       "utc": 1635620400000,
-      "gameId": 15
+      "matchId": 15
     },
     {
-      "gameId": 8,
+      "matchId": 8,
       "utc": 1635622200000
     },
     {
-      "gameId": 10,
+      "matchId": 10,
       "utc": 1635624000000
     },
     {
       "utc": 1635625800000,
-      "gameId": 11
+      "matchId": 11
     },
     {
       "utc": 1635627600000,
-      "gameId": 13
+      "matchId": 13
     },
     {
       "utc": 1635629400000,
-      "gameId": 9
+      "matchId": 9
     },
     {
       "utc": 1635631200000,
-      "gameId": 16
+      "matchId": 16
     },
     {
-      "gameId": 17,
+      "matchId": 17,
       "utc": 1635633000000
     },
     {
-      "gameId": 18,
+      "matchId": 18,
       "utc": 1635634800000
     },
     {
       "utc": 1635636600000,
-      "gameId": 19
+      "matchId": 19
     },
     {
-      "gameId": 22,
+      "matchId": 22,
       "utc": 1635638400000
     },
     {
       "utc": 1635640200000,
-      "gameId": 23
+      "matchId": 23
     },
     {
-      "gameId": 20,
+      "matchId": 20,
       "utc": 1635642000000
     },
     {
-      "gameId": 21,
+      "matchId": 21,
       "utc": 1635643800000
     },
     {
       "utc": 1635645600000,
-      "gameId": 24
+      "matchId": 24
     },
     {
       "utc": 1635647400000,
-      "gameId": 25
+      "matchId": 25
     },
     {
-      "gameId": 32,
+      "matchId": 32,
       "utc": 1635649200000
     },
     {
       "utc": 1635651000000,
-      "gameId": 31
+      "matchId": 31
     },
     {
-      "gameId": 27,
+      "matchId": 27,
       "utc": 1635652800000
     },
     {
       "utc": 1635654600000,
-      "gameId": 26
+      "matchId": 26
     },
     {
       "utc": 1635656400000,
-      "gameId": 28
+      "matchId": 28
     },
     {
-      "gameId": 29,
+      "matchId": 29,
       "utc": 1635658200000
     },
     {
       "utc": 1635660000000,
-      "gameId": 30
+      "matchId": 30
     }
   ],
   "ownerName": "Jason Goemaat",

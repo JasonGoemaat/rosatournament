@@ -7,40 +7,40 @@ import { TimeSlot } from 'src/app/models/tournament';
 import { TournamentViewModel } from 'src/app/models/tournament-view-model';
 import { MyRouteData, TournamentService } from 'src/app/services/tournament.service';
 import { UtilService } from 'src/app/services/util.service';
-import { GameTimeSlotDialogComponent } from './game-time-slot-dialog/game-time-slot-dialog.component';
+import { MatchTimeSlotDialogComponent } from './match-time-slot-dialog/match-time-slot-dialog.component';
 
-const parseForGame = (data: MyRouteData) => {
+const parseForMatch = (data: MyRouteData) => {
   const {vm, config, tournament} = data;
-  let gameConfig = config.matches[data.gameId as number];
-  let timeSlot = tournament.timeSlots.find(ts => ts.gameId === data.gameId) as TimeSlot;
-  let A = vm.getParticipant(tournament.spotParticipant[gameConfig.spotA]);
-  let B = vm.getParticipant(tournament.spotParticipant[gameConfig.spotB]);
+  let matchConfig = config.matches[data.matchId as number];
+  let timeSlot = tournament.timeSlots.find(ts => ts.matchId === data.matchId) as TimeSlot;
+  let A = vm.getParticipant(tournament.spotParticipant[matchConfig.spotA]);
+  let B = vm.getParticipant(tournament.spotParticipant[matchConfig.spotB]);
   let model = {
-    gameName: gameConfig.name as string,
+    matchName: matchConfig.name as string,
     timeString: UtilService.formatTime(timeSlot.utc),
     haveParticipants: !!(A && B),
     A,
     B,
     participants: [A, B],
-    result: data.vm.tournament.gameResultMap[data.gameId as number],
+    result: data.vm.tournament.matchResultMap[data.matchId as number],
     nameFor: (id: number) => vm.getParticipant(id),
   }
-  return {...data, gameConfig, timeSlot, model,};
+  return {...data, matchConfig, timeSlot, model,};
 }
 
 @Component({
-  selector: 'app-tournament-game',
-  templateUrl: './tournament-game.component.html',
-  styleUrls: ['./tournament-game.component.scss']
+  selector: 'app-tournament-match',
+  templateUrl: './tournament-match.component.html',
+  styleUrls: ['./tournament-match.component.scss']
 })
-export class TournamentGameComponent implements OnInit {
+export class TournamentMatchComponent implements OnInit {
 
   data$: Observable<any>;
 
   lagWinner?: string;
-  game1Winner?: string;
-  game2Winner?: string;
-  game3Winner?: string;
+  match1Winner?: string;
+  match2Winner?: string;
+  match3Winner?: string;
   matchWinner?: string;
 
   constructor(
@@ -48,21 +48,21 @@ export class TournamentGameComponent implements OnInit {
     public service: TournamentService,
     public dialog: MatDialog,
   ) {
-    (window as any).cGame = this;
+    (window as any).cMatch = this;
     this.data$ = service.getForParams(route.paramMap)
-    .pipe(map(parseForGame))
+    .pipe(map(parseForMatch))
     // .pipe(delay(20))
     .pipe(tap(x => {
       // set form values based on result
       if (x.model.result) {
         this.lagWinner = `${x.model.result.lagWinner}`;
         this.matchWinner = `${x.model.result.matchWinner}`;
-        const [a, b, c] = x.model.result.gameWinners as number[];
-        this.game1Winner = `${a}`;
-        this.game2Winner = `${b}`;
-        this.game3Winner = `${c}`;
+        const [a, b, c] = x.model.result.matchWinners as number[];
+        this.match1Winner = `${a}`;
+        this.match2Winner = `${b}`;
+        this.match3Winner = `${c}`;
       }
-      console.log('cGame:', x);
+      console.log('cMatch:', x);
       (window as any).g = x;
     }))
   }
@@ -84,10 +84,10 @@ export class TournamentGameComponent implements OnInit {
       return undefined;
     }
     
-    const newTournament = vm.setGameResult(data.gameId, {
+    const newTournament = vm.setMatchResult(data.matchId, {
       lagWinner: numberFor(this.lagWinner),
       matchWinner: numberFor(this.matchWinner),
-      gameWinners: [numberFor(this.game1Winner), numberFor(this.game2Winner), numberFor(this.game3Winner)].map(numberFor).filter(x => typeof(x) === 'number') as number[]
+      matchWinners: [numberFor(this.match1Winner), numberFor(this.match2Winner), numberFor(this.match3Winner)].map(numberFor).filter(x => typeof(x) === 'number') as number[]
     })
 
     this.service.setTournament(data.tournamentId, newTournament)
@@ -100,18 +100,18 @@ export class TournamentGameComponent implements OnInit {
     }
 
     const vm = data.vm as TournamentViewModel;
-    const tournament = vm.deleteGameResult(data.gameId);
+    const tournament = vm.deleteMatchResult(data.matchId);
     this.service.setTournament(data.tournamentId, tournament)
     .then(() => (window as any).history.back()) // go back to previous page
   }
 
   openDialog(data: any): void {
-    const gameId = data.gameId;
-    const dialogRef = this.dialog.open(GameTimeSlotDialogComponent, {
+    const matchId = data.matchId;
+    const dialogRef = this.dialog.open(MatchTimeSlotDialogComponent, {
       width: '250px',
       data: {
         vm: data.vm,
-        gameId: data.gameId
+        matchId: data.matchId
       }
     });
 
@@ -124,21 +124,21 @@ export class TournamentGameComponent implements OnInit {
 
       const newTimeSlot = result;
       const vm = data.vm as TournamentViewModel;
-      let currentTimeSlot = vm.tournament.timeSlots.findIndex(ts => ts.gameId === data.gameId);
+      let currentTimeSlot = vm.tournament.timeSlots.findIndex(ts => ts.matchId === data.matchId);
       if (currentTimeSlot < 0) {
         console.log('COULD NOT FIND CURRENT TIMESLOT');
       }
 
       const tournament = vm.cloneTournament();
       while (currentTimeSlot > newTimeSlot) {
-        tournament.timeSlots[currentTimeSlot].gameId = tournament.timeSlots[currentTimeSlot - 1].gameId;
+        tournament.timeSlots[currentTimeSlot].matchId = tournament.timeSlots[currentTimeSlot - 1].matchId;
         currentTimeSlot--;
       }
       while (currentTimeSlot < newTimeSlot) {
-        tournament.timeSlots[currentTimeSlot].gameId = tournament.timeSlots[currentTimeSlot + 1].gameId;
+        tournament.timeSlots[currentTimeSlot].matchId = tournament.timeSlots[currentTimeSlot + 1].matchId;
         currentTimeSlot++;
       }
-      tournament.timeSlots[currentTimeSlot].gameId = data.gameId;
+      tournament.timeSlots[currentTimeSlot].matchId = data.matchId;
       this.service.setTournament(data.tournamentId, tournament)
       .then(() => (window as any).history.back()) // go back to previous page
     });

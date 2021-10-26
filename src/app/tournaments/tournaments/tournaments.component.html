@@ -6,7 +6,7 @@
   </button>
   <mat-menu #menu>
     <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId])">Bracket</button>
-    <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId, 'games'])">Games</button>
+    <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId, 'matches'])">Matches</button>
     <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId, 'participants'])">Participants</button>
     <button mat-menu-item *ngIf="!data.auth.name" (click)="signIn()">Sign In</button>
     <button mat-menu-item *ngIf="data.auth.name" (click)="signOut()">Sign Out</button>

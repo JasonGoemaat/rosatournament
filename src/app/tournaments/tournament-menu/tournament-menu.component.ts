@@ -24,8 +24,8 @@ export class TournamentMenuComponent implements OnInit {
     this.router.navigate(['tournaments', this.tournamentId]);
   }
 
-  clickGames(): void {
-    this.router.navigate(['tournaments', this.tournamentId, 'games']);
+  clickMatches(): void {
+    this.router.navigate(['tournaments', this.tournamentId, 'matches']);
   }
 
   clickParticipants(): void {

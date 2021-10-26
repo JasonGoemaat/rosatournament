@@ -1,5 +1,5 @@
 import { UtilService } from "../services/util.service";
-import { GameResult, Participant, Tournament } from "./tournament";
+import { MatchResult, Participant, Tournament } from "./tournament";
 import { TournamentConfig, SpotConfig } from "./tournament-config";
 
 export interface SpotModel {
@@ -8,17 +8,17 @@ export interface SpotModel {
   isLoser?: boolean;
   isItalic?: boolean;
   isBold?: boolean;
-  gameName?: string;
+  matchName?: string;
   text: string;
   config: SpotConfig;
 }
 
 export interface ParticipantModel extends Participant {
   index: number; // index into Tournament.participants
-  gamesWon: number;
-  gamesLost: number;
   matchesWon: number;
   matchesLost: number;
+  gamesWon: number;
+  gamesLost: number;
 }
 
 export interface ParticipantViewModel {
@@ -47,12 +47,12 @@ export class TournamentViewModel {
 
       const spots = config.spots.map((spotConfig, index) => <SpotModel>{ text: `Spot ${index}`, config: spotConfig, index });
 
-      // process games adding game name and time
-      config.matches.forEach((gameConfig, gameIndex) => {
-          const { winnerTo, loserTo, name } = gameConfig;
+      // process matches adding match name and time
+      config.matches.forEach((matchConfig, matchIndex) => {
+          const { winnerTo, loserTo, name } = matchConfig;
           if (winnerTo) {
-              spots[winnerTo].gameName = name;
-              const timeSlot = tournament.timeSlots.find(ts => ts.gameId == gameIndex);
+              spots[winnerTo].matchName = name;
+              const timeSlot = tournament.timeSlots.find(ts => ts.matchId == matchIndex);
               if (timeSlot) {
                   const utc = timeSlot.utc;
                   //spots[winnerTo].text = getTimeString(utc);
@@ -99,47 +99,47 @@ export class TournamentViewModel {
     }
 
     /**
-     * To show upcoming games, list unplayed games in order by time slot
+     * To show upcoming matches, list unplayed matches in order by time slot
      */
-    getGames(unplayedOnly = false) {
-      const timeSlots = this.tournament.timeSlots.filter(timeSlot => !unplayedOnly || this.tournament.gameResultMap[timeSlot.gameId] === undefined);
+    getMatches(unplayedOnly = false) {
+      const timeSlots = this.tournament.timeSlots.filter(timeSlot => !unplayedOnly || this.tournament.matchResultMap[timeSlot.matchId] === undefined);
       const unknownParticipant: Participant = { name: 'UNKNOWN' };
-      const games = timeSlots.map(timeSlot => {
-        let gameConfig = this.config.matches[timeSlot.gameId];
-        let participantA = this.getParticipant(this.tournament.spotParticipant[gameConfig.spotA]) || unknownParticipant;
-        let participantB = this.getParticipant(this.tournament.spotParticipant[gameConfig.spotB]) || unknownParticipant;
+      const matches = timeSlots.map(timeSlot => {
+        let matchConfig = this.config.matches[timeSlot.matchId];
+        let participantA = this.getParticipant(this.tournament.spotParticipant[matchConfig.spotA]) || unknownParticipant;
+        let participantB = this.getParticipant(this.tournament.spotParticipant[matchConfig.spotB]) || unknownParticipant;
         return {
-          ...gameConfig, ...timeSlot, participantA, participantB, result: this.tournament.gameResultMap[timeSlot.gameId]
+          ...matchConfig, ...timeSlot, participantA, participantB, result: this.tournament.matchResultMap[timeSlot.matchId]
         }
       });
-      return games;
+      return matches;
     }
 
-    deleteGameResult(gameId: number, useTournament?: Tournament) : Tournament {
+    deleteMatchResult(matchId: number, useTournament?: Tournament) : Tournament {
       const tournament = useTournament ? useTournament : this.tournament;
-      const config = this.config.matches[gameId];
+      const config = this.config.matches[matchId];
       if (config.winnerTo) delete tournament.spotParticipant[config.winnerTo];
       if (config.loserTo) delete tournament.spotParticipant[config.loserTo];
-      delete tournament.gameResultMap[gameId];
+      delete tournament.matchResultMap[matchId];
       return tournament;
     }
 
-    // to reset final 2 games (from /games):
-    // var t = x.vm.cloneTournament(); delete t.gameResultMap[29]; delete t.gameResultMap[30]; cGames.service.setTournament(x.tournamentId, t);
-    // var t = x.vm.cloneTournament(); [58, 59, 60, 61].forEach(i => delete t.spotParticipant[i]); cGames.service.setTournament(x.tournamentId, t);
+    // to reset final 2 matches (from /matches):
+    // var t = x.vm.cloneTournament(); delete t.matchResultMap[29]; delete t.matchResultMap[30]; cMatches.service.setTournament(x.tournamentId, t);
+    // var t = x.vm.cloneTournament(); [58, 59, 60, 61].forEach(i => delete t.spotParticipant[i]); cMatches.service.setTournament(x.tournamentId, t);
     // ----- or -----
-    // var t = x.vm.deleteGameResult(29);
-    // t = x,vm.deleteGameResult(30, t);
-    // cGame.service.setTournament(x.tournamentId, t);
-    setGameResult(gameId: any, info: { lagWinner?: number; matchWinner?: number; gameWinners: (number)[]; }, useTournament?: Tournament) {
+    // var t = x.vm.deleteMatchResult(29);
+    // t = x,vm.deleteMatchResult(30, t);
+    // cMatch.service.setTournament(x.tournamentId, t);
+    setMatchResult(matchId: any, info: { lagWinner?: number; matchWinner?: number; matchWinners: (number)[]; }, useTournament?: Tournament) {
       // use passed tournament or clone a new one
       let tournament = useTournament ? useTournament : this.cloneTournament();
 
-      const gameConfig = this.config.matches[gameId];
+      const matchConfig = this.config.matches[matchId];
 
-      const {lagWinner, matchWinner, gameWinners} = info;
-      const A = tournament.spotParticipant[gameConfig.spotA];
-      const B = tournament.spotParticipant[gameConfig.spotB];
+      const {lagWinner, matchWinner, matchWinners} = info;
+      const A = tournament.spotParticipant[matchConfig.spotA];
+      const B = tournament.spotParticipant[matchConfig.spotB];
 
       let matchLoser = undefined;
       let isFinished = false;
@@ -147,107 +147,107 @@ export class TournamentViewModel {
         isFinished = true;
         matchLoser = (matchWinner === A) ? B : A; // loser is other
 
-        const winnerSourceSpot = (matchWinner === A) ? gameConfig.spotA : gameConfig.spotB;
-        const loserSourceSpot = (matchWinner === A) ? gameConfig.spotB : gameConfig.spotA;
+        const winnerSourceSpot = (matchWinner === A) ? matchConfig.spotA : matchConfig.spotB;
+        const loserSourceSpot = (matchWinner === A) ? matchConfig.spotB : matchConfig.spotA;
         tournament.resultMap[winnerSourceSpot] = true;
         tournament.resultMap[loserSourceSpot] = false;
-        tournament.spotParticipant[gameConfig.winnerTo as number] = matchWinner;
-        tournament.spotParticipant[gameConfig.loserTo as number] = matchLoser;
+        tournament.spotParticipant[matchConfig.winnerTo as number] = matchWinner;
+        tournament.spotParticipant[matchConfig.loserTo as number] = matchLoser;
       }
 
-      var oldResult = tournament.gameResultMap[gameId];
+      var oldResult = tournament.matchResultMap[matchId];
       const startTime = oldResult && oldResult.startTime ? oldResult.startTime : Date.now()
 
-      var gameResult: GameResult = {
+      var matchResult: MatchResult = {
         isFinished,
         matchWinner,
         matchLoser,
         lagWinner,
-        gameWinners,
+        matchWinners,
         startTime,
         endTime: Date.now(),
         entryTime: Date.now(),
       }
 
-      if (!gameResult.lagWinner) delete gameResult.lagWinner;
-      if (!gameResult.matchWinner) delete gameResult.matchWinner;
-      if (!gameResult.matchLoser) delete gameResult.matchLoser;
+      if (!matchResult.lagWinner) delete matchResult.lagWinner;
+      if (!matchResult.matchWinner) delete matchResult.matchWinner;
+      if (!matchResult.matchLoser) delete matchResult.matchLoser;
 
-      console.log('setting gameResult:', gameResult);
-      console.log('gameId:', gameId);
+      console.log('setting matchResult:', matchResult);
+      console.log('matchId:', matchId);
 
-      tournament.gameResultMap[gameId] = gameResult;
+      tournament.matchResultMap[matchId] = matchResult;
 
       //--------------------------------------------------------------------------------
-      // if the game we just set the result for is the playoff game
-      // (ifAWinsSkipGame is set) and A won, then we can skip this game.  To do that
-      // we set the gameResult as if A won again and recursively call this function
-      // to make it appear as if they played the game and A won.  Then we just alter
-      // that game result to show that B was really a BYE.  This should put everyone
+      // if the match we just set the result for is the playoff match
+      // (ifAWinsSkipMatch is set) and A won, then we can skip this match.  To do that
+      // we set the matchResult as if A won again and recursively call this function
+      // to make it appear as if they played the match and A won.  Then we just alter
+      // that match result to show that B was really a BYE.  This should put everyone
       // in the correct spots
       //--------------------------------------------------------------------------------
-      if (gameConfig.ifAWinsSkipGame as number >= 0 && matchWinner === A) {
-        // set game result as if A won again
-        const skippedGameId = gameConfig.ifAWinsSkipGame as number;
-        tournament = this.setGameResult(skippedGameId, {matchWinner, gameWinners: [], lagWinner: undefined}, tournament);
+      if (matchConfig.ifAWinsSkipMatch as number >= 0 && matchWinner === A) {
+        // set match result as if A won again
+        const skippedMatchId = matchConfig.ifAWinsSkipMatch as number;
+        tournament = this.setMatchResult(skippedMatchId, {matchWinner, matchWinners: [], lagWinner: undefined}, tournament);
         
-        // change person at spotB of skipped game to 'NOT NEEDED'
+        // change person at spotB of skipped match to 'NOT NEEDED'
         const notNeededId = this.getNotNeededParticipant().id as number;
-        tournament.spotParticipant[gameConfig.loserTo as number] = notNeededId;
-        tournament.gameResultMap[skippedGameId].skipped = true;
-        tournament.gameResultMap[skippedGameId].matchWinner = notNeededId;
+        tournament.spotParticipant[matchConfig.loserTo as number] = notNeededId;
+        tournament.matchResultMap[skippedMatchId].skipped = true;
+        tournament.matchResultMap[skippedMatchId].matchWinner = notNeededId;
       }
 
       return tournament;
     }
 
     // OLD method - deprecated and doesn't work
-    declareWinner(gameId: number, winnerId: number): Tournament {
+    declareWinner(matchId: number, winnerId: number): Tournament {
       const tournament = this.cloneTournament();
-      const gameConfig = this.config.matches[gameId];
-      const info = this.getParticipant(tournament.spotParticipant[gameConfig.spotA]).id === winnerId ? {
-        winnerSourceSpot: gameConfig.spotA,
-        loserSourceSpot: gameConfig.spotB,
-        winner: tournament.spotParticipant[gameConfig.spotA],
-        loser: tournament.spotParticipant[gameConfig.spotB],
+      const matchConfig = this.config.matches[matchId];
+      const info = this.getParticipant(tournament.spotParticipant[matchConfig.spotA]).id === winnerId ? {
+        winnerSourceSpot: matchConfig.spotA,
+        loserSourceSpot: matchConfig.spotB,
+        winner: tournament.spotParticipant[matchConfig.spotA],
+        loser: tournament.spotParticipant[matchConfig.spotB],
       } : {
-        winnerSourceSpot: gameConfig.spotB,
-        loserSourceSpot: gameConfig.spotA,
-        winner: tournament.spotParticipant[gameConfig.spotB],
-        loser: tournament.spotParticipant[gameConfig.spotA],
+        winnerSourceSpot: matchConfig.spotB,
+        loserSourceSpot: matchConfig.spotA,
+        winner: tournament.spotParticipant[matchConfig.spotB],
+        loser: tournament.spotParticipant[matchConfig.spotA],
       }
 
-      var gameResult: GameResult = {
+      var matchResult: MatchResult = {
         isFinished: true,
         matchWinner: info.winner,
         matchLoser: info.loser,
         lagWinner: info.winner,
-        gameWinners: [info.winner, info.loser, info.winner],
+        matchWinners: [info.winner, info.loser, info.winner],
         startTime: Date.now() - 20 * 60 * 1000,
         endTime: Date.now(),
         entryTime: Date.now()
       }
 
-      tournament.gameResultMap[gameId] = gameResult;
+      tournament.matchResultMap[matchId] = matchResult;
       tournament.resultMap[info.winnerSourceSpot] = true;
       tournament.resultMap[info.loserSourceSpot] = false;
-      tournament.spotParticipant[gameConfig.winnerTo as number] = info.winner;
-      tournament.spotParticipant[gameConfig.loserTo as number] = info.loser;
+      tournament.spotParticipant[matchConfig.winnerTo as number] = info.winner;
+      tournament.spotParticipant[matchConfig.loserTo as number] = info.loser;
       return tournament;
     }
 
-    getGameResultForSpot(spotIndex: number) : GameResult | null {
+    getMatchResultForSpot(spotIndex: number) : MatchResult | null {
       return null;
     }
 
-    getUpcomingGames() {
-      const games = this.getGames(true).slice(0, 5);
-      const game = games[0];
+    getUpcomingMatches() {
+      const matches = this.getMatches(true).slice(0, 5);
+      const match = matches[0];
     }
 
     /**
      * Get all possible players that can go in a spot.  If spot has a player, use
-     * that.  Otherwise parse unplayed games and add to a list.
+     * that.  Otherwise parse unplayed matches and add to a list.
      */
     generatePossiblePlayers(): any[] {
       const mapped = this.config.spots.map((spot, index) => {
@@ -260,7 +260,7 @@ export class TournamentViewModel {
           result.possible = [];
         }
       });
-      this.getGames(true).forEach(game => {
+      this.getMatches(true).forEach(match => {
       })
       return []; // TODO: finish this?
     }
@@ -279,13 +279,13 @@ export class TournamentViewModel {
       n.timeSlots = n.timeSlots.map(x => ({...x}));
       n.spotParticipant = {...n.spotParticipant};
       n.resultMap = {...n.resultMap};
-      n.gameResultMap = {...n.gameResultMap};
-      Object.keys(n.gameResultMap).forEach(key => {
+      n.matchResultMap = {...n.matchResultMap};
+      Object.keys(n.matchResultMap).forEach(key => {
         const k = Number(key);
-        const map = {...n.gameResultMap[k]};
-        const winners = map.gameWinners;
+        const map = {...n.matchResultMap[k]};
+        const winners = map.matchWinners;
         if (winners) {
-          n.gameResultMap[k].gameWinners = [...winners];
+          n.matchResultMap[k].matchWinners = [...winners];
         }
       });
       return n;
@@ -338,11 +338,11 @@ export class TournamentViewModel {
         spotMap[keyNumber] = [value]
       });
 
-      // Follow unplayed games to find ids of players that might get there.
-      // Use timeSlots to get games in play order which should make sure
+      // Follow unplayed matches to find ids of players that might get there.
+      // Use timeSlots to get matches in play order which should make sure
       // there are players in the spots we're getting from
-      this.getUnfinishedGames().forEach(({gameId}) => {
-        const {spotA, spotB, winnerTo, loserTo} = config.matches[gameId];
+      this.getUnfinishedMatches().forEach(({matchId}) => {
+        const {spotA, spotB, winnerTo, loserTo} = config.matches[matchId];
         const possible = [...spotMap[spotA], ...spotMap[spotB]];
         if(winnerTo) spotMap[winnerTo] = possible;
         if(loserTo) spotMap[loserTo] = possible;
@@ -351,27 +351,27 @@ export class TournamentViewModel {
       return spotMap;
     }
 
-    getUnfinishedGamesForParticipant(participantId: number) {
+    getUnfinishedMatchesForParticipant(participantId: number) {
 
     }
 
-    getUnfinishedGames(): ({gameId: number,  utc: number, timeSlotIndex: number}[]) {
+    getUnfinishedMatches(): ({matchId: number,  utc: number, timeSlotIndex: number}[]) {
       const {tournament, config} = this;
-      return tournament.timeSlots.map(({gameId, utc}, timeSlotIndex) => {
-        if (tournament.gameResultMap[gameId] && tournament.gameResultMap[gameId].isFinished) return null;
-        return {gameId, utc, timeSlotIndex};
-        //const {spotA, spotB, winnerTo, loserTo} = config.games[gameId];
+      return tournament.timeSlots.map(({matchId, utc}, timeSlotIndex) => {
+        if (tournament.matchResultMap[matchId] && tournament.matchResultMap[matchId].isFinished) return null;
+        return {matchId, utc, timeSlotIndex};
+        //const {spotA, spotB, winnerTo, loserTo} = config.matches[matchId];
         // const possible = [...spotMap[spotA], ...spotMap[spotB]];
         // if(winnerTo) spotMap[winnerTo] = possible;
         // if(loserTo) spotMap[loserTo] = possible;
-      }).filter(x => x != null) as {gameId: number,  utc: number, timeSlotIndex: number}[];
+      }).filter(x => x != null) as {matchId: number,  utc: number, timeSlotIndex: number}[];
     }
 
     getParticipantViewModels() {
-      const {participants, gameResultMap, spotParticipant, timeSlots} = this.tournament;
+      const {participants, matchResultMap, spotParticipant, timeSlots} = this.tournament;
       const results = participants.map((x, index) => ({...x, index})).filter(x => !x.hidden).map(participant => {
-        // want the game results in time order where it is the winner or loser
-        // parse games to get lags, games, and matches won/lost
+        // want the match results in time order where it is the winner or loser
+        // parse matches to get lags, matches, and matches won/lost
 
         const spotsIds = Object.keys(spotParticipant).reduce((acc, key) => {
           const participantId = spotParticipant[Number(key)];
@@ -380,7 +380,7 @@ export class TournamentViewModel {
           }
           return acc;
         }, <number[]>[]);
-        const games = this.tournament.timeSlots.map(x => {
+        const matches = this.tournament.timeSlots.map(x => {
         });
       });
     }
@@ -389,12 +389,12 @@ export class TournamentViewModel {
 
 /*
 
-export interface Game {
+export interface Match {
   isFinished?: boolean;
   matchWinner?: number;
   matchLoser?: number;
   lagWinner?: number, // who won the lag (if we want to track)
-  gameWinners?: []; // IDs for winner of each game played (if we want to track)
+  matchWinners?: []; // IDs for winner of each match played (if we want to track)
   startTime?: number;
   endTime?: number;
   entryTime?: number;

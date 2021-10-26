@@ -9,50 +9,50 @@ import { TournamentViewModel } from "../../models/tournament-view-model";
 // used for quick design to see what data I needed
 const sampleData = [
   {
-    gameId: 0,
+    matchId: 0,
     timeString: '9:00 am',
-    gameName: 'WA',
+    matchName: 'WA',
     participants1: ['Jeff Livingston'],
     participants2: ['Kade Rosa']
   },
   {
-    gameId: 1,
+    matchId: 1,
     timeString: '9:30 am',
-    gameName: 'WB',
+    matchName: 'WB',
     participants1: ['Jason Goemaat'],
     participants2: ['Brent Kolk']
   },
   {
-    gameId: 2,
+    matchId: 2,
     timeString: '10:00 am',
-    gameName: 'WC',
+    matchName: 'WC',
     participants1: ['Danny Martin'],
     participants2: ['Jack Rosa']
   },
   {
-    gameId: 3,
+    matchId: 3,
     timeString: '10:30 am',
-    gameName: 'WD',
+    matchName: 'WD',
     participants1: ['Doug Liebe'],
     participants2: ['Chris Goldenstein']
   },
   {
-    gameId: 4,
+    matchId: 4,
     timeString: '11:00 am',
-    gameName: 'WE',
+    matchName: 'WE',
     participants1: ['Tim Martin'],
     participants2: ['Kurt Berry']
   }
 ];
 
-export const getParticipantsForGameId = (vm: TournamentViewModel, gameIndex: number, winnerOrLoser: string) : string[] => {
-  const game = vm.config.matches[gameIndex];
-  let participantA = vm.getParticipant(vm.tournament.spotParticipant[game.spotA]);
-  let participantB = vm.getParticipant(vm.tournament.spotParticipant[game.spotB]);
+export const getParticipantsForMatchId = (vm: TournamentViewModel, matchIndex: number, winnerOrLoser: string) : string[] => {
+  const match = vm.config.matches[matchIndex];
+  let participantA = vm.getParticipant(vm.tournament.spotParticipant[match.spotA]);
+  let participantB = vm.getParticipant(vm.tournament.spotParticipant[match.spotB]);
   if (participantA && participantB) {
     return [`${participantA.name || 'UNKNOWN'}`, '-or-', `${participantB.name || 'UNKNOWN'}`];
   } else {
-    return [`${winnerOrLoser} of ${game.name}`];
+    return [`${winnerOrLoser} of ${match.name}`];
   }
 }
 
@@ -70,48 +70,48 @@ export const getParticipantsForSpot = (vm: TournamentViewModel, spotIndex: numbe
     return [`Seed {spotConfig.seed}`];
   }
 
-  // no participant yet, must be a game yet to be played
-  if (typeof(spotConfig.winnerOfGame) === 'number') {
-    return getParticipantsForGameId(vm, spotConfig.winnerOfGame as number, 'Winner');
-  } else if (typeof(spotConfig.loserOfGame) === 'number') {
-    return getParticipantsForGameId(vm, spotConfig.loserOfGame, 'Loser');
+  // no participant yet, must be a match yet to be played
+  if (typeof(spotConfig.winnerOfMatch) === 'number') {
+    return getParticipantsForMatchId(vm, spotConfig.winnerOfMatch as number, 'Winner');
+  } else if (typeof(spotConfig.loserOfMatch) === 'number') {
+    return getParticipantsForMatchId(vm, spotConfig.loserOfMatch, 'Loser');
   }
 
   return ['UNKONWN'];
 }
 
-export const parseForGames = (data: MyRouteData) => {
+export const parseForMatches = (data: MyRouteData) => {
   let result: any = {...data};
 
-  let games = data.vm.getGames().map((game, gameIndex) => {
-    let result: any = {...game};
+  let matches = data.vm.getMatches().map((match, matchIndex) => {
+    let result: any = {...match};
 
-    // has game been played?
-    if (game.result && game.result.isFinished) {
-      const winner = data.vm.getParticipant(game.result.matchWinner as number);
-      const loser = data.vm.getParticipant(game.result.matchLoser as number);
+    // has match been played?
+    if (match.result && match.result.isFinished) {
+      const winner = data.vm.getParticipant(match.result.matchWinner as number);
+      const loser = data.vm.getParticipant(match.result.matchLoser as number);
       result.model = {
-        gameId: gameIndex,
-        timeString: UtilService.formatTime(game.utc),
-        gameName: game.name,
+        matchId: matchIndex,
+        timeString: UtilService.formatTime(match.utc),
+        matchName: match.name,
         winnerName: winner.name,
         loserName: loser.name
       }
     } else {
       result.model = {
-        gameId: gameIndex,
-        timeString: UtilService.formatTime(game.utc),
-        gameName: game.name,
-        participants1: getParticipantsForSpot(data.vm, game.spotA),
-        participants2: getParticipantsForSpot(data.vm, game.spotB)
+        matchId: matchIndex,
+        timeString: UtilService.formatTime(match.utc),
+        matchName: match.name,
+        participants1: getParticipantsForSpot(data.vm, match.spotA),
+        participants2: getParticipantsForSpot(data.vm, match.spotB)
       }
     }
     
     return result;
   });
 
-  let unplayed = games.filter(game => !(game.result && game.result.isFinished));
-  let played = games.filter(game => (game.result && game.result.isFinished)).reverse(); // reversed to show most recent first
+  let unplayed = matches.filter(match => !(match.result && match.result.isFinished));
+  let played = matches.filter(match => (match.result && match.result.isFinished)).reverse(); // reversed to show most recent first
 
   let some = unplayed.splice(0, 5);
   let more = unplayed;
@@ -119,17 +119,17 @@ export const parseForGames = (data: MyRouteData) => {
 }
 
 @Component({
-  selector: 'app-tournament-games',
-  templateUrl: './tournament-games.component.html',
-  styleUrls: ['./tournament-games.component.scss']
+  selector: 'app-tournament-matches',
+  templateUrl: './tournament-matches.component.html',
+  styleUrls: ['./tournament-matches.component.scss']
 })
-export class TournamentGamesComponent implements OnInit {
+export class TournamentMatchesComponent implements OnInit {
   data$: Observable<any>;
 
   showMore = false;
   showPlayed = false;
 
-  parseForGames = parseForGames; // for debugging in console
+  parseForMatches = parseForMatches; // for debugging in console
   getParticipantsForSpot = getParticipantsForSpot; // for debugging in console
 
   constructor(
@@ -137,11 +137,11 @@ export class TournamentGamesComponent implements OnInit {
     public service: TournamentService,
     public router: Router,
   ) {
-    (window as any).cGames = this;
+    (window as any).cMatches = this;
     this.data$ = service.getForParams(route.paramMap)
-    .pipe(map(parseForGames))
+    .pipe(map(parseForMatches))
     .pipe(tap(x => {
-      console.log('cGames:', x);
+      console.log('cMatches:', x);
       (window as any).x = x;
 
       // automatically show more if there aren't any (basically don't show link)
@@ -149,7 +149,7 @@ export class TournamentGamesComponent implements OnInit {
         this.showMore = true;
       }
 
-      // if all games have been played, show played
+      // if all matches have been played, show played
       if (x.some.length === 0) {
         this.showPlayed = true;
       }
@@ -164,8 +164,8 @@ export class TournamentGamesComponent implements OnInit {
     this.showPlayed = true;
   }
 
-  openGame(data: any, game: any) {
-    this.router.navigate(['/', 'tournaments', data.tournamentId, 'games', game.gameId]);
+  openMatch(data: any, match: any) {
+    this.router.navigate(['/', 'tournaments', data.tournamentId, 'matches', match.matchId]);
   }
 
   ngOnInit(): void {

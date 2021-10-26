@@ -8,9 +8,9 @@ So this folder has docs on what the user can do and what we need to think about.
 2. They can create/view/edit anything about the tournament
   * Setup
     * Estimated time per match
-    * Score games/matches
+    * Score matches/matches
   * Running Tournament
-    * Add/subtract/clear game wins/losses for a match
+    * Add/subtract/clear match wins/losses for a match
     * Select winner of match ()
 3. They can invite people
   * Create an invite to view

@@ -20,23 +20,23 @@ export interface Tournament {
   timeSlots: TimeSlot[];
   spotParticipant: spotParticipant; // index with spot, gives participant ID
   resultMap: ResultMap; // index with spot, tells you if they won (true), lost (false) or haven't played (undefined)
-  gameResultMap: GameResultMap;
+  matchResultMap: MatchResultMap;
 }
 
-export interface GameResult {
+export interface MatchResult {
   isFinished?: boolean;
-  skipped?: boolean; // for games where there is a BYE or not played if winner bracket winner never loses
+  skipped?: boolean; // for matches where there is a BYE or not played if winner bracket winner never loses
   matchWinner?: number;
   matchLoser?: number;
   lagWinner?: number, // who won the lag (if we want to track)
-  gameWinners?: number[]; // IDs for winner of each game played (if we want to track)
+  matchWinners?: number[]; // IDs for winner of each match played (if we want to track)
   startTime?: number;
   endTime?: number;
   entryTime?: number;
 }
 
-// Tournament.games is GameMap, game is only added when it is scored
-export type GameResultMap = Record<number, GameResult>
+// Tournament.matches is MatchMap, match is only added when it is scored
+export type MatchResultMap = Record<number, MatchResult>
 
 export interface TournamentSpot {
   playerId?: number;
@@ -50,7 +50,7 @@ export interface TournamentSpot {
 
 export interface TimeSlot {
   utc: number;
-  gameId: number;
+  matchId: number;
 }
 
 export type TournamentSpots = Record<number, TournamentSpot>;
@@ -61,7 +61,7 @@ export interface TournamentData {
 
 export const data = {
   spots: { },
-  gameMap: {},
+  matchMap: {},
   timeSlots: [
   ]
 }
@@ -71,7 +71,7 @@ export const data = {
 /* Actions:
 
 SeatPlayer(playerId, spotIndex) - puts player in spot
-DeclareWinner(gameIndex, winnerindex) - assigns winner and loser, puts them into the new spots automatically
+DeclareWinner(matchIndex, winnerindex) - assigns winner and loser, puts them into the new spots automatically
 
 Display:
 

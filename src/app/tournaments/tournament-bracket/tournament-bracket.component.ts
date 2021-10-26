@@ -65,14 +65,14 @@ export class TournamentBracketComponent implements OnInit {
     return '';
   }
 
-  getGameString(data: MyRouteData, index: number): string | null{
+  getMatchString(data: MyRouteData, index: number): string | null{
     const config = data.config as TournamentConfig;
     for (let i = 0; i < config.matches.length; i++) {
-      const game = config.matches[i];
-      if (game.spotA == index) {
+      const match = config.matches[i];
+      if (match.spotA == index) {
         return `A${i}`;
       }
-      if (game.spotB == index) {
+      if (match.spotB == index) {
         return `B${i}`;
       }
     }
@@ -83,7 +83,7 @@ export class TournamentBracketComponent implements OnInit {
     // need 'isWinner' or 'isLoser' to add class to element
     // need displayText (name (i.e. 'Jeff Livingston'), time (i.e. '9:00 am'), source (i.e. loser of WA'))
     // need isItalic (if not name like 'Jeff Livingston' (i.e. for time or source, or place ))
-    // hintText (if is where winner goes, display game name)
+    // hintText (if is where winner goes, display match name)
 
     // const infos: any[] = [];
 
@@ -94,28 +94,28 @@ export class TournamentBracketComponent implements OnInit {
     // }
   }
 
-  navigateToGame(tournamentId: string, gameId: number) {
-    this.router.navigate(['tournaments', tournamentId, 'games', gameId]);
+  navigateToMatch(tournamentId: string, matchId: number) {
+    this.router.navigate(['tournaments', tournamentId, 'matches', matchId]);
   }
 
   onSpotClick(data: MyRouteData, spot: SpotModel) {
     const tournamentId = data.tournamentId;
-    const {loserOfGame, winnerOfGame} = data.config.spots[spot.index];
-    if (typeof(loserOfGame) === 'number') {
-      this.navigateToGame(tournamentId, loserOfGame);
+    const {loserOfMatch, winnerOfMatch} = data.config.spots[spot.index];
+    if (typeof(loserOfMatch) === 'number') {
+      this.navigateToMatch(tournamentId, loserOfMatch);
       return;
     }
 
-    if (typeof(winnerOfGame) === 'number') {
-      this.navigateToGame(tournamentId, winnerOfGame);
+    if (typeof(winnerOfMatch) === 'number') {
+      this.navigateToMatch(tournamentId, winnerOfMatch);
       return;
     }
 
-    // spot doesn't have loser or winner, must be a seed spot...  find the game
+    // spot doesn't have loser or winner, must be a seed spot...  find the match
     // they play in
-    let gameId = data.config.matches.findIndex(game => game.spotA === spot.index || game.spotB === spot.index);
-    if (gameId >= 0) {
-      this.navigateToGame(tournamentId, gameId);
+    let matchId = data.config.matches.findIndex(match => match.spotA === spot.index || match.spotB === spot.index);
+    if (matchId >= 0) {
+      this.navigateToMatch(tournamentId, matchId);
     }
 
     // ----- old stuff for when I was using a dialog -----

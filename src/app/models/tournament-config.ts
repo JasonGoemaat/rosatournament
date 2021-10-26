@@ -10,8 +10,8 @@ export interface SpotConfig {
   gridArea: string;
   borders: BorderConfig;
   seed?: number;
-  winnerOfGame?: number;
-  loserOfGame?: number;
+  winnerOfMatch?: number;
+  loserOfMatch?: number;
   place?: number;
   copySpot?: number; // for placings at end, copy name from spot as winner
   hidden?: boolean; // special
@@ -20,11 +20,11 @@ export interface SpotConfig {
 export interface MatchConfig {
   spotA: number;
   spotB: number;
-  winnerTo?: number; // spot, this is also where game winner is displayed and game time
+  winnerTo?: number; // spot, this is also where match winner is displayed and match time
   loserTo?: number;
   name?: string;
   description?: string;
-  ifAWinsSkipGame?: number; // if spotA wins and this is set, finish this game using A and BYE
+  ifAWinsSkipMatch?: number; // if spotA wins and this is set, finish this match using A and BYE
 }
 
 export interface TournamentTextConfig {
@@ -122,7 +122,7 @@ const createDefaultConfig = () : TournamentConfig => {
       {gridArea: '24/11/span 8/span 2', borders: BorderConfig.Bottom},
       {gridArea: '32/11/span 24/span 2', borders: BorderConfig.BottomRight},
 
-      // championship game
+      // championship match
       {gridArea: '2/11/span 16/span 4', borders: BorderConfig.Bottom},
       {gridArea: '18/13/span 26/span 2', borders: BorderConfig.BottomRight},
 
@@ -165,7 +165,7 @@ const createDefaultConfig = () : TournamentConfig => {
       {gridArea: '35/7/span 2/span 2', text: '5th-6th'},
     ],
     matches: [
-      // winner bracket round 1 (games 0-7)
+      // winner bracket round 1 (matches 0-7)
       { spotA: 0, spotB: 1, winnerTo: 24, loserTo: 16, name: 'WA' },
       { spotA: 2, spotB: 3, winnerTo: 25, loserTo: 17, name: 'WB' },
       { spotA: 4, spotB: 5, winnerTo: 26, loserTo: 18, name: 'WC' },
@@ -175,33 +175,33 @@ const createDefaultConfig = () : TournamentConfig => {
       { spotA: 12, spotB: 13, winnerTo: 30, loserTo: 22, name: 'WG' },
       { spotA: 14, spotB: 15, winnerTo: 31, loserTo: 23, name: 'WH' },
 
-      // loser bracket round 1 (games 8-11)
+      // loser bracket round 1 (matches 8-11)
       { spotA: 16, spotB: 17, winnerTo: 33, name: 'LA' },
       { spotA: 18, spotB: 19, winnerTo: 35, name: 'LB' },
       { spotA: 20, spotB: 21, winnerTo: 37, name: 'LC' },
       { spotA: 22, spotB: 23, winnerTo: 39, name: 'LD' },
 
-      // winner bracket round 2 (games 12-15)
+      // winner bracket round 2 (matches 12-15)
       { spotA: 24, spotB: 25, winnerTo: 40, loserTo: 36, name: 'WI', },
       { spotA: 26, spotB: 27, winnerTo: 41, loserTo: 38, name: 'WJ' },
       { spotA: 28, spotB: 29, winnerTo: 42, loserTo: 32, name: 'WK' },
       { spotA: 30, spotB: 31, winnerTo: 43, loserTo: 34, name: 'WL' },
 
-      // loser bracket round 2 (games 16-19)
+      // loser bracket round 2 (matches 16-19)
       { spotA: 32, spotB: 33, winnerTo: 44, name: 'LE' },
       { spotA: 34, spotB: 35, winnerTo: 45, name: 'LF' },
       { spotA: 36, spotB: 37, winnerTo: 46, name: 'LG' },
       { spotA: 38, spotB: 39, winnerTo: 47, name: 'LH' },
 
-      // winner bracket round 3 (games 20-21)
+      // winner bracket round 3 (matches 20-21)
       { spotA: 40, spotB: 41, winnerTo: 52, loserTo: 48, name: 'WM' },
       { spotA: 42, spotB: 43, winnerTo: 53, loserTo: 51, name: 'WN' },
 
-      // loser bracket round 3 (games 22-23) (losers go to 7th and 8th place)
+      // loser bracket round 3 (matches 22-23) (losers go to 7th and 8th place)
       { spotA: 44, spotB: 45, winnerTo: 49, loserTo: 71, name: 'LI' },
       { spotA: 46, spotB: 47, winnerTo: 50, loserTo: 72, name: 'LJ' },
 
-      // loser bracket round 4 (games 24-25) (losers go to 5th and 6th place)
+      // loser bracket round 4 (matches 24-25) (losers go to 5th and 6th place)
       { spotA: 48, spotB: 49, winnerTo: 54, loserTo: 67, name: 'LK' },
       { spotA: 50, spotB: 51, winnerTo: 55, loserTo: 68, name: 'LL' },
 
@@ -215,10 +215,10 @@ const createDefaultConfig = () : TournamentConfig => {
       { spotA: 56, spotB: 57, winnerTo: 59, loserTo: 65, name: 'LP' },
 
       // finals - winners of winner bracket and lose bracket
-      { spotA: 58, spotB: 59, winnerTo: 60, loserTo: 61, name: 'WP', ifAWinsSkipGame: 30 }, // skip game 30 if A wins (winner never loses a game)
+      { spotA: 58, spotB: 59, winnerTo: 60, loserTo: 61, name: 'WP', ifAWinsSkipMatch: 30 }, // skip match 30 if A wins (winner never loses a match)
 
       // final playoff (if needed because loser bracket champion beat winner bracket champion, if
-      // not needed just select the winner - this is game 30)
+      // not needed just select the winner - this is match 30)
       { spotA: 60, spotB: 61, winnerTo: 62, loserTo: 64, name: 'LQ' },
 
       // playoff to determine 5th and 6th
@@ -229,12 +229,12 @@ const createDefaultConfig = () : TournamentConfig => {
     ]
   };
 
-  config.matches.forEach((game, i) => {
-    if (game.loserTo != undefined) {
-      config.spots[game.loserTo].loserOfGame = i;
+  config.matches.forEach((match, i) => {
+    if (match.loserTo != undefined) {
+      config.spots[match.loserTo].loserOfMatch = i;
     }
-    if (game.winnerTo != undefined) {
-      config.spots[game.winnerTo].winnerOfGame = i;
+    if (match.winnerTo != undefined) {
+      config.spots[match.winnerTo].winnerOfMatch = i;
     }
   })
   return config;

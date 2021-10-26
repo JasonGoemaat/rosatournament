@@ -1,23 +1,23 @@
 <div *ngIf="data$ | async as data; else loading">
   <h2 *ngIf="data.some.length === 0" style="margin-left: 20px">
-    All games have finished!
+    All matches have finished!
   </h2>
 
   <ol>
     <!-- some -->
-    <li *ngFor="let game of data.some" class="game" (click)="openGame(data, game)">
+    <li *ngFor="let match of data.some" class="match" (click)="openMatch(data, match)">
       <div class="header">
-        <div class="time">{{game.model.timeString}} - Game {{game.model.gameName}}</div>
+        <div class="time">{{match.model.timeString}} - Match {{match.model.matchName}}</div>
       </div>
       <div class="vs">
         <div class="participants">
-          <div *ngFor="let name of game.model.participants1">
+          <div *ngFor="let name of match.model.participants1">
             {{name}}
           </div>
         </div>
         <div class="separator" style="margin-left: 10px;">vs.</div>
         <div class="participants">
-          <div *ngFor="let name of game.model.participants2">
+          <div *ngFor="let name of match.model.participants2">
             {{name}}
           </div>
         </div>
@@ -29,19 +29,19 @@
     </li>
 
     <!-- more -->
-    <li *ngFor="let game of showMore ? data.more : []" class="game" (click)="openGame(data, game)">
+    <li *ngFor="let match of showMore ? data.more : []" class="match" (click)="openMatch(data, match)">
       <div class="header">
-        <div class="time">{{game.model.timeString}} - Game {{game.model.gameName}}</div>
+        <div class="time">{{match.model.timeString}} - Match {{match.model.matchName}}</div>
       </div>
       <div class="vs">
         <div class="participants">
-          <div *ngFor="let name of game.model.participants1">
+          <div *ngFor="let name of match.model.participants1">
             {{name}}
           </div>
         </div>
         <div class="separator" style="margin-left: 10px;">vs.</div>
         <div class="participants">
-          <div *ngFor="let name of game.model.participants2">
+          <div *ngFor="let name of match.model.participants2">
             {{name}}
           </div>
         </div>
@@ -53,14 +53,14 @@
     </li>
 
     <!-- played -->
-    <li *ngFor="let game of showPlayed ? data.played : []" class="game finished" (click)="openGame(data, game)">
+    <li *ngFor="let match of showPlayed ? data.played : []" class="match finished" (click)="openMatch(data, match)">
       <div class="header">
-        <div class="time">{{game.model.timeString}} - Game {{game.model.gameName}}</div>
+        <div class="time">{{match.model.timeString}} - Match {{match.model.matchName}}</div>
       </div>
       <div class="vs">
-        <span>{{game.model.winnerName}}</span>
+        <span>{{match.model.winnerName}}</span>
         <em>won vs.</em>
-        <span>{{game.model.loserName}}</span>
+        <span>{{match.model.loserName}}</span>
       </div>
     </li>
   </ol>

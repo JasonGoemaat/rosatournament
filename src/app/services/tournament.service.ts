@@ -15,7 +15,7 @@ export interface MyRouteData {
   config: TournamentConfig,
   tournament: Tournament,
   vm: TournamentViewModel,
-  gameId: number | null,
+  matchId: number | null,
   participantId: number | null,
   tournamentId: string,
 }
@@ -75,7 +75,7 @@ export class TournamentService {
           console.log('getForParams:', params);
           return {
             tournamentId: `${params.get('tournamentId')}`,
-            gameId: params.has('gameId') ? Number(params.get('gameId')) : undefined,
+            matchId: params.has('matchId') ? Number(params.get('matchId')) : undefined,
             participantId: params.has('participantId') ? Number(params.get('participantId')) : undefined,
           };
         })
@@ -88,7 +88,7 @@ export class TournamentService {
       .pipe(
         map(([result, info]) => {
           return <MyRouteData>{
-            gameId: result.gameId,
+            matchId: result.matchId,
             participantId: result.participantId,
             ...info
           }

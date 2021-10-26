@@ -32,13 +32,13 @@ import { TodosState } from "./shared/todos.state";
 
 import { initializeApp } from "firebase/app";
 import { TournamentMenuComponent } from './tournaments/tournament-menu/tournament-menu.component';
-import { TournamentGamesComponent } from './tournaments/tournament-games/tournament-games.component';
+import { TournamentMatchesComponent } from './tournaments/tournament-matches/tournament-matches.component';
 import { TournamentParticipantsComponent } from './tournaments/tournament-participants/tournament-participants.component';
 import { TournamentParticipantComponent } from './tournaments/tournament-participant/tournament-participant.component';
-import { TournamentGameComponent } from './tournaments/tournament-game/tournament-game.component';
+import { TournamentMatchComponent } from './tournaments/tournament-match/tournament-match.component';
 import { TournamentBracketComponent } from './tournaments/tournament-bracket/tournament-bracket.component';
 import { LoadingComponent } from './loading/loading.component';
-import { GameTimeSlotDialogComponent } from './tournaments/tournament-game/game-time-slot-dialog/game-time-slot-dialog.component';
+import { MatchTimeSlotDialogComponent } from './tournaments/tournament-match/match-time-slot-dialog/match-time-slot-dialog.component';
 import { TournamentSpotComponent } from './tournaments/tournament-spot/tournament-spot.component';
 
 const firebaseConfig = {
@@ -72,12 +72,12 @@ export const NGXS_MODULE = NgxsModule.forRoot(
     SampleNavComponent,
     TournamentBracketComponent,
     TournamentMenuComponent,
-    TournamentGamesComponent,
-    TournamentGameComponent,
+    TournamentMatchesComponent,
+    TournamentMatchComponent,
     TournamentParticipantsComponent,
     TournamentParticipantComponent,
     LoadingComponent,
-    GameTimeSlotDialogComponent,
+    MatchTimeSlotDialogComponent,
     TournamentSpotComponent,
   ],
   imports: [

@@ -16,27 +16,27 @@ export const sampleParticipant = {
   id: 9,
   seed: 9,
 
-  currentGame: {
-    config: { // TournamentGameConfig.games[1]
+  currentMatch: {
+    config: { // TournamentMatchConfig.matches[1]
       spotA: 2, spotB: 3, winnerTo: 25, loserTo: 17, name: 'WB',
     },
-    timeSlot: { // Tournament.timeSlots[1] (where gameId is 1)
-      gameId: 1, utc: 1635604200000
+    timeSlot: { // Tournament.timeSlots[1] (where matchId is 1)
+      matchId: 1, utc: 1635604200000
     }
   },
 
-  // list of all possible upcoming games
-  upcomingGames: [
+  // list of all possible upcoming matches
+  upcomingMatches: [
   ],
 
-  // list of games that have finished already
-  finishedGames: [
+  // list of matches that have finished already
+  finishedMatches: [
     {
-      config: { // TournamentGameConfig.games[1]
+      config: { // TournamentMatchConfig.matches[1]
         spotA: 2, spotB: 3, winnerTo: 25, loserTo: 17, name: 'WB',
       },
-      timeSlot: { // Tournament.timeSlots[1] (where gameId is 1)
-        gameId: 1, utc: 1635604200000
+      timeSlot: { // Tournament.timeSlots[1] (where matchId is 1)
+        matchId: 1, utc: 1635604200000
       },
       result: {
       },

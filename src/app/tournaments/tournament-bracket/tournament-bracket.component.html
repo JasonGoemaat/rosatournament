@@ -6,7 +6,14 @@
     [style.border-right]="getBorderRight(spot.config)"
     [hidden]="spot.config.hidden"
   >
-    <div (click)="onSpotClick(data, spot)" class="name" [ngClass]="{ winner: spot.isWinner, loser: spot.isLoser, bold: spot.isBold, italic: spot.isItalic }">{{spot.text}}</div>
+    <div
+      (click)="onSpotClick(data, spot)"
+      class="name"
+      [ngClass]="{ winner: spot.isWinner, loser: spot.isLoser, bold: spot.isBold, italic: spot.isItalic }"
+      matTooltip="{{getTooltip(data, spot)}}"
+      [matTooltipClass]="{ 'multiline-tooltip': true }">
+      {{spot.text}}
+    </div>
     <div class="text">{{spot.gameName}}</div>
   </div>
 

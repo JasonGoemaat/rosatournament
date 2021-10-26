@@ -303,6 +303,36 @@ export class TournamentViewModel {
       return result;
     }
 
+    /**
+     * Get array of player ids that might be in this spot.
+     * 
+     * Sample usage: data.vm.getPossiblePlayers()[47].map(x => data.vm.getParticipant(x).name)
+     */
+    getPossiblePlayers() {
+      const spotMap: Record<number, number[]> = {};
+
+      // fill in spots where we know the player
+      const {tournament, config} = this;
+      Object.keys(tournament.participantMap).forEach((key) => {
+        const keyNumber = Number(key)
+        const value = tournament.participantMap[keyNumber];
+        spotMap[keyNumber] = [value]
+      });
+
+      // Follow unplayed games to find ids of players that might get there.
+      // Use timeSlots to get games in play order which should make sure
+      // there are players in the spots we're getting from
+      tournament.timeSlots.forEach(({gameId}) => {
+        if (tournament.gameResultMap[gameId]) return;
+        const {spotA, spotB, winnerTo, loserTo} = config.games[gameId];
+        const possible = [...spotMap[spotA], ...spotMap[spotB]];
+        if(winnerTo) spotMap[winnerTo] = possible;
+        if(loserTo) spotMap[loserTo] = possible;
+      });
+
+      return spotMap;
+    }
+
     getParticipantViewModels() {
       const {participants, gameResultMap, participantMap, timeSlots} = this.tournament;
       const results = participants.map((x, index) => ({...x, index})).filter(x => !x.hidden).map(participant => {

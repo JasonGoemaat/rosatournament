@@ -13,6 +13,12 @@ export interface SpotViewModel {
   config: TournamentSpotConfig;
 }
 
+export interface ParticipantViewModel {
+  index: number,
+  id: number,
+  name: string,
+}
+
 export class TournamentViewModel {
     public spots: SpotViewModel[];
 
@@ -296,6 +302,25 @@ export class TournamentViewModel {
       }
       return result;
     }
+
+    getParticipantViewModels() {
+      const {participants, gameResultMap, participantMap, timeSlots} = this.tournament;
+      const results = participants.map((x, index) => ({...x, index})).filter(x => !x.hidden).map(participant => {
+        // want the game results in time order where it is the winner or loser
+        // parse games to get lags, games, and matches won/lost
+
+        const spotsIds = Object.keys(participantMap).reduce((acc, key) => {
+          const participantId = participantMap[Number(key)];
+          if (participantId === participant.id) {
+            acc.push(Number(key));
+          }
+          return acc;
+        }, <number[]>[]);
+        const games = this.tournament.timeSlots.map(x => {
+        });
+      });
+    }
+
 }
 
 /*

@@ -52,6 +52,7 @@ export interface MatchModel {
   participantsAIds: Set<number>,
   participantsBIds: Set<number>,
   matchResult: MatchResult,
+  isFinished: boolean,
 }
 
 export class TournamentViewModel {
@@ -242,6 +243,7 @@ export class TournamentViewModel {
           matchResult: this.tournament.matchResultMap[ts.matchIndex],
           participantsAIds, // Set<number>
           participantsBIds, // Set<number>
+          isFinished: !!(this.tournament.matchResultMap[ts.matchIndex]?.isFinished),
         }
       });
       

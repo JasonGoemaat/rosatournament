@@ -57,13 +57,13 @@ export class TournamentMatchComponent implements OnInit {
       if (x.model.result) {
         this.lagWinner = `${x.model.result.lagWinner}`;
         this.matchWinner = `${x.model.result.matchWinner}`;
-        const [a, b, c] = x.model.result.matchWinners as number[];
+        const [a, b, c] = x.model.result.gameWinners as number[];
         this.match1Winner = `${a}`;
         this.match2Winner = `${b}`;
         this.match3Winner = `${c}`;
       }
       console.log('cMatch:', x);
-      (window as any).g = x;
+      (window as any).x = x;
     }))
   }
 
@@ -87,7 +87,7 @@ export class TournamentMatchComponent implements OnInit {
     const newTournament = vm.setMatchResult(data.matchIndex, {
       lagWinner: numberFor(this.lagWinner),
       matchWinner: numberFor(this.matchWinner),
-      matchWinners: [numberFor(this.match1Winner), numberFor(this.match2Winner), numberFor(this.match3Winner)].map(numberFor).filter(x => typeof(x) === 'number') as number[]
+      gameWinners: [numberFor(this.match1Winner), numberFor(this.match2Winner), numberFor(this.match3Winner)].map(numberFor).filter(x => typeof(x) === 'number') as number[]
     })
 
     this.service.setTournament(data.tournamentId, newTournament)

@@ -9,6 +9,10 @@ mat-card {
     margin-bottom: 10px;
     padding: 5px;
 
+    &.finished {
+        background-color: white;
+    }
+
     mat-card-title {
         font-size: 18px;
         margin-bottom: 4px;
@@ -16,5 +20,17 @@ mat-card {
 
     mat-card-subtitle {
         margin-bottom: 5px;
+    }
+
+    mat-card-content {
+        &.placed {
+            font-weight: bold;
+            color: green;
+            text-align: center;
+        }
+
+        &.notPlaced {
+            text-align: center;
+        }
     }
 }

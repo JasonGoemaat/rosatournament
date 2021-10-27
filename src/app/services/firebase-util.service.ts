@@ -5,9 +5,9 @@ import { FirebaseFunctionsService } from './firebase-functions.service';
 
 export interface AuthInfo {
   isAuthReceived: boolean;
-  photoURL: string | null | undefined;
-  name: string | null | undefined;
-  uid: string | undefined;
+  photoURL?: string | null;
+  name?: string | null;
+  uid?: string;
 }
 
 @Injectable({
@@ -22,9 +22,9 @@ export class FirebaseUtilService {
     this.ff.getAuth().onAuthStateChanged((user: User | null) => {
       this.auth.next({ 
         isAuthReceived: true,
-        photoURL: user === null ? undefined : user.photoURL,
-        name: user === null ? undefined : user.displayName,
-        uid: user === null ? undefined : user.uid
+        photoURL: user?.photoURL,
+        name: user?.displayName,
+        uid: user?.uid
       });
     })
   }

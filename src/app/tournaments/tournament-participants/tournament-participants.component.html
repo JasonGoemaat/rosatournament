@@ -1,38 +1,21 @@
-<p>tournament-participants works!</p>
 
-<div *ngIf="mine | async as mine; else loading">
-  <ol>
-    <li *ngFor="let participant of mine.participants">{{participant.name}}</li>
-  </ol>
+<h2 style="width: 320px; text-align: center">Participants</h2>
+
+<div *ngIf="data$ | async as data; else loading">
+  <mat-card *ngFor="let participant of data.participants"
+      (click)="onClickParticipant(data, participant)"
+      [ngClass]="{finished: participant.isFinished}">
+    <mat-card-title>{{participant.name}}<span *ngIf="participant.record" style="float: right; font-size: 0.75em">{{participant.record}}</span></mat-card-title>
+    <mat-card-subtitle *ngIf="participant.subtitle !== null">
+      {{participant.subtitle}}
+    </mat-card-subtitle>
+    <mat-card-content *ngIf="participant.content !== null"
+      [ngClass]="{placed: participant.isPlaced, notPlaced: participant.isNotPlaced}">
+      {{participant.content}}
+    </mat-card-content>
+  </mat-card>
 </div>
 
-<h2>Sample Row</h2>
-
-<mat-card>
-  <mat-card-title>Bill Polka</mat-card-title>
-  <mat-card-subtitle>8th Place</mat-card-subtitle>
-</mat-card>
-
-<mat-card>
-  <mat-card-title>Jason Goemaat</mat-card-title>
-  <mat-card-subtitle>Matches: 4-1, Games: 9-3<br/>Next Match: 09:30 am</mat-card-subtitle>
-</mat-card>
-
-<mat-card>
-  <mat-card-title>Jason Goemaat</mat-card-title>
-  <mat-card-content>Record: 4-1, Games: 9-3<br/>Next Match: 09:30 am vs. Brent Kolk</mat-card-content>
-</mat-card>
-
-<mat-card>
-  <mat-card-title>Jason Goemaat</mat-card-title>
-  <mat-card-content>Yet to play<br/>Next Match: 09:30 am vs. Brent Kolk</mat-card-content>
-</mat-card>
-
-<mat-card>
-  <mat-card-title>Jason Goemaat</mat-card-title>
-  <mat-card-subtitle>4-1, Games: 9-3</mat-card-subtitle>
-  <mat-card-content>Next Match: 09:30 am vs. Brent Kolk</mat-card-content>
-</mat-card>
-
-
-<ng-template #loading><h1 class="loading">Loading</h1></ng-template>
+<ng-template #loading>
+  <h1 class="loading">Loading</h1>
+</ng-template>

@@ -116,11 +116,11 @@ export const tournamentReset = {
     },
     {
       "name": "BYE",
-      "hidden": true,
+      "isHidden": true,
       "id": 17
     },
     {
-      "hidden": true,
+      "isHidden": true,
       "name": "NOT NEEDED",
       "id": 18
     }

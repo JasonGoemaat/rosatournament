@@ -7,9 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TournamentParticipantComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    (window as any).cParticipant = this;
+  }
 
   ngOnInit(): void {
   }
-
 }

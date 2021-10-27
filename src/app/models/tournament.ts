@@ -3,7 +3,7 @@ export interface Participant {
   id?: number;
   seed?: number;
   uid?: string;
-  hidden?: boolean; // for 'BYE' and 'NOT NEEDED' players
+  isHidden?: boolean; // for 'BYE' and 'NOT NEEDED' players
 }
 
 export type spotParticipant = Record<number, number>
@@ -11,9 +11,9 @@ export type spotParticipant = Record<number, number>
 export type ResultMap = Record<number, boolean>
 
 export interface Tournament {
-  ownerUid: string | undefined;
-  ownerName: string | undefined;
-  name: string | undefined;
+  ownerUid?: string;
+  ownerName?: string;
+  name?: string;
   participants: Participant[];
   isPublic: boolean;
   scheduleMinutes: number;
@@ -29,7 +29,7 @@ export interface MatchResult {
   matchWinner?: number;
   matchLoser?: number;
   lagWinner?: number, // who won the lag (if we want to track)
-  matchWinners?: number[]; // IDs for winner of each match played (if we want to track)
+  gameWinners?: number[]; // IDs for winner of each match played (if we want to track)
   startTime?: number;
   endTime?: number;
   entryTime?: number;

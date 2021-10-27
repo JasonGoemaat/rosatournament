@@ -1,1 +1,15 @@
-<p>tournament-participant works!</p>
+<div *ngIf="data$ | async as data; else loading">
+  <h2>{{data.participant.name}} (id: {{data.participantId}})</h2>
+
+  <div *ngIf="data.gridModel" class="my-grid" [ngStyle]="data.gridStyle">
+    <div class="grid-cell"
+      *ngFor="let cell of data.gridModel.gridElements"
+      [ngStyle]="{ 'gridArea': cell.gridArea }">
+      <span *ngFor="let line of cell.lines">{{line}}</span>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>

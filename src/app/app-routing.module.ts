@@ -38,7 +38,7 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'participants/:playerId',
+        path: 'participants/:participantId',
         component: TournamentParticipantComponent
       },
     ]

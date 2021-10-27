@@ -1,0 +1,13 @@
+div.my-grid {
+  box-sizing: border-box;
+  display: grid;
+  
+  div.grid-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px black;
+    box-sizing: border-box;
+  }
+}

@@ -1,10 +1,20 @@
 @use "../../../_variables" as *;
 
 mat-card {
-    margin-bottom: 10px;
     width: 300px;
     user-select: none;
     cursor: pointer;
     background-color: $card-background;
     margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+
+    mat-card-title {
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+
+    mat-card-subtitle {
+        margin-bottom: 5px;
+    }
 }

@@ -270,6 +270,8 @@ export class TournamentViewModel {
     deleteMatchResult(matchIndex: number, useTournament?: Tournament) : Tournament {
       const tournament = useTournament ? useTournament : this.tournament;
       const config = this.config.matches[matchIndex];
+      delete tournament.resultMap[config.spotA];
+      delete tournament.resultMap[config.spotB];
       if (config.winnerTo) delete tournament.spotParticipant[config.winnerTo];
       if (config.loserTo) delete tournament.spotParticipant[config.loserTo];
       delete tournament.matchResultMap[matchIndex];

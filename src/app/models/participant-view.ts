@@ -20,8 +20,8 @@ export const sampleParticipant = {
     config: { // TournamentMatchConfig.matches[1]
       spotA: 2, spotB: 3, winnerTo: 25, loserTo: 17, name: 'WB',
     },
-    timeSlot: { // Tournament.timeSlots[1] (where matchId is 1)
-      matchId: 1, utc: 1635604200000
+    timeSlot: { // Tournament.timeSlots[1] (where matchIndex is 1)
+      matchIndex: 1, utc: 1635604200000
     }
   },
 
@@ -35,8 +35,8 @@ export const sampleParticipant = {
       config: { // TournamentMatchConfig.matches[1]
         spotA: 2, spotB: 3, winnerTo: 25, loserTo: 17, name: 'WB',
       },
-      timeSlot: { // Tournament.timeSlots[1] (where matchId is 1)
-        matchId: 1, utc: 1635604200000
+      timeSlot: { // Tournament.timeSlots[1] (where matchIndex is 1)
+        matchIndex: 1, utc: 1635604200000
       },
       result: {
       },

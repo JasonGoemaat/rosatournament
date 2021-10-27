@@ -6,7 +6,7 @@ import { UtilService } from 'src/app/services/util.service';
 
 export interface MatchTimeSlotDialogData {
   timeSlots: TimeSlot[],
-  matchId: number,
+  matchIndex: number,
   newTimeSlot: number,
   currentTimeSlot: number,
   vm: TournamentViewModel,
@@ -31,10 +31,10 @@ export class MatchTimeSlotDialogComponent implements OnInit {
       const result = {
         ...ts,
         timeString: UtilService.formatTime(ts.utc),
-        matchName: data.vm.config.matches[ts.matchId].name
+        matchName: data.vm.config.matches[ts.matchIndex].name
       };
 
-      if (ts.matchId === data.matchId) {
+      if (ts.matchIndex === data.matchIndex) {
         //this.currentTimeSlotIndex = `${index}`;
         this.currentTimeSlotIndex = index;
         this.currentTimeSlot = result;

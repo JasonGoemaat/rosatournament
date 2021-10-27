@@ -67,3 +67,11 @@ ol {
     }
   }
 }
+
+mat-card-content.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}

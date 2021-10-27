@@ -2,7 +2,7 @@
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '~@angular/material' as mat;
+@use "~@angular/material" as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -21,24 +21,31 @@ $tournament-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$tournament-theme: mat.define-light-theme((
-  color: (
-    primary: $tournament-primary,
-    accent: $tournament-accent,
-    warn: $tournament-warn,
+$tournament-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $tournament-primary,
+      accent: $tournament-accent,
+      warn: $tournament-warn,
+    ),
   )
-));
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($tournament-theme);
 
-
 // done with themes
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .nav-main {
   position: sticky;
@@ -65,7 +72,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     img {
       height: 30px;
     }
-  
+
     .nav-item-icon {
       display: flex;
       justify-content: center;
@@ -74,7 +81,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
       margin-right: 10px;
     }
   }
-  
+
   .nav-item-action {
     &:hover {
       background-color: $nav-background-hover;
@@ -83,12 +90,39 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 }
 
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
-mat-card {
+mat-card.mat-card {
+  width: 300px;
+  user-select: none;
+  cursor: pointer;
   background-color: $card-background;
+  margin-left: 10px;
   margin-bottom: 10px;
+  padding: 5px;
+
+  &.done {
+    background-color: white;
+  }
+
+  mat-card-title.mat-card-title {
+    font-size: 14px;
+    margin-bottom: 4px;
+
+    span.extra {
+      font-size: 0.75em;
+      float: right;
+    }
+  }
+
+  mat-card-subtitle.mat-card-subtitle {
+    margin-bottom: 5px;
+  }
 }

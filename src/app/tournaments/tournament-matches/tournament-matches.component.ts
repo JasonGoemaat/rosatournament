@@ -41,6 +41,13 @@ export const getParticipantsForSpot = (vm: TournamentViewModel, spotIndex: numbe
   return ['UNKONWN'];
 }
 
+const getParticipantsString = (participants: string[]): string => {
+  const arr = participants.filter(x => x !== '-or-');
+  if (arr.length === 0) return 'UNKNOWN';
+  if (arr.length === 1) return arr[0];
+  return `(${arr.join(', ')})`;
+}
+
 export const parseForMatches = (data: MyRouteData) => {
   let result: any = {...data};
 
@@ -66,6 +73,8 @@ export const parseForMatches = (data: MyRouteData) => {
         participants1: getParticipantsForSpot(data.vm, match.spotA),
         participants2: getParticipantsForSpot(data.vm, match.spotB)
       }
+
+      result.model.displayText = getParticipantsString(result.model.participants1) + ' vs ' + getParticipantsString(result.model.participants2);
     }
     
     return result;
@@ -77,6 +86,10 @@ export const parseForMatches = (data: MyRouteData) => {
   let some = unplayed.splice(0, 5);
   let more = unplayed;
   return {...data, some, more, played };
+}
+
+export const newParseForMatches = (data: MyRouteData) => {
+  const allMatches = data.vm.matchList;
 }
 
 @Component({

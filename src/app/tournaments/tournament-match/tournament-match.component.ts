@@ -38,9 +38,9 @@ export class TournamentMatchComponent implements OnInit {
   data$: Observable<any>;
 
   lagWinner?: string;
-  match1Winner?: string;
-  match2Winner?: string;
-  match3Winner?: string;
+  game1Winner?: string;
+  game2Winner?: string;
+  game3Winner?: string;
   matchWinner?: string;
 
   constructor(
@@ -58,9 +58,9 @@ export class TournamentMatchComponent implements OnInit {
         this.lagWinner = `${x.model.result.lagWinner}`;
         this.matchWinner = `${x.model.result.matchWinner}`;
         const [a, b, c] = x.model.result.gameWinners as number[];
-        this.match1Winner = `${a}`;
-        this.match2Winner = `${b}`;
-        this.match3Winner = `${c}`;
+        this.game1Winner = `${a}`;
+        this.game2Winner = `${b}`;
+        this.game3Winner = `${c}`;
       }
       console.log('cMatch:', x);
       (window as any).x = x;
@@ -87,7 +87,7 @@ export class TournamentMatchComponent implements OnInit {
     const newTournament = vm.setMatchResult(data.matchIndex, {
       lagWinner: numberFor(this.lagWinner),
       matchWinner: numberFor(this.matchWinner),
-      gameWinners: [numberFor(this.match1Winner), numberFor(this.match2Winner), numberFor(this.match3Winner)].map(numberFor).filter(x => typeof(x) === 'number') as number[]
+      gameWinners: [numberFor(this.game1Winner), numberFor(this.game2Winner), numberFor(this.game3Winner)].map(numberFor).filter(x => typeof(x) === 'number') as number[]
     })
 
     this.service.setTournament(data.tournamentId, newTournament)

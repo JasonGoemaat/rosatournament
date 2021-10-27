@@ -1,36 +1,15 @@
 @use "../../../_variables" as *;
 
 mat-card {
-    width: 300px;
-    user-select: none;
-    cursor: pointer;
-    background-color: $card-background;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    padding: 5px;
-
-    &.finished {
-        background-color: white;
+  mat-card-content {
+    &.placed {
+      font-weight: bold;
+      color: green;
+      text-align: center;
     }
 
-    mat-card-title {
-        font-size: 18px;
-        margin-bottom: 4px;
+    &.notPlaced {
+      text-align: center;
     }
-
-    mat-card-subtitle {
-        margin-bottom: 5px;
-    }
-
-    mat-card-content {
-        &.placed {
-            font-weight: bold;
-            color: green;
-            text-align: center;
-        }
-
-        &.notPlaced {
-            text-align: center;
-        }
-    }
+  }
 }

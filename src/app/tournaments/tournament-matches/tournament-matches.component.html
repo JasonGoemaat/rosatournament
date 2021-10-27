@@ -3,68 +3,38 @@
     All matches have finished!
   </h2>
 
-  <ol>
-    <!-- some -->
-    <li *ngFor="let match of data.some" class="match" (click)="openMatch(data, match)">
-      <div class="header">
-        <div class="time">{{match.model.timeString}} - Match {{match.model.matchName}}</div>
-      </div>
-      <div class="vs">
-        <div class="participants">
-          <div *ngFor="let name of match.model.participants1">
-            {{name}}
-          </div>
-        </div>
-        <div class="separator" style="margin-left: 10px;">vs.</div>
-        <div class="participants">
-          <div *ngFor="let name of match.model.participants2">
-            {{name}}
-          </div>
-        </div>
-      </div>
-    </li>
+  <mat-card *ngFor="let match of data.some" (click)="openMatch(data, match)">
+    <mat-card-title>{{match.model.timeString}} - Match {{match.model.matchName}}</mat-card-title>
+    <mat-card-content>{{match.model.displayText}}</mat-card-content>
+  </mat-card>
 
-    <li *ngIf="!showMore && data.more.length > 0" class="link" (click)="clickShowMore(data)">
-      show more
-    </li>
+  <mat-card *ngIf="!showMore && data.more.length > 0">
+    <mat-card-content class="actions" (click)="clickShowMore(data)">
+      <span>show more</span>
+    </mat-card-content>
+  </mat-card>
 
-    <!-- more -->
-    <li *ngFor="let match of showMore ? data.more : []" class="match" (click)="openMatch(data, match)">
-      <div class="header">
-        <div class="time">{{match.model.timeString}} - Match {{match.model.matchName}}</div>
-      </div>
-      <div class="vs">
-        <div class="participants">
-          <div *ngFor="let name of match.model.participants1">
-            {{name}}
-          </div>
-        </div>
-        <div class="separator" style="margin-left: 10px;">vs.</div>
-        <div class="participants">
-          <div *ngFor="let name of match.model.participants2">
-            {{name}}
-          </div>
-        </div>
-      </div>
-    </li>
+  <mat-card *ngFor="let match of showMore ? data.more : []" (click)="openMatch(data, match)">
+    <mat-card-title>{{match.model.timeString}} - Match {{match.model.matchName}}</mat-card-title>
+    <mat-card-content>{{match.model.displayText}}</mat-card-content>
+  </mat-card>
 
-    <li *ngIf="!showPlayed && data.played.length > 0" class="link" (click)="clickShowPlayed(data)">
-      show played
-    </li>
+  <mat-card *ngIf="!showPlayed && data.played.length > 0">
+    <mat-card-content class="actions" (click)="clickShowPlayed(data)">
+      <span>show played</span>
+    </mat-card-content>
+  </mat-card>
 
-    <!-- played -->
-    <li *ngFor="let match of showPlayed ? data.played : []" class="match finished" (click)="openMatch(data, match)">
-      <div class="header">
-        <div class="time">{{match.model.timeString}} - Match {{match.model.matchName}}</div>
-      </div>
-      <div class="vs">
-        <span>{{match.model.winnerName}}</span>
-        <em>won vs.</em>
-        <span>{{match.model.loserName}}</span>
-      </div>
-    </li>
-  </ol>
+  <mat-card *ngFor=" let match of showPlayed ? data.played : []" class="done" (click)="openMatch(data, match)">
+    <mat-card-title>{{match.model.timeString}} - Match {{match.model.matchName}}</mat-card-title>
+    <mat-card-content> <span>{{match.model.winnerName}}</span>
+      &nbsp;<em>won vs.</em>&nbsp;
+      <span>{{match.model.loserName}}</span>
+    </mat-card-content>
+  </mat-card>
+
 </div>
+
 <ng-template #loading>
   <app-loading></app-loading>
 </ng-template>

@@ -3,6 +3,8 @@
     All matches have finished!
   </h2>
 
+  <h2 style="width: 320px; text-align: center">Matches</h2>
+
   <mat-card *ngFor="let match of data.some" (click)="openMatch(data, match)">
     <mat-card-title>{{match.model.timeString}} - Match {{match.model.matchName}}</mat-card-title>
     <mat-card-content>{{match.model.displayText}}</mat-card-content>

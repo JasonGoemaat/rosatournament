@@ -19,7 +19,6 @@
       <h4>Games</h4>
       <div class="games" *ngIf="data.model.haveParticipants">
         <mat-form-field appearance="fill">
-          <mat-label>Match 1</mat-label>
           <mat-select [(value)]="game1Winner">
             <mat-option>Not Set</mat-option>
             <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
@@ -28,7 +27,6 @@
         </mat-form-field>
         <br/>
         <mat-form-field appearance="fill">
-          <mat-label>Match 2</mat-label>
           <mat-select [(value)]="game2Winner">
             <mat-option>Not Set</mat-option>
             <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
@@ -37,7 +35,6 @@
         </mat-form-field>
         <br/>
         <mat-form-field appearance="fill">
-          <mat-label>Match 3</mat-label>
           <mat-select [(value)]="game3Winner">
             <mat-option>Not Set</mat-option>
             <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>

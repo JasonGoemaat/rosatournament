@@ -1,6 +1,7 @@
 div.my-grid {
   box-sizing: border-box;
   display: grid;
+  width: 640px;
   
   div.grid-cell {
     display: flex;
@@ -9,5 +10,13 @@ div.my-grid {
     align-items: center;
     border: solid 1px black;
     box-sizing: border-box;
+    overflow: hidden;
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 124px;
+    }
   }
 }

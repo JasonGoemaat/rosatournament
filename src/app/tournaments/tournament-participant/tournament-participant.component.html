@@ -1,7 +1,7 @@
 <div *ngIf="data$ | async as data; else loading">
   <h2>{{data.participant.name}} (id: {{data.participantId}})</h2>
 
-  <div *ngIf="data.gridModel" class="my-grid" [ngStyle]="data.gridStyle">
+  <div *ngIf="data.gridModel" class="my-grid" [ngStyle]="data.gridModel.gridStyle">
     <div class="grid-cell"
       *ngFor="let cell of data.gridModel.gridElements"
       [ngStyle]="{ 'gridArea': cell.gridArea }">

@@ -40,6 +40,7 @@ import { TournamentBracketComponent } from './tournaments/tournament-bracket/tou
 import { LoadingComponent } from './loading/loading.component';
 import { MatchTimeSlotDialogComponent } from './tournaments/tournament-match/match-time-slot-dialog/match-time-slot-dialog.component';
 import { TournamentSpotComponent } from './tournaments/tournament-spot/tournament-spot.component';
+import { UtilService } from './services/util.service';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDyEMGADaBOQW1F36QtoPFYDGJzdFETvrs",
@@ -51,6 +52,8 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
+
+(window as any).UtilService = UtilService;
 
 export const NGXS_MODULE = NgxsModule.forRoot(
   [

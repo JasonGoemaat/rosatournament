@@ -6,7 +6,9 @@ const rxTime = /([0-9]+:)([0-9]+):[0-9]+( AM| PM)/
   providedIn: 'root'
 })
 export class UtilService {
-  constructor() { }
+  constructor() {
+    (window as any).sUtil = this;
+  }
 
   static formatTime(utc: number) {
     const lts = new Date(utc).toLocaleTimeString();
@@ -27,5 +29,18 @@ export class UtilService {
       if (fn(a) < fn(b)) return -1;
       return 1;
     }
+  }
+
+  static getPlaceString(place?: number): string {
+    const places: Record<number, string> = {
+      1: '1st', 2: '2nd', 3: '3rd', 4: '4th',
+      5: '5th', 6: '6th', 7: '7th', 8: '8th'
+    };
+
+    if (typeof(place) === 'number' && places[place]) {
+      return `${places[place]} Place`;
+    }
+
+    return 'not placed';
   }
 }

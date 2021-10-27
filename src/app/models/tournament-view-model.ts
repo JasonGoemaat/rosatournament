@@ -22,6 +22,9 @@ export interface ParticipantModel extends Participant {
   gamesWon: number;
   gamesLost: number;
   lagsWon: number;
+  nextMatch?: MatchModel,
+  place?: number,
+  isFinished?: boolean,
 }
 
 /**
@@ -34,13 +37,6 @@ export interface ParticipantModel extends Participant {
  * that could be faced in either position.
  */
 export interface ParticipantMatch {
-}
-
-export interface ParticipantModel {
-  index: number,
-  nextMatch?: ParticipantMatch,
-  place?: number,
-  isFinished?: boolean,
 }
 
 export interface MatchModel {
@@ -429,12 +425,12 @@ export class TournamentViewModel {
 
     getByeParticipant(useTournament?: Tournament): Participant {
       const tournament = useTournament ? useTournament : this.tournament;
-      let result = tournament.participants.find(p => p.hidden && p.name === 'BYE');
+      let result = tournament.participants.find(p => p.isHidden && p.name === 'BYE');
       if (!result) {
         let newId = tournament.participants.reduce((acc, v) => Math.max(acc, v.id as number), 0) + 1;
         result = {
           id: newId,
-          hidden: true,
+          isHidden: true,
           name: 'BYE'
         };
         tournament.participants.push(result);
@@ -444,12 +440,12 @@ export class TournamentViewModel {
 
     getNotNeededParticipant(useTournament?: Tournament): Participant {
       const tournament = useTournament ? useTournament : this.tournament;
-      let result = tournament.participants.find(p => p.hidden && p.name === 'NOT NEEDED');
+      let result = tournament.participants.find(p => p.isHidden && p.name === 'NOT NEEDED');
       if (!result) {
         let newId = tournament.participants.reduce((acc, v) => Math.max(acc, v.id as number), 0) + 1;
         result = {
           id: newId,
-          hidden: true,
+          isHidden: true,
           name: 'NOT NEEDED'
         };
         tournament.participants.push(result);
@@ -475,7 +471,7 @@ export class TournamentViewModel {
 
     getParticipantViewModels() {
       const {participants, matchResultMap, spotParticipant, timeSlots} = this.tournament;
-      const results = participants.map((x, index) => ({...x, index})).filter(x => !x.hidden).map(participant => {
+      const results = participants.map((x, index) => ({...x, index})).filter(x => !x.isHidden).map(participant => {
         // want the match results in time order where it is the winner or loser
         // parse matches to get lags, matches, and matches won/lost
 

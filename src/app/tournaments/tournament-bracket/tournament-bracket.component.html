@@ -4,7 +4,7 @@
     [style.grid-area]="spot.config.gridArea"
     [style.border-bottom]="getBorderBottom(spot.config)"
     [style.border-right]="getBorderRight(spot.config)"
-    [hidden]="spot.config.hidden"
+    [hidden]="spot.config.isHidden"
   >
     <div
       (click)="onSpotClick(data, spot, $event)"

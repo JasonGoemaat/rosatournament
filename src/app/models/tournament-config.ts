@@ -14,7 +14,7 @@ export interface SpotConfig {
   loserOfMatch?: number;
   place?: number;
   copySpot?: number; // for placings at end, copy name from spot as winner
-  hidden?: boolean; // special
+  isHidden?: boolean; // special
 }
 
 export interface MatchConfig {
@@ -134,7 +134,7 @@ const createDefaultConfig = () : TournamentConfig => {
       {gridArea: '31/17/span 13/span 2', borders: BorderConfig.DashedBottom, place: 1}, // not displayed
 
       // spot for 1st place
-      {gridArea: '62/17/span 2/span 2', borders: BorderConfig.DashedBottom, place: 1, copySpot: 62, hidden: true },
+      {gridArea: '62/17/span 2/span 2', borders: BorderConfig.DashedBottom, place: 1, copySpot: 62, isHidden: true },
 
       // 2rd place is loser of championship/playoff
       {gridArea: '62/17/span 2/span 2', borders: BorderConfig.DashedBottom, place: 2},

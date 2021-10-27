@@ -3,7 +3,7 @@ export interface Participant {
   id?: number;
   seed?: number;
   uid?: string;
-  hidden?: boolean; // for 'BYE' and 'NOT NEEDED' players
+  isHidden?: boolean; // for 'BYE' and 'NOT NEEDED' players
 }
 
 export type spotParticipant = Record<number, number>

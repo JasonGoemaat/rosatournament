@@ -22,6 +22,15 @@ export interface ParticipantModel extends Participant {
   gamesLost: number;
 }
 
+/**
+ * Match from a participant perspective.  Shows name, time,
+ * who you'll play (i.e. '(loser of WB)' or name), time.  Also
+ * has list of possible opponents.  And spot of this participant
+ * along with spot of other participant.  Note:  Final between
+ * loser bracket and winner bracket could have two entries here. 
+ * One for if this participant is the winner, and one for if they
+ * are in the loser's bracket.
+ */
 export interface ParticipantMatch {
 }
 
@@ -29,7 +38,7 @@ export interface ParticipantModel {
   index: number,
   id: number,
   name: string,
-  nextMatch?: any,
+  nextMatch?: ParticipantMatch,
   place?: number,
   isFinished: boolean,
 }

@@ -63,7 +63,7 @@ export class TournamentMatchComponent implements OnInit {
         this.match3Winner = `${c}`;
       }
       console.log('cMatch:', x);
-      (window as any).g = x;
+      (window as any).x = x;
     }))
   }
 

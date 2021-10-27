@@ -25,7 +25,10 @@ export class TournamentBracketComponent implements OnInit {
     public router: Router
   ) {
     (window as any).cBracket = this;
-    this.data$ = service.getForParams(route.paramMap).pipe(tap(x => console.log('Bracket component:', x)));
+    this.data$ = service.getForParams(route.paramMap)
+    .pipe(tap(x => {
+      (window as any).x = x;
+    }));
   }
 
   ngOnInit(): void {

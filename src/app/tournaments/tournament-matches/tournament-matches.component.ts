@@ -6,45 +6,6 @@ import { MyRouteData, TournamentService } from 'src/app/services/tournament.serv
 import { UtilService } from 'src/app/services/util.service';
 import { TournamentViewModel } from "../../models/tournament-view-model";
 
-// used for quick design to see what data I needed
-const sampleData = [
-  {
-    matchIndex: 0,
-    timeString: '9:00 am',
-    matchName: 'WA',
-    participants1: ['Jeff Livingston'],
-    participants2: ['Kade Rosa']
-  },
-  {
-    matchIndex: 1,
-    timeString: '9:30 am',
-    matchName: 'WB',
-    participants1: ['Jason Goemaat'],
-    participants2: ['Brent Kolk']
-  },
-  {
-    matchIndex: 2,
-    timeString: '10:00 am',
-    matchName: 'WC',
-    participants1: ['Danny Martin'],
-    participants2: ['Jack Rosa']
-  },
-  {
-    matchIndex: 3,
-    timeString: '10:30 am',
-    matchName: 'WD',
-    participants1: ['Doug Liebe'],
-    participants2: ['Chris Goldenstein']
-  },
-  {
-    matchIndex: 4,
-    timeString: '11:00 am',
-    matchName: 'WE',
-    participants1: ['Tim Martin'],
-    participants2: ['Kurt Berry']
-  }
-];
-
 export const getParticipantsForMatchId = (vm: TournamentViewModel, matchIndex: number, winnerOrLoser: string) : string[] => {
   const match = vm.config.matches[matchIndex];
   let participantA = vm.getParticipant(vm.tournament.spotParticipant[match.spotA]);

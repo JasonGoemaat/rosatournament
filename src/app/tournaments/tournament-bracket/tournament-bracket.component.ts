@@ -101,7 +101,48 @@ export class TournamentBracketComponent implements OnInit {
     this.router.navigate(['tournaments', tournamentId, 'matches', matchIndex]);
   }
 
-  onSpotClick(data: MyRouteData, spot: SpotModel) {
+  doRandomWinner(data: MyRouteData, spot: SpotModel) {
+    const tournamentId = data.tournamentId;
+    let matchIndex = data.config.matches.findIndex(match => match.winnerTo === spot.index || match.loserTo === spot.index);
+    if (!(matchIndex >= 0)) return;
+    console.log('found match index:', matchIndex);
+    const match = data.vm.matches[matchIndex];
+    if (match.isFinished) return; // already finished, dummy!
+    console.log(match);
+
+    const [a] = [...match.participantsAIds];
+    const [b] = [...match.participantsBIds];
+    const lagWinner = Math.random() >= 0.5 ? a : b;
+    const game1Winner = Math.random() >= 0.5 ? a : b;
+    const game2Winner = Math.random() >= 0.5 ? a : b;
+    const game3Winner = Math.random() >= 0.5 ? a : b;
+
+    if (game1Winner === game2Winner) {
+      const newTournament = data.vm.setMatchResult(matchIndex, {
+        lagWinner,
+        matchWinner: game1Winner,
+        gameWinners: [game1Winner, game2Winner]
+      })
+  
+      this.service.setTournament(data.tournamentId, newTournament)
+      .then(() => console.log('UPDATED:', newTournament));
+    } else {
+      const newTournament = data.vm.setMatchResult(matchIndex, {
+        lagWinner,
+        matchWinner: game3Winner,
+        gameWinners: [game1Winner, game2Winner, game3Winner]
+      })
+  
+      this.service.setTournament(data.tournamentId, newTournament)
+      .then(() => console.log('UPDATED:', newTournament));
+    }
+  }
+
+  onSpotClick(data: MyRouteData, spot: SpotModel, $event: MouseEvent) {
+    if ($event.shiftKey) {
+      this.doRandomWinner(data, spot);
+      return;
+    }
     const tournamentId = data.tournamentId;
     const {loserOfMatch, winnerOfMatch} = data.config.spots[spot.index];
     if (typeof(loserOfMatch) === 'number') {

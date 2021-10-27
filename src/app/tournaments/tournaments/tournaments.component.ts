@@ -15,7 +15,7 @@ import { tournamentReset } from 'src/app/models/reset';
 export class TournamentsComponent implements OnInit, OnDestroy {
   tournamentId: string = '';
   data$: Observable<MyRouteData>
-  paramMap : Subscription | undefined = undefined;
+  paramMap? : Subscription;
 
   constructor(
     public route: ActivatedRoute,

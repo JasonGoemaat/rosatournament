@@ -1,9 +1,10 @@
 import { UtilService } from "../services/util.service";
 import { MatchResult, Participant, Tournament } from "./tournament";
-import { TournamentConfig, SpotConfig } from "./tournament-config";
+import { TournamentConfig, SpotConfig, MatchConfig } from "./tournament-config";
 
 export interface SpotModel {
   index: number;
+  participant?: number;
   isWinner?: boolean;
   isLoser?: boolean;
   isItalic?: boolean;
@@ -20,38 +21,46 @@ export interface ParticipantModel extends Participant {
   matchesLost: number;
   gamesWon: number;
   gamesLost: number;
+  lagsWon: number;
 }
 
 /**
  * Match from a participant perspective.  Shows name, time,
  * who you'll play (i.e. '(loser of WB)' or name), time.  Also
  * has list of possible opponents.  And spot of this participant
- * along with spot of other participant.  Note:  Final between
- * loser bracket and winner bracket could have two entries here. 
- * One for if this participant is the winner, and one for if they
- * are in the loser's bracket.
+ * along with spot of other participant.  If this player could
+ * be in either spot (i.e. winner bracket winner vs. loser
+ * bracket winner), the list of opponents will include everyone
+ * that could be faced in either position.
  */
 export interface ParticipantMatch {
 }
 
 export interface ParticipantModel {
   index: number,
-  id: number,
-  name: string,
   nextMatch?: ParticipantMatch,
   place?: number,
-  isFinished: boolean,
+  isFinished?: boolean,
 }
 
 export interface MatchModel {
+  timeSlotIndex: number,
+  matchIndex: number,
+  utc: number,
+  timeString: string,
+  matchConfig: MatchConfig,
+  participantsAIds: Set<number>,
+  participantsBIds: Set<number>,
+  matchResult: MatchResult,
 }
 
 export class TournamentViewModel {
     public spotList: SpotModel[];
     public spotPossibleParticipants: Record<number, Set<number>>;
-    public matchList: MatchModel[];
-    public participants: Record<number, ParticipantModel> = {};
-    public participantList: ParticipantModel[] = [];
+    public matchList: MatchModel[]; // order is by time slot
+    public matches: Record<number, MatchModel> = {};
+    public participants: Record<number, ParticipantModel> = {}; // by id
+    public participantList: ParticipantModel[];
 
     constructor(
       public config: TournamentConfig,
@@ -60,6 +69,66 @@ export class TournamentViewModel {
         this.spotList = this.generateSpotModels();
         this.spotPossibleParticipants = this.generatePossibleParticipants();
         this.matchList = this.generateMatchModels();
+        this.participantList = this.generateParticipantModels();
+        this.participantList.forEach(x => this.participants[x.id as number] = x);
+
+        this.matchList.forEach(x => {
+          const assignNextMatch = (id: number) => {
+            if (!this.participants[id].nextMatch) {
+              this.participants[id].nextMatch = x;
+              this.participants[id].isFinished = false;
+            }
+          }
+
+          const matchResult = x.matchResult;
+
+          this.matches[x.matchIndex] = x;
+          if (matchResult?.isFinished) {
+            const {matchWinner, matchLoser, lagWinner, gameWinners} = matchResult;
+            if (matchWinner) this.participants[matchWinner].matchesWon++;
+            if (matchLoser) this.participants[matchLoser].matchesLost++;
+            if (lagWinner) this.participants[lagWinner].lagsWon++;
+            if (gameWinners) {
+              gameWinners.forEach(winnerId => {
+                const loserId = (winnerId === matchWinner) ? matchLoser : matchWinner; // OTHER participant
+                if (winnerId) this.participants[winnerId].gamesWon++;
+                if (loserId) this.participants[loserId].gamesLost++;
+              })
+            }
+          } else {
+            let a = [...x.participantsAIds];
+            let b = [...x.participantsBIds];
+            if (a.length === 1) assignNextMatch(a[0]);
+            if (b.length === 1) assignNextMatch(b[0]);
+          }
+        });
+
+        // assign places
+        this.spotList.forEach(x => {
+          if (x.config.place) {
+            const participantId = this.tournament.spotParticipant[x.index];
+            if (participantId) this.participants[participantId].place = x.config.place;
+          } 
+        });
+        
+        this.participantList.forEach(x => {
+
+        });
+    }
+
+    generateParticipantModels(): ParticipantModel[] {
+      return this.tournament.participants.map((x, index): ParticipantModel => {
+        return {
+          index,
+          ...x,
+          matchesWon: 0,
+          matchesLost: 0,
+          gamesWon: 0,
+          gamesLost: 0,
+          lagsWon: 0,
+          isFinished: true, // default, will clear if player has upcoming match
+        }
+      });
     }
 
     /**
@@ -68,7 +137,7 @@ export class TournamentViewModel {
     generateSpotModels() : SpotModel[] {
       const {config, tournament} = this;
 
-      const spots = config.spots.map((spotConfig, index) => <SpotModel>{ text: `Spot ${index}`, config: spotConfig, index });
+      const spots = config.spots.map((spotConfig, index) => <SpotModel>{ text: `Spot ${index}`, config: spotConfig, index, participant: this.tournament.spotParticipant[index] });
 
       // process matches adding match name and time
       config.matches.forEach((matchConfig, matchIndex) => {
@@ -155,15 +224,24 @@ export class TournamentViewModel {
     }
 
     /**
-     * vm.matches will have match info in order
+     * vm.matches will have match info in order, should be run
+     * after generating participants for a spot to list participants
+     * in each spot.
      */
     generateMatchModels(): MatchModel[] {
       const models = this.tournament.timeSlots.map((ts, index) => {
+        const matchConfig = this.config.matches[ts.matchIndex]
+        const participantsAIds = this.spotPossibleParticipants[matchConfig.spotA];
+        const participantsBIds = this.spotPossibleParticipants[matchConfig.spotB];
         return {
           timeSlotIndex: index,
           matchIndex: ts.matchIndex,
           utc: ts.utc,
           timeString: UtilService.formatTime(ts.utc),
+          matchConfig,
+          matchResult: this.tournament.matchResultMap[ts.matchIndex],
+          participantsAIds, // Set<number>
+          participantsBIds, // Set<number>
         }
       });
       
@@ -207,13 +285,13 @@ export class TournamentViewModel {
     // var t = x.vm.deleteMatchResult(29);
     // t = x,vm.deleteMatchResult(30, t);
     // cMatch.service.setTournament(x.tournamentId, t);
-    setMatchResult(matchIndex: any, info: { lagWinner?: number; matchWinner?: number; matchWinners: (number)[]; }, useTournament?: Tournament) {
+    setMatchResult(matchIndex: any, info: { lagWinner?: number; matchWinner?: number; gameWinners: (number)[]; }, useTournament?: Tournament) {
       // use passed tournament or clone a new one
       let tournament = useTournament ? useTournament : this.cloneTournament();
 
       const matchConfig = this.config.matches[matchIndex];
 
-      const {lagWinner, matchWinner, matchWinners} = info;
+      const {lagWinner, matchWinner, gameWinners} = info;
       const A = tournament.spotParticipant[matchConfig.spotA];
       const B = tournament.spotParticipant[matchConfig.spotB];
 
@@ -239,7 +317,7 @@ export class TournamentViewModel {
         matchWinner,
         matchLoser,
         lagWinner,
-        matchWinners,
+        gameWinners,
         startTime,
         endTime: Date.now(),
         entryTime: Date.now(),
@@ -265,7 +343,7 @@ export class TournamentViewModel {
       if (matchConfig.ifAWinsSkipMatch as number >= 0 && matchWinner === A) {
         // set match result as if A won again
         const skippedMatchId = matchConfig.ifAWinsSkipMatch as number;
-        tournament = this.setMatchResult(skippedMatchId, {matchWinner, matchWinners: [], lagWinner: undefined}, tournament);
+        tournament = this.setMatchResult(skippedMatchId, {matchWinner, gameWinners: [], lagWinner: undefined}, tournament);
         
         // change person at spotB of skipped match to 'NOT NEEDED'
         const notNeededId = this.getNotNeededParticipant().id as number;
@@ -298,7 +376,7 @@ export class TournamentViewModel {
         matchWinner: info.winner,
         matchLoser: info.loser,
         lagWinner: info.winner,
-        matchWinners: [info.winner, info.loser, info.winner],
+        gameWinners: [info.winner, info.loser, info.winner],
         startTime: Date.now() - 20 * 60 * 1000,
         endTime: Date.now(),
         entryTime: Date.now()
@@ -339,9 +417,9 @@ export class TournamentViewModel {
       Object.keys(n.matchResultMap).forEach(key => {
         const k = Number(key);
         const map = {...n.matchResultMap[k]};
-        const winners = map.matchWinners;
+        const winners = map.gameWinners;
         if (winners) {
-          n.matchResultMap[k].matchWinners = [...winners];
+          n.matchResultMap[k].gameWinners = [...winners];
         }
       });
       return n;

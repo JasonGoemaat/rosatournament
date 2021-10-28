@@ -73,11 +73,11 @@ export class TournamentMatchComponent implements OnInit {
   save(data: any): void {
     const vm = data.vm as TournamentViewModel;
     const numberFor = (x: any) => {
-      if (typeof(x) === 'number') {
+      if (typeof(x) === 'number' && x > 0) {
         return x;
       }
 
-      if (typeof(x) === 'string') {
+      if (typeof(x) === 'string' && parseInt(x) > 0) {
         return parseInt(x);
       }
 

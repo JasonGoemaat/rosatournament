@@ -18,6 +18,8 @@ export class TournamentBracketComponent implements OnInit {
   data$: Observable<MyRouteData>;
   BorderConfig = BorderConfig;
   data = data;
+  focusParticipantId?: number = 1;
+  focus: boolean[] = [];
 
   constructor(
     public route: ActivatedRoute,
@@ -27,6 +29,7 @@ export class TournamentBracketComponent implements OnInit {
     (window as any).cBracket = this;
     this.data$ = service.getForParams(route.paramMap)
     .pipe(tap(x => {
+      this.focus = x.vm.spotList.map(spot => this.shouldFocusSpot(x, spot.index));
       (window as any).x = x;
     }));
   }
@@ -139,10 +142,25 @@ export class TournamentBracketComponent implements OnInit {
   }
 
   onSpotClick(data: MyRouteData, spot: SpotModel, $event: MouseEvent) {
+    // for debugging, click with shift to auto-complete game randomly
     if ($event.shiftKey) {
       this.doRandomWinner(data, spot);
       return;
     }
+
+    // if clicking on seed spot, focus that player's possible spots throughout
+    // tournament (or cancel)
+    if (data.config.spots[spot.index].seed || 0 > 0) {
+      let newParticipantId = data.tournament.spotParticipant[spot.index];
+      if (this.focusParticipantId === newParticipantId) {
+        this.focusParticipantId = undefined; // cancel
+      } else {
+        this.focusParticipantId = newParticipantId;
+      }
+      this.focus = data.vm.spotList.map(spot => this.shouldFocusSpot(data, spot.index));
+      return;
+    }
+
     const tournamentId = data.tournamentId;
     const {loserOfMatch, winnerOfMatch} = data.config.spots[spot.index];
     if (typeof(loserOfMatch) === 'number') {
@@ -178,5 +196,14 @@ export class TournamentBracketComponent implements OnInit {
       `spot: ${spot.index}`
     ]
     return lines.join('\r\n');
+  }
+
+  focusSpotCount: number = 0;
+
+  shouldFocusSpot(data: MyRouteData, spotIndex: number): boolean {
+    this.focusSpotCount++;
+    const result = this.focusParticipantId && data.vm.spotPossibleParticipants[spotIndex] && data.vm.spotPossibleParticipants[spotIndex].has(this.focusParticipantId);
+    //console.log(`shouldFocusSpot(data, ${spotIndex}) = ${result}`);
+    return !!result; 
   }
 }

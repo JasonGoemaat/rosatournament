@@ -54,6 +54,12 @@ h1 { text-align: center; }
       &.italic {
         font-style: italic;
       }
+
+      &.focus {
+        border: dashed 1px blue;
+        background-color: lightblue;
+        box-sizing: border-box;
+      }
     }
     
     > .text {

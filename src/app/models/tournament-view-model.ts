@@ -537,7 +537,6 @@ export class TournamentViewModel {
           return { height: 1, spotIndex: x, lines: ['(out)'], isOut: true };
         }
 
-        console.log('x:', x);
         const spotConfig = this.config.spots[x as number];
         if (spotConfig.place || 0 > 0) {
           return { height: 1, spotIndex: x, lines: [`Place: ${spotConfig.place}`] }

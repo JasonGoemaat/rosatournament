@@ -49,9 +49,14 @@ export class TournamentService {
       this.lastTournamentId = tournamentId;
       this.tournamentSubject.complete();
       this.tournamentSubject = new ReplaySubject<Tournament>(1);
-      this.tournament$ = this.tournamentSubject.asObservable();
+      this.tournament$ = this.tournamentSubject.asObservable()
+      .pipe(tap(tournament => {
+        console.log('%cGot Tournament%c', 'padding: 5px; background-color: blue; color: white; border-radius: 5px;', '');
+        console.log(tournament);
+      }));
       const doc = this.ff.doc(this.ff.getFirestore(), "tournaments", tournamentId);
       this.unsub = this.ff.onSnapshot(doc, (doc) => {
+        console.log('%cTournament from firebase%c', 'padding: 5px; background-color: red; color: white; border-radius: 5px;', '');
         const tournament = doc.data() as Tournament;
         this.tournamentSubject.next(tournament);
       });

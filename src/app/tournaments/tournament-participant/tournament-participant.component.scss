@@ -1,0 +1,22 @@
+div.my-grid {
+  box-sizing: border-box;
+  display: grid;
+  width: 640px;
+  
+  div.grid-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px black;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 124px;
+    }
+  }
+}

@@ -4,6 +4,7 @@ export interface Participant {
   seed?: number;
   uid?: string;
   isHidden?: boolean; // for 'BYE' and 'NOT NEEDED' players
+  hasPaid?: boolean;
 }
 
 export type spotParticipant = Record<number, number>
@@ -21,6 +22,7 @@ export interface Tournament {
   spotParticipant: spotParticipant; // index with spot, gives participant ID
   resultMap: ResultMap; // index with spot, tells you if they won (true), lost (false) or haven't played (undefined)
   matchResultMap: MatchResultMap;
+  roles: Record<string, string>;
 }
 
 export interface MatchResult {

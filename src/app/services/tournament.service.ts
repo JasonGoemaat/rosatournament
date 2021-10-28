@@ -18,6 +18,7 @@ export interface MyRouteData {
   matchIndex: number | null,
   participantId: number | null,
   tournamentId: string,
+  role: string,
 }
 
 @Injectable({
@@ -62,7 +63,8 @@ export class TournamentService {
         tournament,
         config,
         vm,
-        tournamentId
+        tournamentId,
+        role: auth && auth.uid && auth.isAuthReceived && tournament && tournament.roles ? tournament.roles[auth.uid] : undefined,
       }
       return result;
     }));

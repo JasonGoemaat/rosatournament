@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { Tournament } from 'src/app/models/tournament';
 import { MyRouteData, TournamentService } from 'src/app/services/tournament.service';
 
 @Component({
@@ -51,5 +53,33 @@ export class TournamentParticipantComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  setPaid(data: any) {
+  }
+
+  setUnpaid(data: any) {
+  }
+
+  togglePaid(data: any, $event: MatSlideToggleChange) {
+    console.log($event);
+    if (data.participant.hasPaid && !confirm(`Are you sure you want to CLEAR THE PAID FLAG for ${data.participant.name}?`)) {
+      $event.source.checked = data.participant.hasPaid;
+      return;
+    }
+    if (!data.participant.hasPaid && !confirm(`Are you sure you want to SET THE PAID FLAG for ${data.participant.name}?`)) {
+      $event.source.checked = data.participant.hasPaid;
+      return;
+    }
+
+    const tournament = data.vm.cloneTournament() as Tournament;
+    const participant = tournament.participants.find(x => x.id === data.participantId);
+    if (participant) {
+      participant.hasPaid = !participant?.hasPaid;
+      this.tournamentService.setTournament(data.tournamentId, tournament);
+    } else {
+      $event.source.checked = data.participant.hasPaid;
+      alert('Unable to find participant...');
+    }
   }
 }

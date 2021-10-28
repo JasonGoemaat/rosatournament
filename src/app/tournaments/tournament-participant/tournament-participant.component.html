@@ -1,5 +1,11 @@
 <div *ngIf="data$ | async as data; else loading">
-  <h2>{{data.participant.name}} (id: {{data.participantId}})</h2>
+  <h2 style="width: 320px; text-align: center">{{data.participant.name}}</h2>
+
+  <div *ngIf="data.role === 'admin'" class="centered-buttons">
+    <mat-slide-toggle
+      [checked]="data.participant.hasPaid"
+      (change)="togglePaid(data, $event)">Paid</mat-slide-toggle>
+  </div>
 
   <div *ngIf="data.gridModel" class="my-grid" [ngStyle]="data.gridModel.gridStyle">
     <div class="grid-cell"

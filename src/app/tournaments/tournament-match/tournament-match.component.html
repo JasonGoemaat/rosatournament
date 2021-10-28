@@ -9,7 +9,7 @@
       <h4>Lag</h4>
       <mat-form-field appearance="fill" *ngIf="data.model.haveParticipants">
         <mat-label>Lag Winner</mat-label>
-        <mat-select [(value)]="lagWinner">
+        <mat-select [(value)]="lagWinner" [disabled]="data.role !== 'admin'">
           <mat-option>Not Set</mat-option>
           <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
           <mat-option value="{{data.model.B.id}}">{{data.model.B.name}}</mat-option>
@@ -19,7 +19,7 @@
       <h4>Games</h4>
       <div class="games" *ngIf="data.model.haveParticipants">
         <mat-form-field appearance="fill">
-          <mat-select [(value)]="game1Winner">
+          <mat-select [(value)]="game1Winner" [disabled]="data.role !== 'admin'">
             <mat-option>Not Set</mat-option>
             <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
             <mat-option value="{{data.model.B.id}}">{{data.model.B.name}}</mat-option>
@@ -27,7 +27,7 @@
         </mat-form-field>
         <br/>
         <mat-form-field appearance="fill">
-          <mat-select [(value)]="game2Winner">
+          <mat-select [(value)]="game2Winner" [disabled]="data.role !== 'admin'">
             <mat-option>Not Set</mat-option>
             <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
             <mat-option value="{{data.model.B.id}}">{{data.model.B.name}}</mat-option>
@@ -35,7 +35,7 @@
         </mat-form-field>
         <br/>
         <mat-form-field appearance="fill">
-          <mat-select [(value)]="game3Winner">
+          <mat-select [(value)]="game3Winner" [disabled]="data.role !== 'admin'">
             <mat-option>Not Set</mat-option>
             <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
             <mat-option value="{{data.model.B.id}}">{{data.model.B.name}}</mat-option>
@@ -46,7 +46,7 @@
       <h4>Match</h4>
       <mat-form-field appearance="fill" *ngIf="data.model.haveParticipants">
         <mat-label>Match Winner</mat-label>
-        <mat-select [(value)]="matchWinner">
+        <mat-select [(value)]="matchWinner" [disabled]="data.role !== 'admin'">
           <mat-option>Not Set</mat-option>
           <mat-option value="{{data.model.A.id}}">{{data.model.A.name}}</mat-option>
           <mat-option value="{{data.model.B.id}}">{{data.model.B.name}}</mat-option>
@@ -60,11 +60,11 @@
     </mat-card-content>
 
     <mat-card-actions *ngIf="data.model.haveParticipants">
-      <button mat-button color="primary" (click)="save(data)">SAVE</button>
-      <button mat-button color="red" (click)="delete(data)">DELETE</button>
+      <button mat-button color="primary" (click)="save(data)" [disabled]="data.role !== 'admin'">SAVE</button>
+      <button mat-button color="red" (click)="delete(data)" [disabled]="data.role !== 'admin'">DELETE</button>
     </mat-card-actions>
     <mat-card-actions>
-      <button mat-button color="primary" (click)="openDialog(data)">reschedule</button>
+      <button mat-button color="primary" (click)="openDialog(data)" [disabled]="data.role !== 'admin'">reschedule</button>
     </mat-card-actions>
   </mat-card>
 </div>

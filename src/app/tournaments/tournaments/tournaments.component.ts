@@ -44,6 +44,7 @@ export class TournamentsComponent implements OnInit, OnDestroy {
     const change = {...tournamentReset};
     if (tournamentId !== 'mine') {
       change.name = `${tournamentId}: ${change.name}`;
+      (change.roles as any)['tehcICyDNNaDzDT2Jzv3OVeIm9v2'] = 'admin';
     }
 
     this.service.setTournament(tournamentId, change).then(x => console.log('RESET!', x)).catch((err: any) => console.error(err));

@@ -25,6 +25,7 @@ export interface ParticipantModel extends Participant {
   nextMatch?: MatchModel,
   place?: number,
   isFinished?: boolean,
+  hasPaid?: boolean,
 }
 
 /**
@@ -603,7 +604,7 @@ export class TournamentViewModel {
       }
     })
 
-    return { rounds, simple };
+    return {rounds, simple};
   }
 
   getMatchForSpot(spotIndex: number | undefined): MatchModel | undefined {

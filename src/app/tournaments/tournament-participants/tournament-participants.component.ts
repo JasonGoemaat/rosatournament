@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Participant } from 'src/app/models/tournament';
 import { MyRouteData, TournamentService } from 'src/app/services/tournament.service';
 import { UtilService } from 'src/app/services/util.service';
 
@@ -13,6 +13,8 @@ import { UtilService } from 'src/app/services/util.service';
 })
 export class TournamentParticipantsComponent implements OnInit {
   public data$: Observable<any>;
+
+  faDollarSign = faDollarSign;
 
   constructor(
     public route: ActivatedRoute,

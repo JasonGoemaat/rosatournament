@@ -12,6 +12,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatSelectModule } from "@angular/material/select";
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 const modules = [
   CdkTableModule,
@@ -26,6 +27,7 @@ const modules = [
   MatSelectModule,
   MatDialogModule,
   MatTooltipModule,
+  MatSlideToggleModule,
 ];
 
 @NgModule({

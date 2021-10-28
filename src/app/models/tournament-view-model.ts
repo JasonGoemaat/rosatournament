@@ -529,19 +529,19 @@ export class TournamentViewModel {
     const simple = rounds.map(spotIds => {
       return spotIds.map(x => {
         // nulls have 1 height, 'OUT'
-        if (typeof(x) !== 'number') {
+        if (typeof (x) !== 'number') {
           return { height: 1, spotIndex: x, lines: ['(out)'] };
         }
 
         console.log('x:', x);
         const spotConfig = this.config.spots[x as number];
         if (spotConfig.place || 0 > 0) {
-          return { height: 1, spotIndex: x, lines: [`Place: ${spotConfig.place}`] }
+          return { height: 1, spotIndex: x, lines: [`Place: ${spotConfig.place}`], isWin: false, isLoss: false }
         }
 
         const match = this.getMatchForSpot(x);
         if (!match) {
-          return { height: 1, spotIndex: x, lines: [`Match not found for spot ${x}`] }
+          return { height: 1, spotIndex: x, lines: [`Match not found for spot ${x}`], isWin: false, isLoss: false }
         }
 
         // find other spot
@@ -555,7 +555,7 @@ export class TournamentViewModel {
         if (opponentList.length > myLimit) {
           opponentList = [...opponentList.slice(0, myLimit - 1), `... ${opponentList.length - myLimit + 1} more`]
         }
-        return { height: opponentList.length, spotIndex: x, lines: opponentList };
+        return { height: opponentList.length, spotIndex: x, lines: opponentList, isWin: false, isLoss: false };
       });
 
       // now simple is array of {height,spotIndex,lines} and I need to size them
@@ -564,25 +564,46 @@ export class TournamentViewModel {
       // larger and say losing leads to 8th place and winning to 7th place
     })
 
-
-    for (let i = simple.length - 1; i > 0; i--) {
-      for (let j = 0; j < simple[i].length; j += 2) {
-        const a = simple[i][j];
-        const b = simple[i][j + 1];
-        const c = simple[i - 1][j >> 1];
-        if (a.height + b.height > c.height) {
-          c.height = a.height + b.height;
-        } else if (c.height > a.height + b.height) {
-          // need to equalize a and b height
-          if (a.height > (c.height >> 1)) {
-            b.height = c.height - a.height;
-          } else {
-            a.height = c.height - b.height;
+    // expand height 3 times to keep adjusting (could create a graph and flag
+    // nodes to be updated, but just do it a few times...)
+    const expandHeights = (simple: any) => {
+      for (let i = simple.length - 1; i > 0; i--) {
+        for (let j = 0; j < simple[i].length; j += 2) {
+          const a = simple[i][j];
+          const b = simple[i][j + 1];
+          const c = simple[i - 1][j >> 1];
+          if (a.height + b.height > c.height) {
+            c.height = a.height + b.height;
+          } else if (c.height > a.height + b.height) {
+            // need to equalize a and b height
+            if (a.height > (c.height >> 1)) {
+              b.height = c.height - a.height;
+            } else {
+              a.height = c.height - b.height;
+            }
           }
         }
       }
     }
-    return {rounds, simple};
+    expandHeights(simple);
+    expandHeights(simple);
+    expandHeights(simple);
+
+    // starting at 2nd round, flag wins and losses so they can be colored
+    // green and red
+    simple.forEach((list, index) => {
+      if (index > 0) {
+        list.forEach((item, index) => {
+          if ((index & 1) === 0) {
+            (item as any).isWin = true;
+          } else {
+            (item as any).isLoss = true;
+          }
+        })
+      }
+    })
+
+    return { rounds, simple };
   }
 
   getMatchForSpot(spotIndex: number | undefined): MatchModel | undefined {

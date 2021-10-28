@@ -12,6 +12,14 @@ div.my-grid {
     box-sizing: border-box;
     overflow: hidden;
 
+    &.win {
+      background-color: #e0ffe0
+    }
+
+    &.loss {
+      background-color: #ffe0e0
+    }
+
     span {
       white-space: nowrap;
       overflow: hidden;

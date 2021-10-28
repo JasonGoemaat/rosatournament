@@ -18,7 +18,7 @@ export class TournamentBracketComponent implements OnInit {
   data$: Observable<MyRouteData>;
   BorderConfig = BorderConfig;
   data = data;
-  focusParticipantId?: number = 1;
+  focusParticipantId?: number;
   focus: boolean[] = [];
 
   constructor(

@@ -36,29 +36,11 @@ export class TournamentsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  resetTournament(tournamentId: string): void {
-    if (!confirm(`ARE YOU ABSOLUTELY SURE?\r\nThis will reset tournament "${tournamentId}"!`)) {
-      return;
-    }
-
-    const change = {...tournamentReset};
-    if (tournamentId !== 'mine') {
-      change.name = `${tournamentId}: ${change.name}`;
-      (change.roles as any)['tehcICyDNNaDzDT2Jzv3OVeIm9v2'] = 'admin';
-    }
-
-    this.service.setTournament(tournamentId, change).then(x => console.log('RESET!', x)).catch((err: any) => console.error(err));
-  }
-
   signIn(): void {
     this.authService.signIn();
   }
 
   signOut(): void {
     this.authService.signOut();
-  }
-
-  copyToClipboard(object: any) {
-    navigator.clipboard.writeText(JSON.stringify(object));
   }
 }

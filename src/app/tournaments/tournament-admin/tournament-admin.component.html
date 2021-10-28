@@ -1,0 +1,16 @@
+<p>tournament-admin works!</p>
+
+<div *ngIf="data$ | async as data; else loading">
+  <div *ngIf="data.role === 'admin'">
+    <button mat-menu-item (click)="resetTournament(data.tournamentId)">&lt;--RESET--&gt;</button>
+    <button mat-menu-item (click)="copyToClipboard(data.tournament)">&lt;--COPY Tournament to clipboard--&gt;</button>
+    <button mat-menu-item (click)="copyToClipboard(data.config)">&lt;--COPY Config to clipboard--&gt;</button>
+    <button mat-menu-item (click)="routeToTournament('mine')">&lt;Go to tournament: mine (Jack's tournament)--&gt;</button>
+    <button mat-menu-item (click)="routeToTournament('test')">&lt;Go to tournament: test&gt;</button>
+    <button mat-menu-item (click)="routeToTournament('other')">&lt;Go to tournament: other &gt;</button>
+  </div>
+</div>
+
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>

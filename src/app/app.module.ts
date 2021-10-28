@@ -42,6 +42,7 @@ import { MatchTimeSlotDialogComponent } from './tournaments/tournament-match/mat
 import { TournamentSpotComponent } from './tournaments/tournament-spot/tournament-spot.component';
 import { UtilService } from './services/util.service';
 import { TournamentParticipantBracketComponent } from './tournaments/tournament-participant-bracket/tournament-participant-bracket.component';
+import { TournamentAdminComponent } from './tournaments/tournament-admin/tournament-admin.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDyEMGADaBOQW1F36QtoPFYDGJzdFETvrs",
@@ -84,6 +85,7 @@ export const NGXS_MODULE = NgxsModule.forRoot(
     MatchTimeSlotDialogComponent,
     TournamentSpotComponent,
     TournamentParticipantBracketComponent,
+    TournamentAdminComponent,
   ],
   imports: [
     BrowserModule,

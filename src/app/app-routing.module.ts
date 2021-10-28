@@ -11,6 +11,7 @@ import { TournamentMatchComponent } from './tournaments/tournament-match/tournam
 import { TournamentParticipantComponent } from './tournaments/tournament-participant/tournament-participant.component';
 import { TournamentParticipantsComponent } from './tournaments/tournament-participants/tournament-participants.component';
 import { TournamentsComponent } from './tournaments/tournaments/tournaments.component';
+import { TournamentAdminComponent } from './tournaments/tournament-admin/tournament-admin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/tournaments/mine', pathMatch: 'full' },
@@ -41,6 +42,10 @@ const routes: Routes = [
         path: 'participants/:participantId',
         component: TournamentParticipantComponent
       },
+      {
+        path: 'admin',
+        component: TournamentAdminComponent
+      }
     ]
   },
   { path: 'second', component: TestSecondRouteComponent },

@@ -7,6 +7,17 @@
       (change)="togglePaid(data, $event)">Paid</mat-slide-toggle>
   </div>
 
+  <mat-card *ngIf="data.participant.nextMatch as match; else noMatches" style="margin-bottom: 20px">
+    <mat-card-title>Next Match {{data.participant.nextMatch.matchConfig.name}} @ {{data.participant.nextMatch.timeString}}</mat-card-title>
+    <mat-card-content>{{data.gridModel.nextOpponents}}</mat-card-content>
+  </mat-card>
+  
+  <ng-template #noMatches>
+    <mat-card>
+      <mat-card-title>No more matches</mat-card-title>
+    </mat-card>
+  </ng-template>
+
   <div *ngIf="data.gridModel && data.gridModel.gridElements?.length > 0; else out" class="my-grid" [ngStyle]="data.gridModel.gridStyle">
     <div class="grid-cell"
       *ngFor="let cell of data.gridModel.gridElements"

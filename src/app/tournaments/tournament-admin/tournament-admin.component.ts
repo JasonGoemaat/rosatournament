@@ -36,6 +36,14 @@ export class TournamentAdminComponent implements OnInit {
       return;
     }
 
+    if (tournamentId === 'mine') {
+      const answer = prompt(`Type "DELETE " and the id of the tournament and an exclamation mark to delete it.  This is required because you are trying to delete Jack's tournament!`);
+      if (answer !== 'DELETE mine!') {
+        alert('Whew!  You entered it wrong.  That was a close one you silly goose!');
+        return;
+      }
+    }
+
     const change = {...tournamentReset};
     if (tournamentId !== 'mine') {
       change.name = `${tournamentId}: ${change.name}`;

@@ -25,7 +25,8 @@ export interface MyRouteData {
   providedIn: 'root'
 })
 export class TournamentService {
-  tournament$ = new ReplaySubject<Tournament>(1);
+  tournamentSubject = new ReplaySubject<Tournament>(1);
+  tournament$?: Observable<Tournament>;
   tournamentIdObservable = new ReplaySubject<number>(1);
   lastTournamentId: string | null = null;
 
@@ -36,25 +37,27 @@ export class TournamentService {
     public ff: FirebaseFunctionsService,
     public fu: FirebaseUtilService,
   ) {
-    this.tournament$.unsubscribe();
   }
 
   getTournament(tournamentId: string) {
     console.log(`getTournament(${tournamentId})`);
     if (tournamentId !== this.lastTournamentId) {
-      this.tournament$ = new ReplaySubject<Tournament>(1);
       if (this.unsub) {
         this.unsub();
         this.unsub = null;
       }
+      this.lastTournamentId = tournamentId;
+      this.tournamentSubject.complete();
+      this.tournamentSubject = new ReplaySubject<Tournament>(1);
+      this.tournament$ = this.tournamentSubject.asObservable();
       const doc = this.ff.doc(this.ff.getFirestore(), "tournaments", tournamentId);
       this.unsub = this.ff.onSnapshot(doc, (doc) => {
         const tournament = doc.data() as Tournament;
-        this.tournament$.next(tournament);
+        this.tournamentSubject.next(tournament);
       });
     }
 
-    return combineLatest([this.auth.auth$, this.tournament$])
+    return combineLatest([this.auth.auth$, this.tournament$ as Observable<Tournament>])
     .pipe(map(([auth, tournament]) => {
       const config = defaultConfig;
       const vm = new TournamentViewModel(config, tournament);

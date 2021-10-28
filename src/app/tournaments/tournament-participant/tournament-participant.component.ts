@@ -29,7 +29,7 @@ export class TournamentParticipantComponent implements OnInit {
         const gridTemplateColumns = `repeat(${matches.simple.length},64px)`;
         const gridTemplateRows = `repeat(${matches.simple[0][0].height},20px)`;
         const gridStyle = {gridTemplateColumns, gridTemplateRows};
-        const gridElements: {gridArea: string, lines: string[], isWin: boolean, isLoss: boolean }[] = [];
+        const gridElements: {gridArea: string, lines: string[], isWin: boolean, isLoss: boolean, isOut: boolean }[] = [];
         matches.simple.forEach((list: any[], column) => {
           let rowStart = 1;
           list.forEach((match) => {
@@ -38,6 +38,7 @@ export class TournamentParticipantComponent implements OnInit {
               lines: match.lines,
               isWin: !!match.isWin,
               isLoss: !!match.isLoss,
+              isOut: !!match.isOut,
             });
             rowStart += match.height;
           });

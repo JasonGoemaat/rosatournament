@@ -495,6 +495,9 @@ export class TournamentViewModel {
   getParticipantUpcomingMatches(participantId: number, limit?: number) {
     const myLimit = limit || 5;
 
+    const participant = this.participants[participantId];
+    if (!participant.nextMatch) return null; // out of tournament
+
     const furthestSpot = this.spotList.reverse().find(x => x.participant === participantId);
     if (furthestSpot === undefined) return null; // NO spots
     const rounds: (number | undefined)[][] = [[furthestSpot.index]];
@@ -531,18 +534,18 @@ export class TournamentViewModel {
       return spotIds.map(x => {
         // nulls have 1 height, 'OUT'
         if (typeof (x) !== 'number') {
-          return { height: 1, spotIndex: x, lines: ['(out)'] };
+          return { height: 1, spotIndex: x, lines: ['(out)'], isOut: true };
         }
 
         console.log('x:', x);
         const spotConfig = this.config.spots[x as number];
         if (spotConfig.place || 0 > 0) {
-          return { height: 1, spotIndex: x, lines: [`Place: ${spotConfig.place}`], isWin: false, isLoss: false }
+          return { height: 1, spotIndex: x, lines: [`Place: ${spotConfig.place}`] }
         }
 
         const match = this.getMatchForSpot(x);
         if (!match) {
-          return { height: 1, spotIndex: x, lines: [`Match not found for spot ${x}`], isWin: false, isLoss: false }
+          return { height: 1, spotIndex: x, lines: [`Match not found for spot ${x}`] }
         }
 
         // find other spot
@@ -556,7 +559,7 @@ export class TournamentViewModel {
         if (opponentList.length > myLimit) {
           opponentList = [...opponentList.slice(0, myLimit - 1), `... ${opponentList.length - myLimit + 1} more`]
         }
-        return { height: opponentList.length, spotIndex: x, lines: opponentList, isWin: false, isLoss: false };
+        return { height: opponentList.length, spotIndex: x, lines: opponentList, isWin: false, isLoss: false, isOut: false };
       });
 
       // now simple is array of {height,spotIndex,lines} and I need to size them

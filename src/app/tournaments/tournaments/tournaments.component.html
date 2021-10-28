@@ -1,8 +1,11 @@
 <div *ngIf="data$ | async as data; else loading">
   <!-- <app-tournament-menu [tournamentId]="data.tournamentId"></app-tournament-menu> -->
-  <button mat-button [matMenuTriggerFor]="menu" style="position: fixed; top: 0; left: 0; z-index: 1000; background-color: white; font-size: 1.5em;">
-    Menu
-    <img *ngIf="data.auth.photoURL" [src]="data.auth.photoURL" style="width: 24px">
+  <h1 class="loading"> 
+    <button mat-button [matMenuTriggerFor]="menu" style="position: relative; float: left; top: 0; left: 0; z-index: 1000; background-color: white; font-size: 1.5em;">
+    <span style="color: blue; font-size:large;">Menu</span>
+    <div *ngIf="data.auth.photoURL" style="display: inline-block; width: 24px; margin-left: 5px; border-radius: 50%;">
+      <img *ngIf="data.auth.photoURL" [src]="data.auth.photoURL" style="width: 24px; border-radius: 50%;">
+    </div>
   </button>
   <mat-menu #menu>
     <button mat-menu-item (click)="router.navigate(['tournaments', data.tournamentId])">Bracket</button>
@@ -14,9 +17,12 @@
     <button mat-menu-item (click)="copyToClipboard(data.tournament)">&lt;--COPY Tournament to clipboard--&gt;</button>
     <button mat-menu-item (click)="copyToClipboard(data.config)">&lt;--COPY Config to clipbaord--&gt;</button>
   </mat-menu>
-  <h1 class="loading">{{data.vm.tournament.name}}</h1>
+{{data.vm.tournament.name}}</h1>
   <router-outlet></router-outlet>
 </div>
 <ng-template #loading>
   <app-loading></app-loading>
 </ng-template>
+
+<!-- simply some padding at the bottom -->
+<div style="height: 20px">&nbsp;</div>

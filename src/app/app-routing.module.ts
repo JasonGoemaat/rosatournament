@@ -12,9 +12,11 @@ import { TournamentParticipantComponent } from './tournaments/tournament-partici
 import { TournamentParticipantsComponent } from './tournaments/tournament-participants/tournament-participants.component';
 import { TournamentsComponent } from './tournaments/tournaments/tournaments.component';
 import { TournamentAdminComponent } from './tournaments/tournament-admin/tournament-admin.component';
+import { DeviceStylesComponent } from './sample/device-styles/device-styles.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/tournaments/mine', pathMatch: 'full' },
+  { path: 'styles', component: DeviceStylesComponent },
   {
     path: 'tournaments/:tournamentId',
     component: TournamentsComponent,

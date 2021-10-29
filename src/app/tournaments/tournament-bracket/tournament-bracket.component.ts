@@ -105,6 +105,12 @@ export class TournamentBracketComponent implements OnInit {
   }
 
   doRandomWinner(data: MyRouteData, spot: SpotModel) {
+    if (data.tournamentId === 'mine') {
+      const answer = confirm(`This is Jack's actual tournament, are you sure you want to assign a random winner?`);
+      if (!answer) {
+        return;
+      }
+    }
     const tournamentId = data.tournamentId;
     let matchIndex = data.config.matches.findIndex(match => match.winnerTo === spot.index || match.loserTo === spot.index);
     if (!(matchIndex >= 0)) return;
@@ -150,12 +156,12 @@ export class TournamentBracketComponent implements OnInit {
 
     // if clicking on seed spot, focus that player's possible spots throughout
     // tournament (or cancel)
-    if (data.config.spots[spot.index].seed || 0 > 0) {
-      let newParticipantId = data.tournament.spotParticipant[spot.index];
-      if (this.focusParticipantId === newParticipantId) {
+    const participantId = data.tournament.spotParticipant[spot.index];
+    if (participantId) {
+      if (this.focusParticipantId === participantId) {
         this.focusParticipantId = undefined; // cancel
       } else {
-        this.focusParticipantId = newParticipantId;
+        this.focusParticipantId = participantId;
       }
       this.focus = data.vm.spotList.map(spot => this.shouldFocusSpot(data, spot.index));
       return;

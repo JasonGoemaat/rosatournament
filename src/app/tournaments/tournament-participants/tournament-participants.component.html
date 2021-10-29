@@ -1,5 +1,5 @@
 
-<h2 style="width: 320px; text-align: center">Participants</h2>
+<h2 class="heading">Participants</h2>
 
 <div *ngIf="data$ | async as data; else loading">
   <mat-card *ngFor="let participant of data.participants"

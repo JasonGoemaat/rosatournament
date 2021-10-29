@@ -99,8 +99,22 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+h2.heading {
+  width: 350px;
+  text-align: center;
+
+  @media (max-width: 640px) {
+    width: 90%;
+    margin-left: 4%;
+  }
+}
+
 mat-card.mat-card {
-  width: 300px;
+  @media (max-width: 640px) {
+    width: 90%;
+    margin-left: 4%;
+  }
+  width: 350px;
   user-select: none;
   cursor: pointer;
   background-color: $card-background;

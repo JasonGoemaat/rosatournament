@@ -1,11 +1,9 @@
 <div *ngIf="data$ | async as data; else loading">
-  <h2 style="width: 320px; text-align: center">{{data.participant.name}}</h2>
-
-  <div *ngIf="data.role === 'admin'" class="centered-buttons">
-    <mat-slide-toggle
-      [checked]="data.participant.hasPaid"
-      (change)="togglePaid(data, $event)">Paid</mat-slide-toggle>
-  </div>
+  <h2 class="heading" style="display: flex; align-items: center; justify-content: space-between; padding-left: 20px; padding-right: 20px;">{{data.participant.name}}
+    <mat-slide-toggle style='margin-right: 10px;'
+    [checked]="data.participant.hasPaid"
+    (change)="togglePaid(data, $event)">Paid</mat-slide-toggle>
+  </h2>
 
   <mat-card *ngIf="data.participant.nextMatch as match; else noMatches" style="margin-bottom: 20px">
     <mat-card-title>Next Match {{data.participant.nextMatch.matchConfig.name}} @ {{data.participant.nextMatch.timeString}}</mat-card-title>

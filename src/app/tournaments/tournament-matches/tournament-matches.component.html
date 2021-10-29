@@ -1,9 +1,9 @@
 <div *ngIf="data$ | async as data; else loading">
-  <h2 *ngIf="data.some.length === 0" style="margin-left: 20px">
+  <h2 class="heading" *ngIf="data.some.length === 0" style="margin-left: 20px">
     All matches have finished!
   </h2>
 
-  <h2 style="width: 320px; text-align: center">Matches</h2>
+  <h2 class="heading">Matches</h2>
 
   <mat-card *ngFor="let match of data.some" (click)="openMatch(data, match)">
     <mat-card-title>{{match.model.timeString}} - Match {{match.model.matchName}}</mat-card-title>
@@ -12,7 +12,7 @@
 
   <mat-card *ngIf="!showMore && data.more.length > 0">
     <mat-card-content class="actions" (click)="clickShowMore(data)">
-      <span>show more</span>
+      <span style="color:blue">show more</span>
     </mat-card-content>
   </mat-card>
 
@@ -23,7 +23,7 @@
 
   <mat-card *ngIf="!showPlayed && data.played.length > 0">
     <mat-card-content class="actions" (click)="clickShowPlayed(data)">
-      <span>show played</span>
+      <span style="color:blue">show played</span>
     </mat-card-content>
   </mat-card>
 

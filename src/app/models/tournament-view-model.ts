@@ -278,6 +278,8 @@ export class TournamentViewModel {
     if (config.winnerTo) delete tournament.spotParticipant[config.winnerTo];
     if (config.loserTo) delete tournament.spotParticipant[config.loserTo];
     delete tournament.matchResultMap[matchIndex];
+    delete tournament.resultMap[config.spotA]
+    delete tournament.resultMap[config.spotB]
     return tournament;
   }
 

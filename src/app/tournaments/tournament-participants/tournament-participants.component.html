@@ -2,7 +2,7 @@
 <h2 class="heading">Participants</h2>
 
 <div *ngIf="data$ | async as data; else loading">
-  <mat-card *ngFor="let participant of data.participants"
+  <mat-card color="primary" *ngFor="let participant of data.participants"
       (click)="onClickParticipant(data, participant)"
       [ngClass]="{done: participant.isFinished}">
     <mat-card-title><fa-icon *ngIf="data.role === 'admin' && !participant.hasPaid" [icon]="faDollarSign"></fa-icon>{{participant.name}}<span *ngIf="participant.record" style="float: right; font-size: 0.75em">{{participant.record}}</span></mat-card-title>

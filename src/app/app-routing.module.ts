@@ -56,7 +56,8 @@ const routes: Routes = [
 ];
 
 const configuration: ExtraOptions = {
-  paramsInheritanceStrategy: 'always'
+  paramsInheritanceStrategy: 'always',
+  scrollPositionRestoration : 'top',
 }
 
 @NgModule({

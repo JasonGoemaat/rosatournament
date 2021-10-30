@@ -38,6 +38,12 @@ h1 { text-align: center; }
       text-overflow: clip;
       text-align: left;
       user-select: none;
+      
+      &.next-match {
+        border: dashed 1px blue;
+        background-color: lightgoldenrodyellow;
+        box-sizing: border-box;
+      }
 
       &.winner {
         color: green;

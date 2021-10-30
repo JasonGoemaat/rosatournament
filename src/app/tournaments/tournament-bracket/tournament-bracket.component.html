@@ -9,7 +9,7 @@
     <div
       (click)="onSpotClick(data, spot, $event)"
       class="name"
-      [ngClass]="{ winner: spot.isWinner, loser: spot.isLoser, bold: spot.isBold, italic: spot.isItalic, 'focus': focus[spot.index] }"
+      [ngClass]="{ winner: spot.isWinner, loser: spot.isLoser, bold: spot.isBold, italic: spot.isItalic, 'focus': focus[spot.index], 'next-match': spot.isNext }"
       matTooltip="{{getTooltip(data, spot)}}"
       [matTooltipClass]="{ 'multiline-tooltip': true }">
       {{spot.text}}

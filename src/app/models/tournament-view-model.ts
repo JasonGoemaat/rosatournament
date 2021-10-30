@@ -13,6 +13,7 @@ export interface SpotModel {
   text: string;
   config: SpotConfig;
   loserOrWinnerText: string; // 'loser of WM' or 'winner of WM'
+  isNext: boolean;
 }
 
 export interface ParticipantModel extends Participant {
@@ -139,7 +140,16 @@ export class TournamentViewModel {
   generateSpotModels(): SpotModel[] {
     const { config, tournament } = this;
 
-    const spots = config.spots.map((spotConfig, index) => <SpotModel>{ text: `Spot ${index}`, config: spotConfig, index, participant: this.tournament.spotParticipant[index] });
+    const nextMatchIndex = this.tournament.timeSlots.find(x => !tournament.matchResultMap[x.matchIndex]?.isFinished)?.matchIndex;
+    const nextMatchConfig = nextMatchIndex ? config.matches[nextMatchIndex] : null;
+
+    const spots = config.spots.map((spotConfig, index) => <SpotModel>{
+      text: `Spot ${index}`,
+      config: spotConfig,
+      index,
+      participant: this.tournament.spotParticipant[index],
+      isNext: index === nextMatchConfig?.winnerTo || index === nextMatchConfig?.loserTo,
+    });
 
     // process matches adding match name and time
     config.matches.forEach((matchConfig, matchIndex) => {

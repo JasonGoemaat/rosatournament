@@ -44,6 +44,7 @@ import { UtilService } from './services/util.service';
 import { TournamentParticipantBracketComponent } from './tournaments/tournament-participant-bracket/tournament-participant-bracket.component';
 import { TournamentAdminComponent } from './tournaments/tournament-admin/tournament-admin.component';
 import { DeviceStylesComponent } from './sample/device-styles/device-styles.component';
+import { FacebookCommentsComponent } from './facebook-comments/facebook-comments.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDyEMGADaBOQW1F36QtoPFYDGJzdFETvrs",
@@ -88,6 +89,7 @@ export const NGXS_MODULE = NgxsModule.forRoot(
     TournamentParticipantBracketComponent,
     TournamentAdminComponent,
     DeviceStylesComponent,
+    FacebookCommentsComponent,
   ],
   imports: [
     BrowserModule,

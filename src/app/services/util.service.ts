@@ -43,4 +43,13 @@ export class UtilService {
 
     return 'not placed';
   }
+
+  static colorLog(color: string, title: string, ...args: any[]) {
+    const text = `%c${title}%c`;
+    const style = `padding: 5px; background-color: ${color}; color: white; border-radius: 5px; margin-right: 10px`
+    console.log(text, style, '', ...args);
+  }
 }
+
+// for debugging
+(window as any).sUtil = UtilService;

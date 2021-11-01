@@ -1,4 +1,4 @@
-import {Component, OnInit } from '@angular/core';
+import {Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { SpotModel } from '../../models/tournament-view-model';
   templateUrl: './tournament-bracket.component.html',
   styleUrls: ['./tournament-bracket.component.scss']
 })
-export class TournamentBracketComponent implements OnInit {
+export class TournamentBracketComponent {
   myConfig: TournamentConfig | null = null;
   myTournament: Tournament | null = null;
   data$: Observable<MyRouteData>;
@@ -24,7 +24,7 @@ export class TournamentBracketComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     public service: TournamentService,
-    public router: Router
+    public router: Router,
   ) {
     (window as any).cBracket = this;
     this.data$ = service.getForParams(route.paramMap)
@@ -32,23 +32,6 @@ export class TournamentBracketComponent implements OnInit {
       this.focus = x.vm.spotList.map(spot => this.shouldFocusSpot(x, spot.index));
       (window as any).x = x;
     }));
-  }
-
-  ngOnInit(): void {
-    // this.route.paramMap.subscribe((params: ParamMap) => {
-    //   console.log('got params:', params);
-    //   const tournamentId = `${params.get('tournamentId')}`;
-    //   console.log('bracket tournamentId:', tournamentId);
-    //   console.log('tournamentId:', tournamentId);
-    //   this.service.getTournament(tournamentId);
-    //   combineLatest([this.service.tournament$, this.authService.auth])
-    //     .subscribe(([tournament, auth]) => {
-    //       console.log('tournament:', tournament);
-    //       console.log('auth:', auth);
-    //       const vm = new TournamentViewModel(defaultConfig, tournament);
-    //       this.data$.next(<MyData>{ vm, auth })
-    //     });
-    // });
   }
 
   getBorderBottom(spot: SpotConfig): string {
@@ -83,21 +66,6 @@ export class TournamentBracketComponent implements OnInit {
       }
     }
     return null;
-  }
-
-  getSpotDisplayInfo(spot: SpotConfig) {
-    // need 'isWinner' or 'isLoser' to add class to element
-    // need displayText (name (i.e. 'Jeff Livingston'), time (i.e. '9:00 am'), source (i.e. loser of WA'))
-    // need isItalic (if not name like 'Jeff Livingston' (i.e. for time or source, or place ))
-    // hintText (if is where winner goes, display match name)
-
-    // const infos: any[] = [];
-
-    // if (this.config != null) {
-    //   this.config.spots.forEach((spot, spotIndex) => {
-    //     // 
-    //   })
-    // }
   }
 
   navigateToMatch(tournamentId: string, matchIndex: number) {

@@ -19,6 +19,7 @@ export interface MyRouteData {
   participantId: number | null,
   tournamentId: string,
   role: string,
+  facebookCommentsUrl: string,
 }
 
 @Injectable({
@@ -73,6 +74,7 @@ export class TournamentService {
         vm,
         tournamentId,
         role: auth && auth.uid && auth.isAuthReceived && tournament && tournament.roles ? tournament.roles[auth.uid] : undefined,
+        facebookCommentsUrl: `https://rosatournament.web.app/tournaments/${tournamentId}`,
       }
       return result;
     }));

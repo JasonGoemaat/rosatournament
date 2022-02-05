@@ -15,7 +15,7 @@ import { TournamentAdminComponent } from './tournaments/tournament-admin/tournam
 import { DeviceStylesComponent } from './sample/device-styles/device-styles.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/tournaments/mine', pathMatch: 'full' },
+  { path: '', redirectTo: '/tournaments/9ball', pathMatch: 'full' },
   { path: 'styles', component: DeviceStylesComponent },
   {
     path: 'tournaments/:tournamentId',

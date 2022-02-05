@@ -4,7 +4,7 @@ import { Unsubscribe } from '@firebase/util';
 import { Observable, Observer, ReplaySubject, combineLatest, of } from 'rxjs';
 import { map, mergeMap, tap } from 'rxjs/operators';
 import { Tournament } from '../models/tournament';
-import { defaultConfig, TournamentConfig } from '../models/tournament-config';
+import { defaultConfig, defaultConfig32, TournamentConfig } from '../models/tournament-config';
 import { TournamentViewModel } from '../models/tournament-view-model';
 import { AuthService } from './auth.service';
 import { FirebaseFunctionsService } from './firebase-functions.service';
@@ -65,7 +65,7 @@ export class TournamentService {
 
     return combineLatest([this.auth.auth$, this.tournament$ as Observable<Tournament>])
     .pipe(map(([auth, tournament]) => {
-      const config = defaultConfig;
+      const config = tournamentId.indexOf('9ball') >= 0 ? defaultConfig32 : defaultConfig;
       const vm = new TournamentViewModel(config, tournament);
       const result = {
         auth,
